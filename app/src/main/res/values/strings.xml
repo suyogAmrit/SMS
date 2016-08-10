@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">SMS</string>
+    <string name="action_settings">Settings</string>
+    <string name="app_tag">Socaity Management System</string>
+    <string name="forgot_password">Enter Your Mail Id</string>
+
+    <string name="drawer_open">Drawer Open</string>
+    <string name="drawer_close">Drawer Close</string>
+
+    <string name="your_zip">Enter Pin Code(Optional)</string>
+    <string name="your_post_office">Enter Your Post Office(Optional)</string>
+    <string name="your_landmark">Enter LandMark</string>
+    <string name="toobar_address">Address</string>
+    <string name="your_name">Enter Your Name</string>
+    <string name="your_dob">Enter Your Date Of Birth</string>
+    <string name="gender">Gender :</string>
+    <string name="your_father">Enter Your Father\'s Name</string>
+    <string name="your_house">Enter House No</string>
+    <string name="your_street">Enter Street</string>
+    <string name="email">Email Id</string>
+    <string name="your_city">Enter Your City</string>
+    <string name="update">Update</string>
+</resources>

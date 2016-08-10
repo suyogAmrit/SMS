@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:background="@drawable/backgroundd">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <TextView
+                android:id="@+id/txtAppname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:text="SMS"
+                android:textColor="#444"
+                android:textSize="50sp"
+                android:textStyle="bold" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtAppname"
+                android:text="@string/app_tag"
+                android:gravity="center"
+                android:textSize="17sp"/>
+
+            <EditText
+                android:id="@+id/edUserId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtAppname"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="30dp"
+                android:drawableLeft="@android:drawable/sym_action_email"
+                android:hint="Enter Your Email Id"
+                android:padding="7dp"
+                android:background="@drawable/et_background"/>
+
+            <EditText
+                android:id="@+id/edPsw"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edUserId"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:drawableLeft="@android:drawable/ic_lock_idle_lock"
+                android:hint="Enter Password"
+                android:padding="7dp"
+                android:background="@drawable/et_background"
+                android:inputType="textPassword"/>
+
+            <Button
+                android:id="@+id/btnLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edPsw"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:onClick="btnLogin"
+                android:text="Login"
+                android:textSize="17sp"
+                android:background="@drawable/button_booknow"
+                android:textColor="#FFF"
+                />
+
+            <LinearLayout
+                android:id="@+id/linerLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btnLogin"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="20dp"
+                android:weightSum="2">
+
+                <Button
+                    android:id="@+id/btnSignIn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:onClick="btnSignIn"
+                    android:text="Sign Up"
+                    android:background="@drawable/button_booknow"
+                    android:textColor="#FFF"/>
+
+                <Button
+                    android:id="@+id/btnFogetPsw"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Forgot Password"
+                    android:background="@drawable/button_booknow"
+                    android:textColor="#FFF"
+                    android:onClick="btnFgtPassword"/>
+            </LinearLayout>
+
+
+        </RelativeLayout>
+    </LinearLayout>
+</ScrollView>
