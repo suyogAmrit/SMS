@@ -14,6 +14,7 @@ import java.util.Date;
  */
 public final class Constants {
     public static final String COLOR_WHITE = "#FFFFFF";
+    public static final String TEST = "#FFFFFF";
     public static final String Request = "request";
     public static final String RESPONSE = "response";
 
