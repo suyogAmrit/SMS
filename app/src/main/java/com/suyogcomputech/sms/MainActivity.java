@@ -27,9 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle drawerToggle;
     ArrayList<String> dataList;
     private ListView mDrawerList;
-    Button btnAddFarmer, btnSubmit;
-    Fragment fragment;
-    Class fragmentClass;
+
     FragmentManager fragmentManager;
 
     @Override
