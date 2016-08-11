@@ -30,44 +30,7 @@
             android:name=".RegistrationActivity"
             android:parentActivityName=".LoginActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name="com.suyogcomputech.fragment.ElectronicsFragment"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".OnlineShoppingActivity"/>
-        <activity
-            android:name="com.suyogcomputech.fragment.LifeStyleFragment"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".OnlineShoppingActivity"/>
-        <activity
-            android:name="com.suyogcomputech.fragment.HomeFurnitureFragment"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".OnlineShoppingActivity"/>
-        <activity
-            android:name="com.suyogcomputech.fragment.BooksFragment"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".OnlineShoppingActivity"/>
-        <activity
-            android:name="com.suyogcomputech.fragment.AutomotiveFragment"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".OnlineShoppingActivity"/>
-        <activity
-            android:name=".MyCartActivity"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".OnlineShoppingActivity"/>
-        <activity
-            android:name=".MyOrderActivity"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".OnlineShoppingActivity"/>
-        <activity
-            android:name=".MyAccountActivity"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".OnlineShoppingActivity"/>
 
-        <activity
-            android:name=".Test"
-            android:screenOrientation="portrait">
-
-        </activity>
     </application>
 
 </manifest>
