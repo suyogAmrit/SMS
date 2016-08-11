@@ -1,6 +1,7 @@
 package com.suyogcomputech.sms;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -87,7 +88,8 @@ public class MainActivity extends AppCompatActivity {
                                 mDrawerLayout.closeDrawer(GravityCompat.START);
                                 break;
                             case 1:
-                                Toast.makeText(MainActivity.this, "My Order", Toast.LENGTH_SHORT).show();
+                                Intent intentMyOrder=new Intent(MainActivity.this,MyOrderActivity.class);
+                                startActivity(intentMyOrder);
                                 mDrawerLayout.closeDrawer(GravityCompat.START);
                                 break;
 

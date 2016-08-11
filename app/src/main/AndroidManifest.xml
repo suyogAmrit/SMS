@@ -30,6 +30,9 @@
             android:name=".RegistrationActivity"
             android:parentActivityName=".LoginActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".MyOrderActivity"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"/>
 
     </application>
 
