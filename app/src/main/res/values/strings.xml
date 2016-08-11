@@ -20,4 +20,13 @@
     <string name="email">Email Id</string>
     <string name="your_city">Enter Your City</string>
     <string name="update">Update</string>
+
+    <array name="insurance">
+        <item>Health Insurance</item>
+        <item>Life Insurance</item>
+        <item>Vehicle Insurance</item>
+        <item>Agricultural insurance‎</item>
+        <item>Property insurance</item>
+        <item>Home insurance</item>
+    </array>
 </resources>

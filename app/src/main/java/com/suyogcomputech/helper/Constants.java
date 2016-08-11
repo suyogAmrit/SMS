@@ -16,13 +16,12 @@ public final class Constants {
     public static final String COLOR_WHITE = "#FFFFFF";
     public static final String TEST = "#FFFFFF";
     public static final String Request = "request";
-    public static final String RESPONSE = "response";
+
+    public static final String INSURANCE_TYPE = "insurance_type";
 
     public static final String IMAGE = "image";
     public static final String NAME = "name";
     public static final String TITLE = "title";
-    public static final String DESCRIPTION = "description";
-    public static final String PRICE = "price";
     public static final String FACILITIES = "facilities";
 
     public static final String TAG_TIME = "time";
