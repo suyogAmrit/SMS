@@ -132,7 +132,8 @@ public class MainActivity extends AppCompatActivity {
                     case 3:
                         switch (childPosition) {
                             case 0:
-                                Toast.makeText(MainActivity.this, "Doctor List", Toast.LENGTH_SHORT).show();
+                                Intent intentDoc=new Intent(MainActivity.this,DoctorListActivity.class);
+                                startActivity(intentDoc);
                                 mDrawerLayout.closeDrawer(GravityCompat.START);
                                 break;
                             case 1:
