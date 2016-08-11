@@ -117,11 +117,13 @@ public class MainActivity extends AppCompatActivity {
                     case 2:
                         switch (childPosition) {
                             case 0:
-                                Toast.makeText(MainActivity.this, "Grocery List", Toast.LENGTH_SHORT).show();
+                                Intent intentGsry=new Intent(MainActivity.this,GroceryActivity.class);
+                                startActivity(intentGsry);
                                 mDrawerLayout.closeDrawer(GravityCompat.START);
                                 break;
                             case 1:
-                                Toast.makeText(MainActivity.this, "My Order", Toast.LENGTH_SHORT).show();
+                                Intent intentMyOrder=new Intent(MainActivity.this,MyOrderActivity.class);
+                                startActivity(intentMyOrder);
                                 mDrawerLayout.closeDrawer(GravityCompat.START);
                                 break;
 
