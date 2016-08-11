@@ -148,7 +148,8 @@ public class MainActivity extends AppCompatActivity {
                     case 4:
                         switch (childPosition) {
                             case 0:
-                                Toast.makeText(MainActivity.this, "Lawyer List", Toast.LENGTH_SHORT).show();
+                                Intent intentDoc=new Intent(MainActivity.this,LawyerListActivity.class);
+                                startActivity(intentDoc);
                                 mDrawerLayout.closeDrawer(GravityCompat.START);
                                 break;
                             case 1:
@@ -163,7 +164,8 @@ public class MainActivity extends AppCompatActivity {
                     case 5:
                         switch (childPosition) {
                             case 0:
-                                Toast.makeText(MainActivity.this, "Insurance List", Toast.LENGTH_SHORT).show();
+                                Intent intentDoc=new Intent(MainActivity.this,InsuranceListActivity.class);
+                                startActivity(intentDoc);
                                 mDrawerLayout.closeDrawer(GravityCompat.START);
                                 break;
                             case 1:
