@@ -21,24 +21,25 @@
 
 
 
-        <FrameLayout
-            android:id="@+id/frame"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rcvShopping"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"/>
+
 
     </LinearLayout>
-    <ListView
-        android:id="@+id/left_drawerHome"
+
+    <ExpandableListView
+        android:id="@+id/lvExp"
         android:layout_width="248dp"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
+        android:layout_gravity="left"
+        android:background="#E6E6E6"
         android:layout_marginTop="?attr/actionBarSize"
-        android:background="@android:color/white"
-        android:alpha="0.8"
-        android:choiceMode="singleChoice"
-        android:divider="#80acacac"
-        android:dividerHeight="0.5dp"
-        android:drawSelectorOnTop="false"/>
+        android:drawSelectorOnTop="false">
+    </ExpandableListView>
 
 
 </android.support.v4.widget.DrawerLayout>
+

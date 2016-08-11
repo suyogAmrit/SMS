@@ -31,9 +31,6 @@
             android:parentActivityName=".LoginActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".OnlineShoppingActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name="com.suyogcomputech.fragment.ElectronicsFragment"
             android:screenOrientation="portrait"
             android:parentActivityName=".OnlineShoppingActivity"/>

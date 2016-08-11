@@ -18,7 +18,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.squareup.picasso.Picasso;
 import com.suyogcomputech.helper.OnlineShopping;
 import com.suyogcomputech.helper.MySingleton;
-import com.suyogcomputech.sms.OnlineShoppingActivity;
+import com.suyogcomputech.sms.MainActivity;
 import com.suyogcomputech.sms.R;
 
 import java.util.List;
@@ -78,9 +78,10 @@ public class OnlineShoppingAdapter extends RecyclerView.Adapter<OnlineShoppingAd
         holder.btnAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((OnlineShoppingActivity)myContext).addItemToCart(myItem.getTitle());
+                ((MainActivity)myContext).addItemToCart(myItem.getTitle());
             }
         });
+
     }
 
     @Override

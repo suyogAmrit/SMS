@@ -44,9 +44,9 @@ public class HomeFragment extends Fragment {
     ArrayList<OnlineShopping> list;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.activity_electronic, container, false);
         detector=new ConnectionDetector(getActivity());
-        rcvFacilities = (RecyclerView) view.findViewById(R.id.rcvFacilities);
+        rcvFacilities = (RecyclerView) view.findViewById(R.id.rcvElectronic);
         if (detector.isConnectingToInternet()) {
             new FetchFacilities().execute(Constants.URL_FACILITIES);
         } else
