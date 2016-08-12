@@ -29,4 +29,18 @@
         <item>Property insurance</item>
         <item>Home insurance</item>
     </array>
+
+    <array name="event_list">
+        <item>Kitty Party Organisers</item>
+        <item>Religious Event Organisers</item>
+        <item>Christian Wedding Planners</item>
+        <item>DJ Services‎</item>
+        <item>Camp and Trip Event Organisers</item>
+        <item>Wedding Organisers</item>
+        <item>Birthday Party Organisers</item>
+        <item>Party Organisers</item>
+        <item>Stage Shows Organisers</item>
+        <item>Sangeet Organisers‎</item>
+        <item>Mandap Decoration Services</item>
+    </array>
 </resources>

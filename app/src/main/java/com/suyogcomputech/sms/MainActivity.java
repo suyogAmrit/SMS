@@ -1,18 +1,16 @@
 package com.suyogcomputech.sms;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.AsyncTask;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,22 +21,12 @@ import com.mikepenz.actionitembadge.library.ActionItemBadge;
 import com.mikepenz.actionitembadge.library.utils.BadgeStyle;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.suyogcomputech.adapter.ExpandableListAdapter;
-import com.suyogcomputech.adapter.OnlineShoppingAdapter;
+import com.suyogcomputech.fragment.InsuranceListFragment;
+import com.suyogcomputech.fragment.ListEventFragment;
+import com.suyogcomputech.fragment.MyOrderFragment;
+import com.suyogcomputech.fragment.ShoppingFragment;
 import com.suyogcomputech.helper.ConnectionDetector;
-import com.suyogcomputech.helper.Constants;
-import com.suyogcomputech.helper.OnlineShopping;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.SocketTimeoutException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -57,11 +45,12 @@ public class MainActivity extends AppCompatActivity {
 
     private BadgeStyle style = ActionItemBadge.BadgeStyles.RED.getStyle();
     private int badgeCount = 0;
-
     ConnectionDetector detector;
-    RecyclerView rcvFacilities;
-    OnlineShoppingAdapter adapter;
-    ArrayList<OnlineShopping> list;
+
+    Fragment fragment;
+    Class fragmentClass;
+    FragmentManager fragmentManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +59,16 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         toolbar = (Toolbar) findViewById(R.id.toolbarHome);
         toolbar.setTitle("e-Shopping");
+        fragmentManager = getSupportFragmentManager();
+
         setSupportActionBar(toolbar);
+
+
+        fragment = new ShoppingFragment();
+        //FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.frame, fragment).commit();
+
+
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
         prepareListData();
         listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
@@ -84,12 +82,15 @@ public class MainActivity extends AppCompatActivity {
                     case 0:
                         switch (childPosition) {
                             case 0:
-                                Toast.makeText(MainActivity.this, "Product List", Toast.LENGTH_SHORT).show();
+                                fragment = new ShoppingFragment();
+                                toolbar.setTitle("e-Shopping");
+                                toolbar.setTitleTextColor(Color.WHITE);
                                 mDrawerLayout.closeDrawer(GravityCompat.START);
                                 break;
                             case 1:
-                                Intent intentMyOrder=new Intent(MainActivity.this,MyOrderActivity.class);
-                                startActivity(intentMyOrder);
+                                fragment = new MyOrderFragment();
+                                toolbar.setTitle("My Order");
+                                toolbar.setTitleTextColor(Color.WHITE);
                                 mDrawerLayout.closeDrawer(GravityCompat.START);
                                 break;
 
@@ -101,7 +102,9 @@ public class MainActivity extends AppCompatActivity {
                     case 1:
                         switch (childPosition) {
                             case 0:
-                                Toast.makeText(MainActivity.this, "List Of Event", Toast.LENGTH_SHORT).show();
+                                fragment = new ListEventFragment();
+                                toolbar.setTitle("Event Management");
+                                toolbar.setTitleTextColor(Color.WHITE);
                                 mDrawerLayout.closeDrawer(GravityCompat.START);
                                 break;
                             case 1:
@@ -117,13 +120,14 @@ public class MainActivity extends AppCompatActivity {
                     case 2:
                         switch (childPosition) {
                             case 0:
-                                Intent intentGsry=new Intent(MainActivity.this,GroceryActivity.class);
+                                Intent intentGsry = new Intent(MainActivity.this, GroceryActivity.class);
                                 startActivity(intentGsry);
                                 mDrawerLayout.closeDrawer(GravityCompat.START);
                                 break;
                             case 1:
-                                Intent intentMyOrder=new Intent(MainActivity.this,MyOrderActivity.class);
-                                startActivity(intentMyOrder);
+                                fragment = new MyOrderFragment();
+                                toolbar.setTitle("My Order");
+                                toolbar.setTitleTextColor(Color.WHITE);
                                 mDrawerLayout.closeDrawer(GravityCompat.START);
                                 break;
 
@@ -134,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
                     case 3:
                         switch (childPosition) {
                             case 0:
-                                Intent intentDoc=new Intent(MainActivity.this,DoctorListActivity.class);
+                                Intent intentDoc = new Intent(MainActivity.this, DoctorListActivity.class);
                                 startActivity(intentDoc);
                                 mDrawerLayout.closeDrawer(GravityCompat.START);
                                 break;
@@ -150,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
                     case 4:
                         switch (childPosition) {
                             case 0:
-                                Intent intentDoc=new Intent(MainActivity.this,LawyerListActivity.class);
+                                Intent intentDoc = new Intent(MainActivity.this, LawyerListActivity.class);
                                 startActivity(intentDoc);
                                 mDrawerLayout.closeDrawer(GravityCompat.START);
                                 break;
@@ -166,8 +170,9 @@ public class MainActivity extends AppCompatActivity {
                     case 5:
                         switch (childPosition) {
                             case 0:
-                                Intent intentDoc=new Intent(MainActivity.this,InsuranceListActivity.class);
-                                startActivity(intentDoc);
+                                fragment = new InsuranceListFragment();
+                                toolbar.setTitle("Insurance");
+                                toolbar.setTitleTextColor(Color.WHITE);
                                 mDrawerLayout.closeDrawer(GravityCompat.START);
                                 break;
                             case 1:
@@ -183,17 +188,17 @@ public class MainActivity extends AppCompatActivity {
                     default:
                         break;
                 }
+                try {
+                    fragmentManager.beginTransaction().replace(R.id.frame, fragment).commit();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 mDrawerLayout.closeDrawer(expListView);
                 return false;
             }
         });
 
-        detector=new ConnectionDetector(MainActivity.this);
-        rcvFacilities = (RecyclerView) findViewById(R.id.rcvShopping);
-        if (detector.isConnectingToInternet()) {
-            new FetchFacilities().execute(Constants.URL_FACILITIES);
-        } else
-            Toast.makeText(MainActivity.this, Constants.dialog_message, Toast.LENGTH_LONG).show();
+        detector = new ConnectionDetector(MainActivity.this);
 
     }
 
@@ -224,6 +229,7 @@ public class MainActivity extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
         drawerToggle.onConfigurationChanged(newConfig);
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -280,79 +286,7 @@ public class MainActivity extends AppCompatActivity {
         listDataChild.put(listDataHeader.get(5), insurance);
     }
 
-    private class FetchFacilities extends AsyncTask<String, Void, String> {
-        ProgressDialog dialog;
 
-        @Override
-        protected String doInBackground(String... params) {
-            try {
-                URL url = new URL(params[0]);
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                // urlConnection.setConnectTimeout(30000);
-                urlConnection.setDoInput(true);
-                BufferedReader in = new BufferedReader(
-                        new InputStreamReader(urlConnection.getInputStream()));
-                String inputLine;
-                StringBuilder response = new StringBuilder();
-
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-                in.close();
-                return response.toString();
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (SocketTimeoutException e) {
-                return null;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            dialog = new ProgressDialog(MainActivity.this);
-            dialog.setTitle(Constants.progress_dialog_title);
-            dialog.setMessage(Constants.progress_dialog_message);
-            dialog.show();
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            try {
-                dialog.dismiss();
-                Log.i("response", s);
-                JSONObject objJson = new JSONObject(s);
-                JSONArray jsonArray = new JSONArray(objJson.getString(Constants.FACILITIES));
-                list = new ArrayList<>();
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    OnlineShopping facilities = new OnlineShopping();
-                    facilities.setTitle(jsonObject.getString(Constants.TITLE));
-                    facilities.setImageUrl(jsonObject.getString(Constants.IMAGE));
-                    list.add(facilities);
-                }
-
-                adapter = new OnlineShoppingAdapter(list, MainActivity.this);
-                rcvFacilities.setAdapter(adapter);
-                rcvFacilities.setHasFixedSize(true);
-                GridLayoutManager glm = new GridLayoutManager(MainActivity.this, 3, GridLayoutManager.VERTICAL, false);
-                rcvFacilities.setLayoutManager(glm);
-
-            } catch (NullPointerException e) {
-                Toast.makeText(MainActivity.this, Constants.null_pointer_message, Toast.LENGTH_LONG).show();
-                finish();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            } catch (IllegalArgumentException ex) {
-            }
-        }
-    }
     public void addItemToCart(String name) {
         badgeCount++;
         invalidateOptionsMenu();

@@ -1,14 +1,14 @@
-package com.suyogcomputech.sms;
+package com.suyogcomputech.fragment;
 
 import android.app.ProgressDialog;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.suyogcomputech.helper.ConnectionDetector;
 import com.suyogcomputech.helper.Constants;
+import com.suyogcomputech.sms.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,38 +31,30 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 
 /**
- * Created by Pintu on 8/11/2016.
+ * Created by Pintu on 8/12/2016.
  */
-public class InsuranceListActivity extends AppCompatActivity {
-    Toolbar toolbar;
+public class ListEventFragment extends Fragment {
     ListView lstInsurance;
     ConnectionDetector detector;
-
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_insurance_list);
-        detector = new ConnectionDetector(InsuranceListActivity.this);
-        toolbar = (Toolbar) findViewById(R.id.toolbarInsurance);
-        toolbar.setTitle("Insurance");
-        toolbar.setTitleTextColor(Color.WHITE);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        lstInsurance = (ListView) findViewById(R.id.lstInsurance);
-        ArrayAdapter<String> adapterInsurance = new ArrayAdapter<String>(InsuranceListActivity.this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.insurance));
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_insurance_list, container, false);
+        detector=new ConnectionDetector(getActivity());
+        lstInsurance = (ListView) view.findViewById(R.id.lstInsurance);
+        ArrayAdapter<String> adapterInsurance = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.event_list));
         lstInsurance.setAdapter(adapterInsurance);
         lstInsurance.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String type = adapterView.getItemAtPosition(i).toString();
-                Toast.makeText(InsuranceListActivity.this, type, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), type, Toast.LENGTH_SHORT).show();
                 JSONObject jsonObject = new JSONObject();
                 try {
                     jsonObject.put(Constants.INSURANCE_TYPE, type);
                     if (detector.isConnectingToInternet()) {
-                        new SendInsuranceType().execute(Constants.URL_FACILITIES);
+                        new SendEventType().execute(Constants.URL_FACILITIES);
                     } else
-                        Toast.makeText(InsuranceListActivity.this, Constants.dialog_message, Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), Constants.dialog_message, Toast.LENGTH_LONG).show();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -69,16 +62,17 @@ public class InsuranceListActivity extends AppCompatActivity {
             }
         });
 
-
+        return view;
     }
 
-    private class SendInsuranceType extends AsyncTask<String, Void, String> {
+
+    private class SendEventType extends AsyncTask<String, Void, String> {
         ProgressDialog dialog;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog = new ProgressDialog(InsuranceListActivity.this);
+            dialog = new ProgressDialog(getActivity());
             dialog.setTitle(Constants.progress_dialog_title);
             dialog.setMessage(Constants.processed_report);
             dialog.show();
@@ -110,10 +104,10 @@ public class InsuranceListActivity extends AppCompatActivity {
 //                    finish();
 //
 //                } else
-//                    Toast.makeText(InsuranceListActivity.this, "Enter valid Email id and Password", Toast.LENGTH_LONG).show();
+//                    Toast.makeText(InsuranceListFragment.this, "Enter valid Email id and Password", Toast.LENGTH_LONG).show();
 //
 //            } catch (NullPointerException e) {
-//                Toast.makeText(InsuranceListActivity.this, Constants.null_pointer_message, Toast.LENGTH_LONG).show();
+//                Toast.makeText(InsuranceListFragment.this, Constants.null_pointer_message, Toast.LENGTH_LONG).show();
 //                dialog.dismiss();
 //                finish();
 //            } catch (JSONException e) {

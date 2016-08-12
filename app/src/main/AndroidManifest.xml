@@ -26,21 +26,18 @@
             android:name=".RegistrationActivity"
             android:parentActivityName=".LoginActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".MyOrderActivity"
-            android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait"/>
+
         <activity android:name=".DoctorListActivity"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".LawyerListActivity"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".InsuranceListActivity"
-            android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait"/>
+
         <activity android:name=".GroceryActivity"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"/>
+
         <activity android:name=".FirstPageActivity"
             android:screenOrientation="portrait">
             <intent-filter>
