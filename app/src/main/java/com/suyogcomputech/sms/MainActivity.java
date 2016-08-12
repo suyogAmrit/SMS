@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         fragment = new ShoppingFragment();
         fragmentManager.beginTransaction().replace(R.id.frame, fragment).commit();
-        
+
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
         prepareListData();
         listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
