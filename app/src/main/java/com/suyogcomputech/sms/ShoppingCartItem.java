@@ -9,7 +9,7 @@ import android.support.v7.widget.Toolbar;
 /**
  * Created by Pintu on 7/27/2016.
  */
-public class MyCartActivity extends AppCompatActivity{
+public class ShoppingCartItem extends AppCompatActivity{
     Toolbar toolbar;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

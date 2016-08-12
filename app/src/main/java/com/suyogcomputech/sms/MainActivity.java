@@ -1,5 +1,6 @@
 package com.suyogcomputech.sms;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -204,13 +205,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                mDrawerLayout.openDrawer(GravityCompat.START);
-                return true;
+        if (item.getItemId() == R.id.item_samplebadge) {
+                Intent i = new Intent(MainActivity.this, ShoppingCartItem.class);
+                startActivity(i);
         }
-
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
 

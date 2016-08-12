@@ -42,7 +42,7 @@ public class ShoppingFragment extends Fragment {
     ArrayList<OnlineShopping> list;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_shopping, container, false);
         detector=new ConnectionDetector(getActivity());
         rcvFacilities = (RecyclerView) view.findViewById(R.id.rcvFacilities);
         if (detector.isConnectingToInternet()) {
@@ -113,7 +113,7 @@ public class ShoppingFragment extends Fragment {
                 adapter = new OnlineShoppingAdapter(list, getActivity());
                 rcvFacilities.setAdapter(adapter);
                 rcvFacilities.setHasFixedSize(true);
-                GridLayoutManager glm = new GridLayoutManager(getActivity(), 3, GridLayoutManager.VERTICAL, false);
+                GridLayoutManager glm = new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false);
                 rcvFacilities.setLayoutManager(glm);
 
             } catch (NullPointerException e) {
