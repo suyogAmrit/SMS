@@ -54,7 +54,7 @@ public class InsuranceListFragment extends Fragment {
                 try {
                     jsonObject.put(Constants.INSURANCE_TYPE, type);
                     if (detector.isConnectingToInternet()) {
-                        new SendEventType().execute(Constants.URL_FACILITIES);
+                        //new SendEventType().execute(Constants.URL_FACILITIES);
                     } else
                         Toast.makeText(getActivity(), Constants.dialog_message, Toast.LENGTH_LONG).show();
 
