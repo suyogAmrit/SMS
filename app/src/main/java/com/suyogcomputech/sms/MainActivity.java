@@ -211,18 +211,12 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
-
-
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
         drawerToggle.syncState();
-
-
     }
-
-
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
