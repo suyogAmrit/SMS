@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.suyogcomputech.adapter.DoctorAdapter;
 import com.suyogcomputech.adapter.LawyerAdapter;
 import com.suyogcomputech.helper.ConnectionDetector;
 import com.suyogcomputech.helper.Constants;
@@ -37,14 +38,14 @@ import java.util.ArrayList;
  */
 public class DoctorListFragment extends Fragment {
     ConnectionDetector detector;
-    RecyclerView rcvLawyer;
-    LawyerAdapter adapter;
+    RecyclerView rcDoctor;
+    DoctorAdapter adapter;
     ArrayList<Doctor> list;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_doctor_list, container, false);
         detector=new ConnectionDetector(getActivity());
-        rcvLawyer = (RecyclerView) view.findViewById(R.id.rcvDoctor);
+        rcDoctor = (RecyclerView) view.findViewById(R.id.rcvDoctor);
         if (detector.isConnectingToInternet()) {
             new FetchLawyerDetails().execute("http://54.193.93.238/fortest/AnugulPol/fetch_impcontacts_data.php");
         } else
@@ -111,11 +112,11 @@ public class DoctorListFragment extends Fragment {
                     list.add(lawyer);
                 }
 
-                adapter = new LawyerAdapter(list, getActivity());
-                rcvLawyer.setAdapter(adapter);
-                rcvLawyer.setHasFixedSize(true);
+                adapter = new DoctorAdapter(list, getActivity());
+                rcDoctor.setAdapter(adapter);
+                rcDoctor.setHasFixedSize(true);
                 LinearLayoutManager glm = new LinearLayoutManager(getActivity());
-                rcvLawyer.setLayoutManager(glm);
+                rcDoctor.setLayoutManager(glm);
 
             } catch (NullPointerException e) {
                 Toast.makeText(getActivity(), Constants.null_pointer_message, Toast.LENGTH_LONG).show();
