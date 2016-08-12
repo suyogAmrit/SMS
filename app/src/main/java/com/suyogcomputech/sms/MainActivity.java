@@ -1,6 +1,5 @@
 package com.suyogcomputech.sms;
 
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -21,7 +20,10 @@ import com.mikepenz.actionitembadge.library.ActionItemBadge;
 import com.mikepenz.actionitembadge.library.utils.BadgeStyle;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.suyogcomputech.adapter.ExpandableListAdapter;
+import com.suyogcomputech.fragment.DoctorListFragment;
+import com.suyogcomputech.fragment.GroceryFragment;
 import com.suyogcomputech.fragment.InsuranceListFragment;
+import com.suyogcomputech.fragment.LawyerListFragment;
 import com.suyogcomputech.fragment.ListEventFragment;
 import com.suyogcomputech.fragment.MyOrderFragment;
 import com.suyogcomputech.fragment.ShoppingFragment;
@@ -48,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
     ConnectionDetector detector;
 
     Fragment fragment;
-    Class fragmentClass;
     FragmentManager fragmentManager;
 
 
@@ -59,16 +60,12 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         toolbar = (Toolbar) findViewById(R.id.toolbarHome);
         toolbar.setTitle("e-Shopping");
+        toolbar.setTitleTextColor(Color.WHITE);
         fragmentManager = getSupportFragmentManager();
-
         setSupportActionBar(toolbar);
-
-
         fragment = new ShoppingFragment();
-        //FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.frame, fragment).commit();
-
-
+        
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
         prepareListData();
         listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
@@ -120,8 +117,9 @@ public class MainActivity extends AppCompatActivity {
                     case 2:
                         switch (childPosition) {
                             case 0:
-                                Intent intentGsry = new Intent(MainActivity.this, GroceryActivity.class);
-                                startActivity(intentGsry);
+                                fragment = new GroceryFragment();
+                                toolbar.setTitle("Grocery");
+                                toolbar.setTitleTextColor(Color.WHITE);
                                 mDrawerLayout.closeDrawer(GravityCompat.START);
                                 break;
                             case 1:
@@ -138,8 +136,9 @@ public class MainActivity extends AppCompatActivity {
                     case 3:
                         switch (childPosition) {
                             case 0:
-                                Intent intentDoc = new Intent(MainActivity.this, DoctorListActivity.class);
-                                startActivity(intentDoc);
+                                fragment = new DoctorListFragment();
+                                toolbar.setTitle("Doctor");
+                                toolbar.setTitleTextColor(Color.WHITE);
                                 mDrawerLayout.closeDrawer(GravityCompat.START);
                                 break;
                             case 1:
@@ -154,8 +153,9 @@ public class MainActivity extends AppCompatActivity {
                     case 4:
                         switch (childPosition) {
                             case 0:
-                                Intent intentDoc = new Intent(MainActivity.this, LawyerListActivity.class);
-                                startActivity(intentDoc);
+                                fragment = new LawyerListFragment();
+                                toolbar.setTitle("Lawyer");
+                                toolbar.setTitleTextColor(Color.WHITE);
                                 mDrawerLayout.closeDrawer(GravityCompat.START);
                                 break;
                             case 1:

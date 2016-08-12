@@ -1,21 +1,23 @@
-package com.suyogcomputech.sms;
+package com.suyogcomputech.fragment;
 
 import android.app.ProgressDialog;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.suyogcomputech.adapter.LawyerAdapter;
 import com.suyogcomputech.helper.ConnectionDetector;
 import com.suyogcomputech.helper.Constants;
 import com.suyogcomputech.helper.Doctor;
+import com.suyogcomputech.sms.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,29 +35,24 @@ import java.util.ArrayList;
 /**
  * Created by Pintu on 8/11/2016.
  */
-public class DoctorListActivity extends AppCompatActivity {
-    Toolbar toolbar;
+public class DoctorListFragment extends Fragment {
     ConnectionDetector detector;
     RecyclerView rcvLawyer;
     LawyerAdapter adapter;
     ArrayList<Doctor> list;
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_doctor_list);
-        toolbar = (Toolbar) findViewById(R.id.toolbarDoctor);
-        toolbar.setTitle("Doctor");
-        toolbar.setTitleTextColor(Color.WHITE);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        detector=new ConnectionDetector(DoctorListActivity.this);
-        rcvLawyer = (RecyclerView) findViewById(R.id.rcvDoctor);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_doctor_list, container, false);
+        detector=new ConnectionDetector(getActivity());
+        rcvLawyer = (RecyclerView) view.findViewById(R.id.rcvDoctor);
         if (detector.isConnectingToInternet()) {
             new FetchLawyerDetails().execute("http://54.193.93.238/fortest/AnugulPol/fetch_impcontacts_data.php");
         } else
-            Toast.makeText(DoctorListActivity.this, Constants.dialog_message, Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), Constants.dialog_message, Toast.LENGTH_LONG).show();
 
+        return view;
     }
+
     private class FetchLawyerDetails extends AsyncTask<String, Void, String> {
         ProgressDialog dialog;
 
@@ -91,7 +88,7 @@ public class DoctorListActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog = new ProgressDialog(DoctorListActivity.this);
+            dialog = new ProgressDialog(getActivity());
             dialog.setTitle(Constants.progress_dialog_title);
             dialog.setMessage(Constants.progress_dialog_message);
             dialog.show();
@@ -114,15 +111,15 @@ public class DoctorListActivity extends AppCompatActivity {
                     list.add(lawyer);
                 }
 
-                adapter = new LawyerAdapter(list, DoctorListActivity.this);
+                adapter = new LawyerAdapter(list, getActivity());
                 rcvLawyer.setAdapter(adapter);
                 rcvLawyer.setHasFixedSize(true);
-                LinearLayoutManager glm = new LinearLayoutManager(DoctorListActivity.this);
+                LinearLayoutManager glm = new LinearLayoutManager(getActivity());
                 rcvLawyer.setLayoutManager(glm);
 
             } catch (NullPointerException e) {
-                Toast.makeText(DoctorListActivity.this, Constants.null_pointer_message, Toast.LENGTH_LONG).show();
-                finish();
+                Toast.makeText(getActivity(), Constants.null_pointer_message, Toast.LENGTH_LONG).show();
+                getActivity().finish();
             } catch (JSONException e) {
                 e.printStackTrace();
             } catch (IllegalArgumentException ex) {
