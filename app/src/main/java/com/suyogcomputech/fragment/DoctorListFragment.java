@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.suyogcomputech.adapter.DoctorAdapter;
-import com.suyogcomputech.adapter.LawyerAdapter;
 import com.suyogcomputech.helper.ConnectionDetector;
 import com.suyogcomputech.helper.Constants;
 import com.suyogcomputech.helper.Doctor;
@@ -101,7 +100,6 @@ public class DoctorListFragment extends Fragment {
             try {
                 dialog.dismiss();
                 Log.i("response", s);
-//                JSONObject objJson = new JSONObject(s);
                 JSONArray jsonArray = new JSONArray(s);
                 list = new ArrayList<>();
                 for (int i = 0; i < jsonArray.length(); i++) {
@@ -111,7 +109,6 @@ public class DoctorListFragment extends Fragment {
                     lawyer.setType(jsonObject.getString("Designation"));
                     list.add(lawyer);
                 }
-
                 adapter = new DoctorAdapter(list, getActivity());
                 rcDoctor.setAdapter(adapter);
                 rcDoctor.setHasFixedSize(true);
