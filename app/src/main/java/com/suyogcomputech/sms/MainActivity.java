@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         fragment = new ShoppingFragment();
         fragmentManager.beginTransaction().replace(R.id.frame, fragment).commit();
-        
+
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
         prepareListData();
         listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
@@ -211,18 +211,12 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
-
-
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
         drawerToggle.syncState();
-
-
     }
-
-
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
