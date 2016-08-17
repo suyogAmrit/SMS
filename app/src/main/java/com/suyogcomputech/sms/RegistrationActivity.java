@@ -48,7 +48,7 @@ public class RegistrationActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbarReg);
         toolbar.setTitle("Registration");
         toolbar.setTitleTextColor(Color.parseColor(Constants.COLOR_WHITE));
-//
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ed_name = (EditText) findViewById(R.id.edName);

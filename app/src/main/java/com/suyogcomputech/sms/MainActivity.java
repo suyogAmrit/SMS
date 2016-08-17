@@ -206,17 +206,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.item_samplebadge) {
-                Intent i = new Intent(MainActivity.this, ShoppingCartItem.class);
-                startActivity(i);
+            Intent i = new Intent(MainActivity.this, ShoppingCartItem.class);
+            startActivity(i);
         }
         return true;
     }
+
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
         drawerToggle.syncState();
     }
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
