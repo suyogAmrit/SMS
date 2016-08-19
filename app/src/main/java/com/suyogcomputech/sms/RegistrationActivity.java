@@ -1,32 +1,21 @@
 package com.suyogcomputech.sms;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.suyogcomputech.helper.ConnectionClass;
 import com.suyogcomputech.helper.ConnectionDetector;
 import com.suyogcomputech.helper.Constants;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.SocketTimeoutException;
-import java.net.URL;
+import java.sql.Connection;
+import java.sql.Statement;
 
 
 public class RegistrationActivity extends AppCompatActivity {
@@ -34,15 +23,15 @@ public class RegistrationActivity extends AppCompatActivity {
     String name, email, mobile, password;
     EditText ed_name, ed_email, ed_mobile, ed_password;
     ConnectionDetector detector;
+    ConnectionClass connectionClass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registaration);
+        connectionClass=new ConnectionClass();
         initilizeUi();
-
     }
-
     private void initilizeUi() {
         detector = new ConnectionDetector(RegistrationActivity.this);
         toolbar = (Toolbar) findViewById(R.id.toolbarReg);
@@ -78,40 +67,20 @@ public class RegistrationActivity extends AppCompatActivity {
             ed_password.requestFocus();
             ed_mobile.setError(null);
         } else {
-            JSONObject jsonObject = new JSONObject();
-            try {
-                jsonObject.put(Constants.USER_NAME, name);
-                jsonObject.put(Constants.USER_MAIL, email);
-                jsonObject.put(Constants.USER_CONTACT, mobile);
-                jsonObject.put(Constants.USER_PASSWORD, password);
-                jsonObject.put(Constants.TYPE, "Email");
-                Log.i("jsonObject", jsonObject.toString());
-                if (detector.isConnectingToInternet()) {
-                    //new SaveData().execute(jsonObject.toString());
-                } else
-                    Toast.makeText(RegistrationActivity.this, Constants.dialog_message, Toast.LENGTH_LONG).show();
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            if (detector.isConnectingToInternet()) {
+                new LoginData().execute();
+            } else
+                Toast.makeText(RegistrationActivity.this, Constants.dialog_message, Toast.LENGTH_LONG).show();
         }
     }
 
-    public final static boolean isValidEmail(CharSequence target) {
-        return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
-    }
 
-    private boolean isValidMobile(String phone) {
-        return android.util.Patterns.PHONE.matcher(phone).matches();
-    }
-
-
-    private class SaveData extends AsyncTask<String, Void, String> {
+    public class LoginData extends AsyncTask<String, String, String> {
+        String z = "";
+        Boolean isSuccess = false;
         ProgressDialog dialog;
-
         @Override
         protected void onPreExecute() {
-            super.onPreExecute();
             dialog = new ProgressDialog(RegistrationActivity.this);
             dialog.setTitle(Constants.progress_dialog_title);
             dialog.setMessage(Constants.processed_report);
@@ -119,65 +88,37 @@ public class RegistrationActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
+        protected void onPostExecute(String r) {
+            Toast.makeText(RegistrationActivity.this, r, Toast.LENGTH_SHORT).show();
             dialog.dismiss();
-            try {
-                Log.i("Result", s);
-                JSONObject jsonObject1 = new JSONObject(s);
-                String status = jsonObject1.getString("status");
-                String message = jsonObject1.getString("message");
-                dialog.dismiss();
-                if (status.equals("1")) {
-                    Toast.makeText(RegistrationActivity.this, "Registration Successful", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                    finish();
-                } else
-                    Toast.makeText(RegistrationActivity.this, message, Toast.LENGTH_LONG).show();
-
-            } catch (NullPointerException e) {
-                Toast.makeText(RegistrationActivity.this, Constants.null_pointer_message, Toast.LENGTH_LONG).show();
-                dialog.dismiss();
-                finish();
-            } catch (JSONException e) {
-                e.printStackTrace();
+            if (isSuccess) {
+//                Intent i = new Intent(MainActivity.this, AddProducts.class);
+//                startActivity(i);
+//                finish();
             }
-
 
         }
 
         @Override
         protected String doInBackground(String... params) {
-            URL myUrl = null;
-            try {
-                String url="";
-                Log.i("Responce", url);
-                myUrl = new URL(url);
-                HttpURLConnection connection = (HttpURLConnection) myUrl.openConnection();
-                connection.setDoOutput(true);
-                OutputStream os = connection.getOutputStream();
-                os.write(params[0].getBytes());
-                BufferedReader in = new BufferedReader(
-                        new InputStreamReader(connection.getInputStream()));
-                String inputLine;
-                StringBuffer response = new StringBuffer();
 
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
+            try {
+                Connection con = connectionClass.CONN();
+                String query = "insert into user_registration(uname,email,password,temp_cart) values('aa','aaa','12345','t')";
+                Statement stmt = con.createStatement();
+                int result=stmt.executeUpdate(query);
+                if (result==1){
+                    return "Successful";
+                }else {
+                    return "jbsd";
                 }
 
-                in.close();
-                return response.toString();
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (SocketTimeoutException e) {
-                return null;
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (Exception ex) {
+                isSuccess = false;
+                z = "Exceptions";
             }
 
-            return null;
+            return z;
         }
     }
 
@@ -191,6 +132,13 @@ public class RegistrationActivity extends AppCompatActivity {
         ed_email.setText("");
         ed_mobile.setText("");
         ed_password.setText("");
+    }
+    public final static boolean isValidEmail(CharSequence target) {
+        return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+    }
+
+    private boolean isValidMobile(String phone) {
+        return android.util.Patterns.PHONE.matcher(phone).matches();
     }
 
 }
