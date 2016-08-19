@@ -133,41 +133,6 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public void btnSignIn(View view) {
-        Intent intent = new Intent(LoginActivity.this, RegistrationActivity.class);
-        startActivity(intent);
-    }
-
-    public void btnFgtPassword(View view) {
-        final Dialog dialog = new Dialog(LoginActivity.this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_forgot_password);
-        Button btnGetPassword = (Button) dialog.findViewById(R.id.btnGetPassword);
-        final EditText edMailID = (EditText) dialog.findViewById(R.id.edForgotPassword);
-        btnGetPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String mailId = edMailID.getText().toString();
-                if (!isValidEmail(mailId)) {
-                    edMailID.setError("Enter valid password");
-                    edMailID.requestFocus();
-                } else {
-                    JSONObject jsonObject = new JSONObject();
-                    try {
-                        jsonObject.put(Constants.USER_MAIL, mailId);
-                        Log.i("jsonObject", jsonObject.toString());
-                        if (detector.isConnectingToInternet()) {
-                            //new GetForgotPassword().execute(jsonObject.toString());
-                        } else
-                            Toast.makeText(LoginActivity.this, Constants.dialog_message, Toast.LENGTH_LONG).show();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-        dialog.show();
-    }
 
     public final static boolean isValidEmail(CharSequence target) {
         return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
