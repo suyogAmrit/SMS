@@ -16,6 +16,9 @@ public final class Constants {
     public static final String COLOR_WHITE = "#FFFFFF";
     public static final String TEST = "#FFFFFF";
     public static final String Request = "request";
+    public static final String Response = "response";
+    public static final String SUCCESSFUL= "Successful";
+
 
     public static final String INSURANCE_TYPE = "insurance_type";
 

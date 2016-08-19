@@ -76,40 +76,6 @@
                 android:textColor="#FFF"
                 />
 
-            <LinearLayout
-                android:id="@+id/linerLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/btnLogin"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="20dp"
-                android:weightSum="2">
-
-                <Button
-                    android:id="@+id/btnSignIn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="2dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:onClick="btnSignIn"
-                    android:text="Sign Up"
-                    android:background="@drawable/button_booknow"
-                    android:textColor="#FFF"/>
-
-                <Button
-                    android:id="@+id/btnFogetPsw"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="2dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="Forgot Password"
-                    android:background="@drawable/button_booknow"
-                    android:textColor="#FFF"
-                    android:onClick="btnFgtPassword"/>
-            </LinearLayout>
 
 
         </RelativeLayout>
