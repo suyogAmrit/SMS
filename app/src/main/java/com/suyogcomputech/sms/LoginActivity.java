@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.suyogcomputech.helper.ConnectionClass;
 import com.suyogcomputech.helper.ConnectionDetector;
 import com.suyogcomputech.helper.Constants;
 
@@ -32,29 +33,37 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * Created by Pintu on 7/15/2016.
  */
 public class LoginActivity extends AppCompatActivity {
     private static String TAG = "LoginActivity";
-    EditText edPassword;
-    AutoCompleteTextView edUserName;
+    EditText edPassword, edUserName;
     ConnectionDetector detector;
-    String uId, psw, name, emailId, uniqueId, type, available;
+    String uId, psw, name, emailId, uniqueId, type, available, z;
     SharedPreferences sharedpreferences;
+    ConnectionClass connectionClass;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        connectionClass = new ConnectionClass();
+        edUserName = (EditText) findViewById(R.id.edUserId);
+        edPassword = (EditText) findViewById(R.id.edPsw);
+        detector=new ConnectionDetector(LoginActivity.this);
+
     }
 
     public void btnLogin(View view) {
-        Intent intent=new Intent(LoginActivity.this,MainActivity.class);
-        startActivity(intent);
-//        uId = edUserName.getText().toString();
-//        psw = edPassword.getText().toString();
+
+        uId = edUserName.getText().toString();
+        psw = edPassword.getText().toString();
 //        if (uId.equals("")) {
 //            edUserName.setError("Enter Your Email");
 //            edUserName.requestFocus();
@@ -66,21 +75,17 @@ public class LoginActivity extends AppCompatActivity {
 //            edPassword.setError(null);
 //            edUserName.setError(null);
 //
-//            JSONObject jsonObject = new JSONObject();
-//            try {
-//                jsonObject.put(Constants.USER_MAIL, uId);
-//                jsonObject.put(Constants.USER_PASSWORD, psw);
-//                Log.i("jsonObject", jsonObject.toString());
-//                if (detector.isConnectingToInternet()) {
-//                   // new LoginDetails().execute(jsonObject.toString());
-//                } else
-//                    Toast.makeText(LoginActivity.this, Constants.dialog_message, Toast.LENGTH_LONG).show();
+        if (detector.isConnectingToInternet()) {
+            new LoginDetails().execute();
+        } else
+            Toast.makeText(LoginActivity.this, Constants.dialog_message, Toast.LENGTH_LONG).show();
 //            } catch (JSONException e) {
 //                e.printStackTrace();
 //            }
 //
 //        }
     }
+
     private class LoginDetails extends AsyncTask<String, Void, String> {
         ProgressDialog dialog;
 
@@ -96,73 +101,38 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            try {
-                Log.i("Result", s);
-                dialog.dismiss();
-                JSONObject jsonObject1 = new JSONObject(s);
-                String sus = jsonObject1.getString("status");
-
-                if (sus.equals("1")) {
-                    uniqueId = jsonObject1.getString("uniqid");
-                    name = jsonObject1.getString("username");
-                    emailId = jsonObject1.getString("useremail");
-                    available=jsonObject1.getString("available_city");
-
-                    SharedPreferences.Editor editor = sharedpreferences.edit();
-                    editor.putString(Constants.UNIQUE_ID, uniqueId);
-                    editor.putString(Constants.AVAILABLE_DETAILS,available);
-                    editor.putString(Constants.USER_NAME, name);
-                    editor.putString(Constants.USER_MAIL, emailId);
-                    editor.commit();
-
-                    finish();
-
-                } else
-                    Toast.makeText(LoginActivity.this, "Enter valid Email id and Password", Toast.LENGTH_LONG).show();
-
-            } catch (NullPointerException e) {
-                Toast.makeText(LoginActivity.this, Constants.null_pointer_message, Toast.LENGTH_LONG).show();
-                dialog.dismiss();
-                finish();
-            } catch (JSONException e) {
-                e.printStackTrace();
-                dialog.dismiss();
+            Log.i(Constants.Response,s);
+            dialog.dismiss();
+            if (s.equals(Constants.SUCCESSFUL)){
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
             }
         }
 
-
         @Override
         protected String doInBackground(String... params) {
-            URL myUrl = null;
             try {
-                String url="";
-                myUrl = new URL(url);
-                HttpURLConnection connection = (HttpURLConnection) myUrl.openConnection();
-                connection.setDoOutput(true);
-                OutputStream os = connection.getOutputStream();
-                os.write(params[0].getBytes());
-                BufferedReader in = new BufferedReader(
-                        new InputStreamReader(connection.getInputStream()));
-                String inputLine;
-                StringBuffer response = new StringBuffer();
-
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
+                Connection con = connectionClass.CONN();
+                String query = "select uname from user_registration where email='bb' and password='12345';";
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery(query);
+                if(rs.next()) {
+                    uniqueId=rs.getString("uname");
+                    Log.i(Constants.Response,uniqueId);
+                    z = Constants.SUCCESSFUL;
+                    return z;
+                } else {
+                    z = "Invalid Credentials";
                 }
-                //Log.i("Responce", response.toString());
-                in.close();
-                return response.toString();
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (SocketTimeoutException e) {
-                return null;
-            } catch (IOException e) {
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
+
 
             return null;
         }
     }
+
     public void btnSignIn(View view) {
         Intent intent = new Intent(LoginActivity.this, RegistrationActivity.class);
         startActivity(intent);
@@ -198,6 +168,7 @@ public class LoginActivity extends AppCompatActivity {
         });
         dialog.show();
     }
+
     public final static boolean isValidEmail(CharSequence target) {
         return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
     }

@@ -13,7 +13,7 @@ import java.sql.DriverManager;
 public class ConnectionClass {
     String ip = "192.168.12.100";
     String classs = "net.sourceforge.jtds.jdbc.Driver";
-    String db = "webservice";
+    String db = "APMS";
     String un = "sa";
     String password = "sql2012";
 //    ip – The IP address or server name of your PC or server where your database is stored.

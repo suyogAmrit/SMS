@@ -1,6 +1,7 @@
 package com.suyogcomputech.sms;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -51,27 +52,27 @@ public class RegistrationActivity extends AppCompatActivity {
         email = ed_email.getText().toString();
         mobile = ed_mobile.getText().toString();
         password = ed_password.getText().toString();
-        if (name.equals("")) {
-            ed_name.setError("Please Enter Your Name");
-            ed_name.requestFocus();
-        } else if (!isValidEmail(email)) {
-            ed_email.setError("Enter valid Email Id");
-            ed_name.setError(null);
-            ed_email.requestFocus();
-        } else if (!isValidMobile(mobile)) {
-            ed_mobile.setError("Enter Mobile No.");
-            ed_mobile.requestFocus();
-            ed_email.setError(null);
-        } else if (password.equals("")) {
-            ed_password.setError("Enter Your Password");
-            ed_password.requestFocus();
-            ed_mobile.setError(null);
-        } else {
+//        if (name.equals("")) {
+//            ed_name.setError("Please Enter Your Name");
+//            ed_name.requestFocus();
+//        } else if (!isValidEmail(email)) {
+//            ed_email.setError("Enter valid Email Id");
+//            ed_name.setError(null);
+//            ed_email.requestFocus();
+//        } else if (!isValidMobile(mobile)) {
+//            ed_mobile.setError("Enter Mobile No.");
+//            ed_mobile.requestFocus();
+//            ed_email.setError(null);
+//        } else if (password.equals("")) {
+//            ed_password.setError("Enter Your Password");
+//            ed_password.requestFocus();
+//            ed_mobile.setError(null);
+//        } else {
             if (detector.isConnectingToInternet()) {
                 new LoginData().execute();
             } else
                 Toast.makeText(RegistrationActivity.this, Constants.dialog_message, Toast.LENGTH_LONG).show();
-        }
+//        }
     }
 
 
@@ -91,10 +92,10 @@ public class RegistrationActivity extends AppCompatActivity {
         protected void onPostExecute(String r) {
             Toast.makeText(RegistrationActivity.this, r, Toast.LENGTH_SHORT).show();
             dialog.dismiss();
-            if (isSuccess) {
-//                Intent i = new Intent(MainActivity.this, AddProducts.class);
-//                startActivity(i);
-//                finish();
+            if (r.equals(Constants.SUCCESSFUL)) {
+                Intent i = new Intent(RegistrationActivity.this, LoginActivity.class);
+                startActivity(i);
+                finish();
             }
 
         }
@@ -108,9 +109,9 @@ public class RegistrationActivity extends AppCompatActivity {
                 Statement stmt = con.createStatement();
                 int result=stmt.executeUpdate(query);
                 if (result==1){
-                    return "Successful";
+                    return Constants.SUCCESSFUL;
                 }else {
-                    return "jbsd";
+                    return "Something went wrong";
                 }
 
             } catch (Exception ex) {
