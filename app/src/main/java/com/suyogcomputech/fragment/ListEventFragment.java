@@ -92,7 +92,7 @@ public class ListEventFragment extends Fragment {
                 String type = adapterView.getItemAtPosition(i).toString();
 
                 Intent intent=new Intent(getActivity(), EventDetailsActivity.class);
-                intent.putExtra(Constants.EVENT_NAME,type);
+                //intent.putExtra(Constants.EVENT_NAME,type);
                 getActivity().startActivity(intent);
             }
         });
@@ -101,7 +101,7 @@ public class ListEventFragment extends Fragment {
         @Override
         protected Void doInBackground(String... params) {
             try {
-                Connection con = connectionClass.CONN();
+                Connection con = connectionClass.connect();
                 String query = "select uname from user_registration";
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery(query);

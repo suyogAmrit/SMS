@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
     private static String TAG = "LoginActivity";
     EditText edPassword, edUserName;
     ConnectionDetector detector;
-    String uId, psw, name, emailId, uniqueId, type, available, z;
+    String uId, psw, name, emailId, uniqueId, type, available, result;
     SharedPreferences sharedpreferences;
     ConnectionClass connectionClass;
 
@@ -112,17 +112,18 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             try {
-                Connection con = connectionClass.CONN();
-                String query = "select uname from user_registration where email='bb' and password='12345';";
+                Connection con = connectionClass.connect();
+                String query = "select uname from user_registration where email='"+uId+"' and password='"+psw+"';";
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
                 if(rs.next()) {
                     uniqueId=rs.getString("uname");
                     Log.i(Constants.Response,uniqueId);
-                    z = Constants.SUCCESSFUL;
-                    return z;
+                    result = Constants.SUCCESSFUL;
+                    return result;
                 } else {
-                    z = "Invalid Credentials";
+                    result = "Invalid Credentials";
+                    return result;
                 }
             } catch (SQLException e) {
                 e.printStackTrace();

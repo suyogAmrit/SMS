@@ -11,18 +11,18 @@ import java.sql.DriverManager;
  * Created by Pintu on 8/17/2016.
  */
 public class ConnectionClass {
-    String ip = "192.168.12.100";
-    String classs = "net.sourceforge.jtds.jdbc.Driver";
-    String db = "APMS";
-    String un = "sa";
-    String password = "sql2012";
+    public static final String ip = "192.168.12.100";
+    public static final String classs = "net.sourceforge.jtds.jdbc.Driver";
+    public static final String db = "APMS";
+    public static final String un = "sa";
+    public static final String password = "sql2012";
 //    ip – The IP address or server name of your PC or server where your database is stored.
 //    classs – Class name.
 //    db – Database name.
 //    un – Username of the database (yours will be different).
 //    password – Password of the database.
 
-    public Connection CONN() {
+    public Connection connect() {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
                 .permitAll().build();
         StrictMode.setThreadPolicy(policy);
