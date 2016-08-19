@@ -35,7 +35,14 @@
         <activity
             android:name=".ShoppingCartItem"
             android:screenOrientation="portrait" />
-
+        <activity
+            android:name=".EventDetailsActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity"/>
+        <activity
+            android:name=".EventConformActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".EventDetailsActivity"/>
 
 
 
