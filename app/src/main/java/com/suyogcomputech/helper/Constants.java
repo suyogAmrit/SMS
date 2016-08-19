@@ -18,6 +18,7 @@ public final class Constants {
     public static final String Request = "request";
     public static final String Response = "response";
     public static final String SUCCESSFUL= "Successful";
+    public static final String EVENT_NAME= "event_name";
 
 
     public static final String INSURANCE_TYPE = "insurance_type";

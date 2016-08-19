@@ -2,24 +2,22 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorPrimary">
+>
 
 
-    <EditText
-        android:id="@+id/edForgotPassword"
+    <TextView
+        android:id="@+id/txtEventId"
+        android:text="Event Id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/forgot_password"
-        android:background="@drawable/et_background"
-        android:padding="7dp"
         android:layout_margin="10dp"/>
     <Button
-        android:id="@+id/btnGetPassword"
+        android:id="@+id/btnConform"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/edForgotPassword"
+        android:layout_below="@+id/txtEventId"
         android:layout_margin="10dp"
-        android:text="Get Password"
+        android:text="Conform"
         android:background="@drawable/button_booknow"
         android:textColor="#FFF"
        />
