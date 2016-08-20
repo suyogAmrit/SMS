@@ -22,7 +22,7 @@ public class FirstPageActivity extends AppCompatActivity {
     }
 
     public void login(View view) {
-        Intent intent=new Intent(FirstPageActivity.this,LoginActivity.class);
+        Intent intent=new Intent(FirstPageActivity.this,MainActivity.class);
         startActivity(intent);
         finish();
     }

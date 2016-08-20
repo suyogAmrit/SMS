@@ -41,31 +41,8 @@ public final class Constants {
     public static final String NOT_AVAILABLE = "NotAvailable";
 
 
-    public static final String USER_NAME = "username";
-    public static final String USER_ID = "userId";
-    public static final String USER_TYPE = "userType";
-    public static final String USER_MAIL = "emailid";
-    public static final String USER_CONTACT = "contactno";
-    public static final String USER_DOB = "dob";
-    public static final String USER_PASSWORD = "password";
-    public static final String USER_GENDER = "gender";
-    public static final String USER_HOUSE = "house_no";
-    public static final String USER_STREET = "street";
-    public static final String USER_CITY = "city";
-    public static final String USER_ZIP = "zipcode";
-    public static final String USER_FATHER = "fathers_name";
-    public static final String USER_ADDRESS = "address";
-    public static final String USER_POST_OFFICE = "post_office";
-    public static final String USER_PHONE_NO = "phone_no";
-    public static final String USER_LAND_MARK = "land_mark";
-    public static final String USER_RESIDENT_CAT = "resident_catagory";
-    public static final String USER_RESIDENT_CATEGORY = "resident_category";
-    public static final String USER_RESIDENT_TYPE = "resident_type";
-    public static final String COMMERCIAL_CLEAN_SQUARE_FEET = "squareFeet";
-    public static final String SQUARE_FEET = "sqr_ft";
-    public static final String STATUS = "status";
-    public static final String ID = "id";
-
+    public static final String USERID = "user_uniqueid";
+    public static final String USERPREFS = "user_prefs";
 
     public static final String UNIQUE_ID = "uniqueId";
     public static final String AVAILABLE_DETAILS = "available_city";

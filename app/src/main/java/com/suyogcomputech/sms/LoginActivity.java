@@ -46,7 +46,6 @@ public class LoginActivity extends AppCompatActivity {
     EditText edPassword, edUserName;
     ConnectionDetector detector;
     String uId, psw, name, emailId, uniqueId, type, available, result;
-    SharedPreferences sharedpreferences;
     ConnectionClass connectionClass;
 
     @Override
@@ -113,11 +112,15 @@ public class LoginActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
             try {
                 Connection con = connectionClass.connect();
-                String query = "select uname from user_registration where email='"+uId+"' and password='"+psw+"';";
+                String query = "select email from user_registration where email='"+uId+"' and password='"+psw+"';";
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
                 if(rs.next()) {
-                    uniqueId=rs.getString("uname");
+                    uniqueId=rs.getString("email");
+                    SharedPreferences shr = getSharedPreferences(Constants.USERPREFS, MODE_PRIVATE);
+                    SharedPreferences.Editor editor = shr.edit();
+                    editor.putString(Constants.USERID, uniqueId);
+                    editor.apply();
                     Log.i(Constants.Response,uniqueId);
                     result = Constants.SUCCESSFUL;
                     return result;
