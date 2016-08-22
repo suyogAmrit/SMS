@@ -12,7 +12,7 @@ import java.util.Date;
 /**
  * Created by Amrit Ratha on 12/28/2015.
  */
-public final class Constants {
+public final class AppConstants {
     public static final String COLOR_WHITE = "#FFFFFF";
     public static final String TEST = "#FFFFFF";
     public static final String Request = "request";
@@ -41,7 +41,7 @@ public final class Constants {
     public static final String NOT_AVAILABLE = "NotAvailable";
 
 
-    public static final String USERID = "user_uniqueid";
+    public static final String USERID = "user_id";
     public static final String USERPREFS = "user_prefs";
 
     public static final String UNIQUE_ID = "uniqueId";
@@ -59,5 +59,5 @@ public final class Constants {
     public static final String URL_BOOK= BASE_URL+"booking.php";
 
 
-
+    public static final String TRYAGAIN = "Please Try Again";
 }

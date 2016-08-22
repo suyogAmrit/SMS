@@ -1,13 +1,10 @@
 package com.suyogcomputech.fragment;
 
 import android.app.ProgressDialog;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +13,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.suyogcomputech.helper.AppConstants;
 import com.suyogcomputech.helper.ConnectionDetector;
-import com.suyogcomputech.helper.Constants;
 import com.suyogcomputech.sms.R;
 
 import org.json.JSONException;
@@ -52,11 +49,11 @@ public class InsuranceListFragment extends Fragment {
                 Toast.makeText(getActivity(), type, Toast.LENGTH_SHORT).show();
                 JSONObject jsonObject = new JSONObject();
                 try {
-                    jsonObject.put(Constants.INSURANCE_TYPE, type);
+                    jsonObject.put(AppConstants.INSURANCE_TYPE, type);
                     if (detector.isConnectingToInternet()) {
-                        //new SendEventType().execute(Constants.URL_FACILITIES);
+                        //new SendEventType().execute(AppConstants.URL_FACILITIES);
                     } else
-                        Toast.makeText(getActivity(), Constants.dialog_message, Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), AppConstants.dialog_message, Toast.LENGTH_LONG).show();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -75,8 +72,8 @@ public class InsuranceListFragment extends Fragment {
         protected void onPreExecute() {
             super.onPreExecute();
             dialog = new ProgressDialog(getActivity());
-            dialog.setTitle(Constants.progress_dialog_title);
-            dialog.setMessage(Constants.processed_report);
+            dialog.setTitle(AppConstants.progress_dialog_title);
+            dialog.setMessage(AppConstants.processed_report);
             dialog.show();
         }
 
@@ -97,10 +94,10 @@ public class InsuranceListFragment extends Fragment {
 //                    available = jsonObject1.getString("available_city");
 //
 //                    SharedPreferences.Editor editor = sharedpreferences.edit();
-//                    editor.putString(Constants.UNIQUE_ID, uniqueId);
-//                    editor.putString(Constants.AVAILABLE_DETAILS, available);
-//                    editor.putString(Constants.USER_NAME, name);
-//                    editor.putString(Constants.USER_MAIL, emailId);
+//                    editor.putString(AppConstants.UNIQUE_ID, uniqueId);
+//                    editor.putString(AppConstants.AVAILABLE_DETAILS, available);
+//                    editor.putString(AppConstants.USER_NAME, name);
+//                    editor.putString(AppConstants.USER_MAIL, emailId);
 //                    editor.commit();
 //
 //                    finish();
@@ -109,7 +106,7 @@ public class InsuranceListFragment extends Fragment {
 //                    Toast.makeText(InsuranceListFragment.this, "Enter valid Email id and Password", Toast.LENGTH_LONG).show();
 //
 //            } catch (NullPointerException e) {
-//                Toast.makeText(InsuranceListFragment.this, Constants.null_pointer_message, Toast.LENGTH_LONG).show();
+//                Toast.makeText(InsuranceListFragment.this, AppConstants.null_pointer_message, Toast.LENGTH_LONG).show();
 //                dialog.dismiss();
 //                finish();
 //            } catch (JSONException e) {

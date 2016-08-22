@@ -9,14 +9,13 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.suyogcomputech.helper.AppConstants;
 import com.suyogcomputech.helper.ConnectionClass;
 import com.suyogcomputech.helper.ConnectionDetector;
-import com.suyogcomputech.helper.Constants;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -42,7 +41,7 @@ public class EventDetailsActivity extends AppCompatActivity {
 
     private void defineComponents() {
         connectionClass=new ConnectionClass();
-//        eventName=getIntent().getExtras().getString(Constants.EVENT_NAME);
+//        eventName=getIntent().getExtras().getString(AppConstants.EVENT_NAME);
 //        Toast.makeText(EventDetailsActivity.this, eventName, Toast.LENGTH_SHORT).show();
         toolbar = (Toolbar) findViewById(R.id.toolbarEventDetails);
         toolbar.setTitle("Event Details");
@@ -53,7 +52,7 @@ public class EventDetailsActivity extends AppCompatActivity {
         if (detector.isConnectingToInternet()) {
             new GetEventList().execute();
         } else
-            Toast.makeText(EventDetailsActivity.this, Constants.dialog_message, Toast.LENGTH_LONG).show();
+            Toast.makeText(EventDetailsActivity.this, AppConstants.dialog_message, Toast.LENGTH_LONG).show();
 
     }
 
@@ -68,8 +67,8 @@ public class EventDetailsActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             dialog = new ProgressDialog(EventDetailsActivity.this);
-            dialog.setTitle(Constants.progress_dialog_title);
-            dialog.setMessage(Constants.processed_report);
+            dialog.setTitle(AppConstants.progress_dialog_title);
+            dialog.setMessage(AppConstants.processed_report);
             dialog.show();
         }
         @Override

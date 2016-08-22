@@ -1,6 +1,5 @@
 package com.suyogcomputech.sms;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,31 +10,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.suyogcomputech.helper.AppConstants;
+import com.suyogcomputech.helper.AppHelper;
 import com.suyogcomputech.helper.ConnectionClass;
-import com.suyogcomputech.helper.ConnectionDetector;
-import com.suyogcomputech.helper.Constants;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.SocketTimeoutException;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
@@ -44,9 +27,13 @@ import java.sql.Statement;
 public class LoginActivity extends AppCompatActivity {
     private static String TAG = "LoginActivity";
     EditText edPassword, edUserName;
-    ConnectionDetector detector;
     String uId, psw, name, emailId, uniqueId, type, available, result;
     ConnectionClass connectionClass;
+    Login taskLogin;
+
+    public final static boolean isValidEmail(CharSequence target) {
+        return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,8 +42,16 @@ public class LoginActivity extends AppCompatActivity {
         connectionClass = new ConnectionClass();
         edUserName = (EditText) findViewById(R.id.edUserId);
         edPassword = (EditText) findViewById(R.id.edPsw);
-        detector=new ConnectionDetector(LoginActivity.this);
 
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (taskLogin != null && taskLogin.getStatus() != AsyncTask.Status.FINISHED) {
+            taskLogin.cancel(true);
+        }
     }
 
     public void btnLogin(View view) {
@@ -74,68 +69,70 @@ public class LoginActivity extends AppCompatActivity {
 //            edPassword.setError(null);
 //            edUserName.setError(null);
 
-            if (detector.isConnectingToInternet()) {
-                new LoginDetails().execute();
-            } else
-                Toast.makeText(LoginActivity.this, Constants.dialog_message, Toast.LENGTH_LONG).show();
+        if (AppHelper.isConnectingToInternet(LoginActivity.this)) {
+            taskLogin = new Login();
+            taskLogin.execute();
+        } else
+            Toast.makeText(LoginActivity.this, AppConstants.dialog_message, Toast.LENGTH_LONG).show();
         //}
     }
 
-    private class LoginDetails extends AsyncTask<String, Void, String> {
+    private class Login extends AsyncTask<Void, Void, Boolean> {
         ProgressDialog dialog;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             dialog = new ProgressDialog(LoginActivity.this);
-            dialog.setTitle(Constants.progress_dialog_title);
-            dialog.setMessage(Constants.processed_report);
+            dialog.setTitle(AppConstants.progress_dialog_title);
+            dialog.setMessage(AppConstants.processed_report);
             dialog.show();
         }
 
         @Override
-        protected void onPostExecute(String s) {
+        protected void onPostExecute(Boolean s) {
             super.onPostExecute(s);
-            Log.i(Constants.Response,s);
             dialog.dismiss();
-            if (s.equals(Constants.SUCCESSFUL)){
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
+            try {
+                Log.i(AppConstants.Response, String.valueOf(s));
+                if (s) {
+                    SharedPreferences shr = getSharedPreferences(AppConstants.USERPREFS, MODE_PRIVATE);
+                    SharedPreferences.Editor editor = shr.edit();
+                    editor.putString(AppConstants.USERID, uniqueId);
+                    editor.apply();
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            } catch (NullPointerException e) {
+                Toast.makeText(LoginActivity.this, AppConstants.TRYAGAIN, Toast.LENGTH_SHORT).show();
             }
         }
 
         @Override
-        protected String doInBackground(String... params) {
+        protected Boolean doInBackground(Void... params) {
             try {
                 Connection con = connectionClass.connect();
                 //select user_id from flat_user_Details where user_id='b' and password='b'
-                String query = "select user_id from flat_user_Details where user_id='"+uId+"' and password='"+psw+"';";
+                String query = "select user_id from flat_user_Details where user_id='" + uId + "' and password='" + psw + "';";
+                Log.i("query", query);
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
-                if(rs.next()) {
-                    uniqueId=rs.getString("user_id");
-                    SharedPreferences shr = getSharedPreferences(Constants.USERPREFS, MODE_PRIVATE);
-                    SharedPreferences.Editor editor = shr.edit();
-                    editor.putString(Constants.USERID, uniqueId);
-                    editor.apply();
-                    Log.i(Constants.Response,uniqueId);
-                    result = Constants.SUCCESSFUL;
-                    return result;
+                if (rs.next()) {
+                    uniqueId = rs.getString(AppConstants.USERID);
+                    Log.i(AppConstants.Response, uniqueId);
+                    result = AppConstants.SUCCESSFUL;
+                    con.close();
+                    return true;
                 } else {
+                    con.close();
                     result = "Invalid Credentials";
-                    return result;
+                    return false;
                 }
-            } catch (SQLException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                return null;
             }
 
-
-            return null;
         }
-    }
-
-
-    public final static boolean isValidEmail(CharSequence target) {
-        return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
     }
 }

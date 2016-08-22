@@ -14,8 +14,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.suyogcomputech.adapter.OnlineShoppingAdapter;
+import com.suyogcomputech.helper.AppConstants;
 import com.suyogcomputech.helper.ConnectionDetector;
-import com.suyogcomputech.helper.Constants;
 import com.suyogcomputech.helper.OnlineShopping;
 import com.suyogcomputech.sms.R;
 
@@ -46,9 +46,9 @@ public class ShoppingFragment extends Fragment {
         detector=new ConnectionDetector(getActivity());
         rcvFacilities = (RecyclerView) view.findViewById(R.id.rcvFacilities);
         if (detector.isConnectingToInternet()) {
-            new FetchFacilities().execute(Constants.URL_FACILITIES);
+            new FetchFacilities().execute(AppConstants.URL_FACILITIES);
         } else
-            Toast.makeText(getActivity(), Constants.dialog_message, Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), AppConstants.dialog_message, Toast.LENGTH_LONG).show();
 
         return view;
     }
@@ -88,8 +88,8 @@ public class ShoppingFragment extends Fragment {
         protected void onPreExecute() {
             super.onPreExecute();
             dialog = new ProgressDialog(getActivity());
-            dialog.setTitle(Constants.progress_dialog_title);
-            dialog.setMessage(Constants.progress_dialog_message);
+            dialog.setTitle(AppConstants.progress_dialog_title);
+            dialog.setMessage(AppConstants.progress_dialog_message);
             dialog.show();
         }
 
@@ -100,13 +100,13 @@ public class ShoppingFragment extends Fragment {
                 dialog.dismiss();
                 Log.i("response", s);
                 JSONObject objJson = new JSONObject(s);
-                JSONArray jsonArray = new JSONArray(objJson.getString(Constants.FACILITIES));
+                JSONArray jsonArray = new JSONArray(objJson.getString(AppConstants.FACILITIES));
                 list = new ArrayList<>();
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     OnlineShopping facilities = new OnlineShopping();
-                    facilities.setTitle(jsonObject.getString(Constants.TITLE));
-                    facilities.setImageUrl(jsonObject.getString(Constants.IMAGE));
+                    facilities.setTitle(jsonObject.getString(AppConstants.TITLE));
+                    facilities.setImageUrl(jsonObject.getString(AppConstants.IMAGE));
                     list.add(facilities);
                 }
 
@@ -117,7 +117,7 @@ public class ShoppingFragment extends Fragment {
                 rcvFacilities.setLayoutManager(glm);
 
             } catch (NullPointerException e) {
-                Toast.makeText(getActivity(), Constants.null_pointer_message, Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), AppConstants.null_pointer_message, Toast.LENGTH_LONG).show();
                 getActivity().finish();
             } catch (JSONException e) {
                 e.printStackTrace();

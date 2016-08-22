@@ -6,8 +6,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,24 +14,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.suyogcomputech.helper.AppConstants;
 import com.suyogcomputech.helper.ConnectionClass;
 import com.suyogcomputech.helper.ConnectionDetector;
-import com.suyogcomputech.helper.Constants;
 import com.suyogcomputech.sms.EventDetailsActivity;
-import com.suyogcomputech.sms.MainActivity;
 import com.suyogcomputech.sms.R;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.SocketTimeoutException;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -64,7 +50,7 @@ public class ListEventFragment extends Fragment {
         if (detector.isConnectingToInternet()) {
             new GetEventList().execute();
         } else
-            Toast.makeText(getActivity(), Constants.dialog_message, Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), AppConstants.dialog_message, Toast.LENGTH_LONG).show();
 
     }
 
@@ -75,8 +61,8 @@ public class ListEventFragment extends Fragment {
         protected void onPreExecute() {
             super.onPreExecute();
             dialog = new ProgressDialog(getActivity());
-            dialog.setTitle(Constants.progress_dialog_title);
-            dialog.setMessage(Constants.processed_report);
+            dialog.setTitle(AppConstants.progress_dialog_title);
+            dialog.setMessage(AppConstants.processed_report);
             dialog.show();
         }
 
@@ -92,7 +78,7 @@ public class ListEventFragment extends Fragment {
                 String type = adapterView.getItemAtPosition(i).toString();
 
                 Intent intent=new Intent(getActivity(), EventDetailsActivity.class);
-                //intent.putExtra(Constants.EVENT_NAME,type);
+                //intent.putExtra(AppConstants.EVENT_NAME,type);
                 getActivity().startActivity(intent);
             }
         });

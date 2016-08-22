@@ -31,8 +31,8 @@ import com.suyogcomputech.fragment.LawyerListFragment;
 import com.suyogcomputech.fragment.ListEventFragment;
 import com.suyogcomputech.fragment.MyOrderFragment;
 import com.suyogcomputech.fragment.ShoppingFragment;
+import com.suyogcomputech.helper.AppConstants;
 import com.suyogcomputech.helper.ConnectionDetector;
-import com.suyogcomputech.helper.Constants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!checkUserData()) {
+        if (checkUserData()) {
             Intent intent=new Intent(MainActivity.this,LoginActivity.class);
             startActivity(intent);
             finish();
@@ -299,12 +299,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean checkUserData() {
-        SharedPreferences sharedpreferences = getSharedPreferences(Constants.USERPREFS, Context.MODE_PRIVATE);
-        uniqueUserId = sharedpreferences.getString(Constants.USERID, Constants.NOT_AVAILABLE);
-        if (uniqueUserId.equals(Constants.NOT_AVAILABLE)) {
-            return false;
-        } else {
+        SharedPreferences sharedpreferences = getSharedPreferences(AppConstants.USERPREFS, Context.MODE_PRIVATE);
+        uniqueUserId = sharedpreferences.getString(AppConstants.USERID, AppConstants.NOT_AVAILABLE);
+        if (uniqueUserId.equals(AppConstants.NOT_AVAILABLE)) {
             return true;
+        } else {
+            return false;
         }
     }
 

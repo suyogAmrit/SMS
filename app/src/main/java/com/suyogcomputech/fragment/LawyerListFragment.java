@@ -1,15 +1,12 @@
 package com.suyogcomputech.fragment;
 
 import android.app.ProgressDialog;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +15,7 @@ import android.widget.Toast;
 
 import com.suyogcomputech.adapter.LawyerAdapter;
 import com.suyogcomputech.helper.ConnectionDetector;
-import com.suyogcomputech.helper.Constants;
+import com.suyogcomputech.helper.AppConstants;
 import com.suyogcomputech.helper.Doctor;
 import com.suyogcomputech.sms.R;
 
@@ -51,7 +48,7 @@ public class LawyerListFragment extends Fragment {
         if (detector.isConnectingToInternet()) {
             new FetchLawyerDetails().execute("http://54.193.93.238/fortest/AnugulPol/fetch_impcontacts_data.php");
         } else
-            Toast.makeText(getActivity(), Constants.dialog_message, Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), AppConstants.dialog_message, Toast.LENGTH_LONG).show();
 
         return view;
     }
@@ -92,8 +89,8 @@ public class LawyerListFragment extends Fragment {
         protected void onPreExecute() {
             super.onPreExecute();
             dialog = new ProgressDialog(getActivity());
-            dialog.setTitle(Constants.progress_dialog_title);
-            dialog.setMessage(Constants.progress_dialog_message);
+            dialog.setTitle(AppConstants.progress_dialog_title);
+            dialog.setMessage(AppConstants.progress_dialog_message);
             dialog.show();
         }
 
@@ -121,7 +118,7 @@ public class LawyerListFragment extends Fragment {
                 rcvLawyer.setLayoutManager(glm);
 
             } catch (NullPointerException e) {
-                Toast.makeText(getActivity(), Constants.null_pointer_message, Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), AppConstants.null_pointer_message, Toast.LENGTH_LONG).show();
                 getActivity().finish();
             } catch (JSONException e) {
                 e.printStackTrace();
