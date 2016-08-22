@@ -63,22 +63,22 @@ public class LoginActivity extends AppCompatActivity {
 
         uId = edUserName.getText().toString();
         psw = edPassword.getText().toString();
-        if (uId.equals("")) {
-            edUserName.setError("Enter Your Email");
-            edUserName.requestFocus();
-        } else if (psw.equals("")) {
-            edPassword.setError("Enter Your Password");
-            edUserName.setError(null);
-            edPassword.requestFocus();
-        } else {
-            edPassword.setError(null);
-            edUserName.setError(null);
+//        if (uId.equals("")) {
+//            edUserName.setError("Enter Your Email");
+//            edUserName.requestFocus();
+//        } else if (psw.equals("")) {
+//            edPassword.setError("Enter Your Password");
+//            edUserName.setError(null);
+//            edPassword.requestFocus();
+//        } else {
+//            edPassword.setError(null);
+//            edUserName.setError(null);
 
             if (detector.isConnectingToInternet()) {
                 new LoginDetails().execute();
             } else
                 Toast.makeText(LoginActivity.this, Constants.dialog_message, Toast.LENGTH_LONG).show();
-        }
+        //}
     }
 
     private class LoginDetails extends AsyncTask<String, Void, String> {
