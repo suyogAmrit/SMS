@@ -102,12 +102,12 @@ public class ListEventFragment extends Fragment {
         protected Void doInBackground(String... params) {
             try {
                 Connection con = connectionClass.connect();
-                String query = "select uname from user_registration";
+                String query = "select user_id from flat_user_Details";
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
                 listEvent = new ArrayList<String>();
                 while (rs.next()) {
-                    String name = rs.getString("uname");
+                    String name = rs.getString("user_id");
                     listEvent.add(name);
                 }
             } catch (SQLException e) {

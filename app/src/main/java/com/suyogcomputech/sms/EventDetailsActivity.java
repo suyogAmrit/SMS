@@ -24,9 +24,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-/**
- * Created by Pintu on 8/19/2016.
- */
 public class EventDetailsActivity extends AppCompatActivity {
     Toolbar toolbar;
     ListView lstEvent;
@@ -75,7 +72,6 @@ public class EventDetailsActivity extends AppCompatActivity {
             dialog.setMessage(Constants.processed_report);
             dialog.show();
         }
-
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
@@ -90,19 +86,17 @@ public class EventDetailsActivity extends AppCompatActivity {
         protected Void doInBackground(String... params) {
             try {
                 Connection con = connectionClass.connect();
-                String query = "select uname from user_registration";
+                String query = "select user_id from flat_user_Details";
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
                 listEvent = new ArrayList<String>();
                 while (rs.next()) {
-                    String name = rs.getString("uname");
+                    String name = rs.getString("user_id");
                     listEvent.add(name);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-
-
             return null;
         }
     }

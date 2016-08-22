@@ -29,7 +29,6 @@ public class EventConformActivity extends AppCompatActivity{
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
     }
 
     public void btnConformEvent(View view) {
@@ -51,7 +50,6 @@ public class EventConformActivity extends AppCompatActivity{
         });
         dialog.show();
     }
-
     private String getUniqueId() {
         String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
         return timeStamp;
