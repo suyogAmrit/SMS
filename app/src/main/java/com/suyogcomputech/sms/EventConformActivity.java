@@ -12,7 +12,6 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -30,7 +29,6 @@ public class EventConformActivity extends AppCompatActivity{
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
     }
 
     public void btnConformEvent(View view) {
@@ -52,7 +50,6 @@ public class EventConformActivity extends AppCompatActivity{
         });
         dialog.show();
     }
-
     private String getUniqueId() {
         String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
         return timeStamp;

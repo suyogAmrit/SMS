@@ -45,8 +45,7 @@ public class LoginActivity extends AppCompatActivity {
     private static String TAG = "LoginActivity";
     EditText edPassword, edUserName;
     ConnectionDetector detector;
-    String uId, psw, name, emailId, uniqueId, type, available, z;
-    SharedPreferences sharedpreferences;
+    String uId, psw, name, emailId, uniqueId, type, available, result;
     ConnectionClass connectionClass;
 
     @Override
@@ -74,16 +73,12 @@ public class LoginActivity extends AppCompatActivity {
 //        } else {
 //            edPassword.setError(null);
 //            edUserName.setError(null);
-//
-        if (detector.isConnectingToInternet()) {
-            new LoginDetails().execute();
-        } else
-            Toast.makeText(LoginActivity.this, Constants.dialog_message, Toast.LENGTH_LONG).show();
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//
-//        }
+
+            if (detector.isConnectingToInternet()) {
+                new LoginDetails().execute();
+            } else
+                Toast.makeText(LoginActivity.this, Constants.dialog_message, Toast.LENGTH_LONG).show();
+        //}
     }
 
     private class LoginDetails extends AsyncTask<String, Void, String> {
@@ -112,17 +107,23 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             try {
-                Connection con = connectionClass.CONN();
-                String query = "select uname from user_registration where email='bb' and password='12345';";
+                Connection con = connectionClass.connect();
+                //select user_id from flat_user_Details where user_id='b' and password='b'
+                String query = "select user_id from flat_user_Details where user_id='"+uId+"' and password='"+psw+"';";
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
                 if(rs.next()) {
-                    uniqueId=rs.getString("uname");
+                    uniqueId=rs.getString("user_id");
+                    SharedPreferences shr = getSharedPreferences(Constants.USERPREFS, MODE_PRIVATE);
+                    SharedPreferences.Editor editor = shr.edit();
+                    editor.putString(Constants.USERID, uniqueId);
+                    editor.apply();
                     Log.i(Constants.Response,uniqueId);
-                    z = Constants.SUCCESSFUL;
-                    return z;
+                    result = Constants.SUCCESSFUL;
+                    return result;
                 } else {
-                    z = "Invalid Credentials";
+                    result = "Invalid Credentials";
+                    return result;
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
