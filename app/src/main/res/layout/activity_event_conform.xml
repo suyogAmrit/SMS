@@ -1,29 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scrollView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbarEventConform"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-    <ListView
+    android:layout_height="match_parent">
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/lstEventConform"
-        android:layout_below="@+id/toolbarEventConform"
-        android:layout_above="@+id/btnConform"
-        android:layout_marginBottom="10dp"/>
+        android:orientation="vertical">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Conform"
-        android:id="@+id/btnConform"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:onClick="btnConformEvent"/>
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbarEventConform"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-</RelativeLayout>
+
+        <EditText
+            android:id="@+id/edEstimate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/et_background"
+            android:hint="Enter Estimate Quantity"
+            android:padding="7dp"
+            android:inputType="number"/>
+
+        <EditText
+            android:id="@+id/edUnit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/et_background"
+            android:hint="Enter Unit"
+            android:padding="7dp" />
+
+        <EditText
+            android:id="@+id/edEventDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/et_background"
+            android:hint="Enter Event Date"
+            android:padding="7dp" />
+
+        <EditText
+            android:id="@+id/edDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/et_background"
+            android:hint="Enter Description"
+            android:inputType="textMultiLine"
+            android:lines="5"
+            android:padding="7dp" />
+
+        <EditText
+            android:id="@+id/edEstimateBudget"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/et_background"
+            android:ems="10"
+            android:hint="Enter Budget"
+            android:inputType="number"
+            android:padding="7dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:onClick="btnConformEvent"
+            android:text="Confirm" />
+    </LinearLayout>
+</ScrollView>

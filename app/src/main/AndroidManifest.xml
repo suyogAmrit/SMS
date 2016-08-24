@@ -12,7 +12,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".FirstPageActivity"
+        <activity
+            android:name=".FirstPageActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,15 +38,18 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".EventDetailsActivity"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".EventListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".EventListActivity"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".EventConformActivity"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".EventDetailsActivity"/>
-
-
-
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SailorDetailsActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

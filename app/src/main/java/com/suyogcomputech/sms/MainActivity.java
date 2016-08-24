@@ -28,7 +28,6 @@ import com.suyogcomputech.fragment.DoctorListFragment;
 import com.suyogcomputech.fragment.GroceryFragment;
 import com.suyogcomputech.fragment.InsuranceListFragment;
 import com.suyogcomputech.fragment.LawyerListFragment;
-import com.suyogcomputech.fragment.ListEventFragment;
 import com.suyogcomputech.fragment.MyOrderFragment;
 import com.suyogcomputech.fragment.ShoppingFragment;
 import com.suyogcomputech.helper.AppConstants;
@@ -111,9 +110,8 @@ public class MainActivity extends AppCompatActivity {
                         case 1:
                             switch (childPosition) {
                                 case 0:
-                                    fragment = new ListEventFragment();
-                                    toolbar.setTitle("Event Management");
-                                    toolbar.setTitleTextColor(Color.WHITE);
+                                    Intent intent=new Intent(MainActivity.this,EventListActivity.class);
+                                    startActivity(intent);
                                     mDrawerLayout.closeDrawer(GravityCompat.START);
                                     break;
                                 case 1:

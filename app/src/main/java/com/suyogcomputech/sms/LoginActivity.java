@@ -31,9 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     ConnectionClass connectionClass;
     Login taskLogin;
 
-    public final static boolean isValidEmail(CharSequence target) {
-        return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
-    }
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -113,9 +111,8 @@ public class LoginActivity extends AppCompatActivity {
         protected Boolean doInBackground(Void... params) {
             try {
                 Connection con = connectionClass.connect();
-                //select user_id from flat_user_Details where user_id='b' and password='b'
                 String query = "select user_id from flat_user_Details where user_id='" + uId + "' and password='" + psw + "';";
-                Log.i("query", query);
+                Log.i(AppConstants.QUERY, query);
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
                 if (rs.next()) {
