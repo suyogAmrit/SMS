@@ -28,6 +28,7 @@ import com.suyogcomputech.fragment.DoctorListFragment;
 import com.suyogcomputech.fragment.GroceryFragment;
 import com.suyogcomputech.fragment.InsuranceListFragment;
 import com.suyogcomputech.fragment.LawyerListFragment;
+import com.suyogcomputech.fragment.MyEventBookingFragment;
 import com.suyogcomputech.fragment.MyOrderFragment;
 import com.suyogcomputech.fragment.ShoppingFragment;
 import com.suyogcomputech.helper.AppConstants;
@@ -115,7 +116,9 @@ public class MainActivity extends AppCompatActivity {
                                     mDrawerLayout.closeDrawer(GravityCompat.START);
                                     break;
                                 case 1:
-                                    Toast.makeText(MainActivity.this, "My Booking", Toast.LENGTH_SHORT).show();
+                                    fragment = new MyEventBookingFragment();
+                                    toolbar.setTitle("My Booking");
+                                    toolbar.setTitleTextColor(Color.WHITE);
                                     mDrawerLayout.closeDrawer(GravityCompat.START);
                                     break;
 

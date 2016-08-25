@@ -32,8 +32,8 @@ import java.util.ArrayList;
 public class SailorDetailsActivity extends AppCompatActivity {
     Toolbar toolbar;
     ConnectionClass connectionClass;
-    String eventId,managerId;
-    TextView txtOrgName,txtorgAddress,txtManagerPhone,txtManagerMobile,txtManagerEmail,txtEventDescription;
+    String eventId,managerId,eventName;
+    TextView txtOrgName,txtEventName,txtEventDescription;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,18 +49,19 @@ public class SailorDetailsActivity extends AppCompatActivity {
     }
 
     private void defineComponts() {
+        eventName=getIntent().getExtras().getString(AppConstants.EVENT_TYPE);
         eventId=getIntent().getExtras().getString(AppConstants.EVENT_ID);
         managerId=getIntent().getExtras().getString(AppConstants.EVENT_MANAGER_USER_ID);
         txtEventDescription=(TextView)findViewById(R.id.txtEventDescription);
         txtOrgName=(TextView)findViewById(R.id.txtOrgName);
-        txtorgAddress=(TextView)findViewById(R.id.txtOrgAddress);
-        txtManagerPhone=(TextView)findViewById(R.id.txtManagerPhone);
-        txtManagerMobile=(TextView)findViewById(R.id.txtManagerMobile);
-        txtManagerEmail=(TextView)findViewById(R.id.txtManagerEmail);
+        txtEventName=(TextView)findViewById(R.id.txtEventName);
+        txtEventName.setText(eventName);
+
     }
 
     public void btnConformSailor(View view) {
         Intent intent=new Intent(SailorDetailsActivity.this,EventConformActivity.class);
+        intent.putExtra(AppConstants.EVENT_ID,eventId);
         startActivity(intent);
     }
 
@@ -93,10 +94,6 @@ public class SailorDetailsActivity extends AppCompatActivity {
                     String mngName=rs.getString(AppConstants.EVENT_MANAGER_NAME);
                     Log.i("Name",mngName);
                     txtOrgName.setText(rs.getString(AppConstants.EVENT_ORGANIZATION_NAME));
-                    txtorgAddress.setText("Address : "+rs.getString(AppConstants.EVENT_ORGANIZATION_ADDRESS));
-                    txtManagerPhone.setText("Phone : "+rs.getString(AppConstants.EVENT_MANAGER_PHONE));
-                    txtManagerMobile.setText("Mobile : "+rs.getString(AppConstants.EVENT_MANAGER_MOBILE));
-                    txtManagerEmail.setText("Email : "+rs.getString(AppConstants.EVENT_MANAGER_EMAIL));
                     txtEventDescription.setText("Description : "+rs.getString(AppConstants.EVENT_DESCRIPTION));
 
                 }

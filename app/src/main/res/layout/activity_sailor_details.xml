@@ -17,69 +17,41 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbarSailorDetails"
         android:layout_centerHorizontal="true"
-        android:text=""
-        android:textSize="20sp"
+        android:text="Organizatiopn Name"
+        android:textSize="22sp"
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/txtManagerPhone"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/txtEventName"
         android:layout_below="@+id/txtOrgName"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:padding="5dp"
-        android:text=""
-        android:textSize="17sp" />
-    <TextView
-        android:id="@+id/txtManagerMobile"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txtManagerPhone"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:padding="5dp"
-        android:text=""
-        android:textSize="17sp" />
-    <TextView
-        android:id="@+id/txtManagerEmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txtManagerMobile"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:padding="5dp"
-        android:text=""
-        android:textSize="17sp" />
+        android:layout_centerHorizontal="true"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"/>
 
-    <TextView
-        android:id="@+id/txtOrgAddress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txtManagerEmail"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginTop="10dp"
-        android:padding="5dp"
-        android:text=""
-        android:textSize="17sp" />
+
     <TextView
         android:id="@+id/txtEventDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/txtOrgAddress"
+        android:layout_below="@+id/txtEventName"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginTop="10dp"
         android:padding="5dp"
-        android:text=""
+        android:text="Description"
         android:textSize="17sp" />
     <Button
         android:id="@+id/btnConform"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
         android:onClick="btnConformSailor"
-        android:text="Confirm" />
+        android:text="Confirm"
+        android:layout_below="@+id/txtEventDescription"
+        android:layout_alignStart="@+id/txtEventName" />
+
+
 </RelativeLayout>

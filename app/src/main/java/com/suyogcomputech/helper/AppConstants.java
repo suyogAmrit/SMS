@@ -111,4 +111,9 @@ public static final String EVENT_MANAGER_NAME = "Event_mng_name";
         DialogFragment newFragment = new DatePickerFragment();
         newFragment.show(fragmentManager, "date");
     }
+
+//    Select r.Event_Type,e.Event_Propose_date from Event_Request_tb e
+//    inner join Event_Type_Table r
+//    on e.Event_id=r.slno
+//    where e.flat_no='jsj'
 }

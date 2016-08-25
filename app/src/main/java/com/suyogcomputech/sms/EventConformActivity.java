@@ -2,6 +2,7 @@ package com.suyogcomputech.sms;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -46,8 +47,8 @@ public class EventConformActivity extends AppCompatActivity implements DatePicke
 
     }
 
-
     private void defineComponents() {
+        eventId=getIntent().getExtras().getString(AppConstants.EVENT_ID);
         connectionClass=new ConnectionClass();
         toolbar = (Toolbar) findViewById(R.id.toolbarEventConform);
         toolbar.setTitle("Confirm Event");
@@ -85,27 +86,27 @@ public class EventConformActivity extends AppCompatActivity implements DatePicke
         proposeDescription = edDescription.getText().toString();
 
         eventProposeDate = edEventDate.getText().toString();
-//        if (edEstimateQuantity.getText().toString().equals("")){
-//            edEstimateQuantity.setError("Please Enter Estimate Quantity");
-//            edEstimateQuantity.requestFocus();
-//        }
-//        else if(unit.equals("")){
-//            edUnit.setError("Enter Unit");
-//            edUnit.requestFocus();
-//            edEstimateQuantity.setError(null);
-//        }else if (eventProposeDate.equals("")){
-//            edEventDate.setError("Enter Propose Date");
-//            edEventDate.requestFocus();
-//            edUnit.setError(null);
-//        }else if (proposeDescription.equals("")){
-//            edEventDate.setError(null);
-//            edDescription.setError("Enter Description");
-//            edDescription.requestFocus();
-//        }else if(edEstimatedBudged.getText().toString().equals("")){
-//            edDescription.setError(null);
-//            edEstimatedBudged.setError("Enter Estimate Budget");
-//            edEstimatedBudged.requestFocus();
-//        }else {
+        if (edEstimateQuantity.getText().toString().equals("")){
+            edEstimateQuantity.setError("Please Enter Estimate Quantity");
+            edEstimateQuantity.requestFocus();
+        }
+        else if(unit.equals("")){
+            edUnit.setError("Enter Unit");
+            edUnit.requestFocus();
+            edEstimateQuantity.setError(null);
+        }else if (eventProposeDate.equals("")){
+            edEventDate.setError("Enter Propose Date");
+            edEventDate.requestFocus();
+            edUnit.setError(null);
+        }else if (proposeDescription.equals("")){
+            edEventDate.setError(null);
+            edDescription.setError("Enter Description");
+            edDescription.requestFocus();
+        }else if(edEstimatedBudged.getText().toString().equals("")){
+            edDescription.setError(null);
+            edEstimatedBudged.setError("Enter Estimate Budget");
+            edEstimatedBudged.requestFocus();
+        }else {
             estimateBudget =Float.parseFloat(edEstimatedBudged.getText().toString()) ;
             estimateQnty =Integer.parseInt(edEstimateQuantity.getText().toString()) ;
             edEstimatedBudged.setError(null);
@@ -113,22 +114,8 @@ public class EventConformActivity extends AppCompatActivity implements DatePicke
                 new InsertEventDetails().execute();
             } else
                 Toast.makeText(EventConformActivity.this, AppConstants.dialog_message, Toast.LENGTH_LONG).show();
-//        }
-//        final Dialog dialog=new Dialog(EventConformActivity.this);
-//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        dialog.setContentView(R.layout.dialog_conform_event);
-//        TextView txtConformId=(TextView)dialog.findViewById(R.id.txtEventId);
-//        txtConformId.setText("Your Conformation Id is : "+uniqueConformId);
-//
-//        Button btnConform=(Button)dialog.findViewById(R.id.btnConform);
-//        btnConform.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                dialog.dismiss();
-//                Toast.makeText(EventConformActivity.this, "nsdjn", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//        dialog.show();
+        }
+
     }
 
     private String getUniqueId() {
@@ -164,14 +151,21 @@ public class EventConformActivity extends AppCompatActivity implements DatePicke
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
             dialog.dismiss();
-            Toast.makeText(EventConformActivity.this, String.valueOf(aBoolean), Toast.LENGTH_SHORT).show();
+            if (aBoolean){
+                Toast.makeText(EventConformActivity.this, "Event Saved Successfully", Toast.LENGTH_SHORT).show();
+                Intent intent=new Intent(EventConformActivity.this,EventListActivity.class);
+                intent.setFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY);
+                startActivity(intent);
+            }
+            Toast.makeText(EventConformActivity.this, "Something Went Wrong Please Try Again...", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         protected Boolean doInBackground(Void... voids) {
             try {
                 Connection con = connectionClass.connect();
-                String query = "INSERT INTO Event_Request_tb(appt_id,flat_no,Event_id,Event_Request_date,Event_Propose_date,Estmated_Qty,Unit,Proposed_Desc,Estimated_Budget,Event_Request_status) VALUES('"+apptId+"','"+flatNo+"',2,'" + eventReqDate + "','" + eventProposeDate + "'," + estimateQnty + ",'" + unit + "','" + proposeDescription + "'," + estimateBudget + ",0)";
+                String query = "INSERT INTO Event_Request_tb(appt_id,flat_no,Event_id,Event_Request_date,Event_Propose_date,Estmated_Qty,Unit,Proposed_Desc,Estimated_Budget,Event_Request_status,user_id) VALUES('"+apptId+"','"+flatNo+"',"+Integer.parseInt(eventId)+",'" + eventReqDate + "','" + eventProposeDate + "'," + estimateQnty + ",'" + unit + "','" + proposeDescription + "'," + estimateBudget + ",0,'"+findUserId()+"')";
+                Log.i(AppConstants.QUERY, query);
                 Statement stmt = con.createStatement();
                 int result = stmt.executeUpdate(query);
                 if (result == 1) {

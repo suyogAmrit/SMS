@@ -4,7 +4,29 @@ package com.suyogcomputech.helper;
  * Created by Pintu on 8/23/2016.
  */
 public class Event {
-    String eventId,eventName,eventImage;
+    String eventId;
+    String eventName;
+    String eventImage;
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    String companyName;
+
+    public String getEventDate() {
+        return eventDate;
+    }
+
+    public void setEventDate(String eventDate) {
+        this.eventDate = eventDate;
+    }
+
+    String eventDate;
 
     public String getEventId() {
         return eventId;

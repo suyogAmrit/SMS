@@ -52,7 +52,7 @@ public class EventDetailsActivity extends AppCompatActivity {
         eventId=getIntent().getExtras().getString(AppConstants.EVENT_ID);
         eventName=getIntent().getExtras().getString(AppConstants.EVENT_TYPE);
         txtEventName.setText(eventName);
-        Toast.makeText(EventDetailsActivity.this, eventId, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(EventDetailsActivity.this, eventId, Toast.LENGTH_SHORT).show();
         toolbar = (Toolbar) findViewById(R.id.toolbarEventDetails);
         toolbar.setTitle("Event Details");
         toolbar.setTitleTextColor(Color.WHITE);
@@ -89,9 +89,9 @@ public class EventDetailsActivity extends AppCompatActivity {
                 while (rs.next()) {
                     Event event=new Event();
                     event.setEventId(rs.getString("sl_no"));
-                    event.setEventName(rs.getString("Event_mng_name"));
+                    event.setEventName(rs.getString("Event_Mng_Org_Name"));
                     eventList.add(event);
-                    listEvent.add(rs.getString("Event_mng_name"));
+                    listEvent.add(rs.getString("Event_Mng_Org_Name"));
                 }
                 adapterInsurance = new ArrayAdapter<String>(EventDetailsActivity.this, android.R.layout.simple_list_item_1, listEvent);
                 lstEvent.setAdapter(adapterInsurance);
@@ -103,6 +103,7 @@ public class EventDetailsActivity extends AppCompatActivity {
                         String id=event2.getEventId();
                         Intent intent=new Intent(EventDetailsActivity.this,SailorDetailsActivity.class);
                         intent.putExtra(AppConstants.EVENT_ID,eventId);
+                        intent.putExtra(AppConstants.EVENT_TYPE,eventName);
                         intent.putExtra(AppConstants.EVENT_MANAGER_USER_ID,id);
                         startActivity(intent);
                        // Toast.makeText(EventDetailsActivity.this,id,Toast.LENGTH_SHORT).show();
@@ -118,7 +119,7 @@ public class EventDetailsActivity extends AppCompatActivity {
         protected ResultSet doInBackground(String... params) {
             try {
                 Connection con = connectionClass.connect();
-                String query = "select em.sl_no,em.Event_mng_name from Event_Desc_tb as ed\n" +
+                String query = "select em.sl_no,em.Event_Mng_Org_Name from Event_Desc_tb as ed\n" +
                         "inner join Event_Type_Table as et on(et.slno=ed.Event_Type_id) \n" +
                         "inner join Event_Manager_tb as em on(em.sl_no=ed.Event_Mng_user_id) \n" +
                         "where et.slno="+eventId+"";

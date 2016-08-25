@@ -46,7 +46,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".EventConformActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait">
+
+        </activity>
         <activity
             android:name=".SailorDetailsActivity"
             android:screenOrientation="portrait" />
