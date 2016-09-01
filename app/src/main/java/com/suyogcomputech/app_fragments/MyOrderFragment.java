@@ -1,4 +1,4 @@
-package com.suyogcomputech.fragment;
+package com.suyogcomputech.app_fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

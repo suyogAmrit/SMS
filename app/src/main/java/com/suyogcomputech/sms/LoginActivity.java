@@ -28,7 +28,6 @@ public class LoginActivity extends AppCompatActivity {
     private static String TAG = "LoginActivity";
     EditText edPassword, edUserName;
     String uId, psw, name, emailId, uniqueId, type, available, result;
-    ConnectionClass connectionClass;
     Login taskLogin;
 
     public final static boolean isValidEmail(CharSequence target) {
@@ -39,7 +38,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        connectionClass = new ConnectionClass();
         edUserName = (EditText) findViewById(R.id.edUserId);
         edPassword = (EditText) findViewById(R.id.edPsw);
 
@@ -112,9 +110,10 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(Void... params) {
             try {
+                ConnectionClass connectionClass = new ConnectionClass();
                 Connection con = connectionClass.connect();
-                //select user_id from flat_user_Details where user_id='b' and password='b'
-                String query = "select user_id from flat_user_Details where user_id='" + uId + "' and password='" + psw + "';";
+                //select user_id from flat_user_Details where user_id='b' and PASSWORD='b'
+                String query = "select user_id from flat_user_Details where user_id='" + uId + "' and PASSWORD='" + psw + "';";
                 Log.i("query", query);
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
@@ -130,6 +129,7 @@ public class LoginActivity extends AppCompatActivity {
                     return false;
                 }
             } catch (Exception e) {
+                Log.e("error", e.getMessage());
                 return null;
             }
 

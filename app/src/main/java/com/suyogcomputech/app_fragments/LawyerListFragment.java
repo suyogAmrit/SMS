@@ -1,4 +1,4 @@
-package com.suyogcomputech.fragment;
+package com.suyogcomputech.app_fragments;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
@@ -13,9 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.suyogcomputech.adapter.DoctorAdapter;
-import com.suyogcomputech.helper.AppConstants;
+import com.suyogcomputech.adapter.LawyerAdapter;
 import com.suyogcomputech.helper.ConnectionDetector;
+import com.suyogcomputech.helper.AppConstants;
 import com.suyogcomputech.helper.Doctor;
 import com.suyogcomputech.sms.R;
 
@@ -35,16 +35,16 @@ import java.util.ArrayList;
 /**
  * Created by Pintu on 8/11/2016.
  */
-public class DoctorListFragment extends Fragment {
+public class LawyerListFragment extends Fragment {
     ConnectionDetector detector;
-    RecyclerView rcDoctor;
-    DoctorAdapter adapter;
+    RecyclerView rcvLawyer;
+    LawyerAdapter adapter;
     ArrayList<Doctor> list;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_doctor_list, container, false);
         detector=new ConnectionDetector(getActivity());
-        rcDoctor = (RecyclerView) view.findViewById(R.id.rcvDoctor);
+        rcvLawyer = (RecyclerView) view.findViewById(R.id.rcvDoctor);
         if (detector.isConnectingToInternet()) {
             new FetchLawyerDetails().execute("http://54.193.93.238/fortest/AnugulPol/fetch_impcontacts_data.php");
         } else
@@ -100,6 +100,7 @@ public class DoctorListFragment extends Fragment {
             try {
                 dialog.dismiss();
                 Log.i("response", s);
+//                JSONObject objJson = new JSONObject(s);
                 JSONArray jsonArray = new JSONArray(s);
                 list = new ArrayList<>();
                 for (int i = 0; i < jsonArray.length(); i++) {
@@ -109,11 +110,12 @@ public class DoctorListFragment extends Fragment {
                     lawyer.setType(jsonObject.getString("Designation"));
                     list.add(lawyer);
                 }
-                adapter = new DoctorAdapter(list, getActivity());
-                rcDoctor.setAdapter(adapter);
-                rcDoctor.setHasFixedSize(true);
+
+                adapter = new LawyerAdapter(list, getActivity());
+                rcvLawyer.setAdapter(adapter);
+                rcvLawyer.setHasFixedSize(true);
                 LinearLayoutManager glm = new LinearLayoutManager(getActivity());
-                rcDoctor.setLayoutManager(glm);
+                rcvLawyer.setLayoutManager(glm);
 
             } catch (NullPointerException e) {
                 Toast.makeText(getActivity(), AppConstants.null_pointer_message, Toast.LENGTH_LONG).show();

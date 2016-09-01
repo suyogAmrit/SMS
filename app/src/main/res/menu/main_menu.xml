@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
+    <item
+        android:id="@+id/item_search"
+        android:icon="@android:drawable/ic_search_category_default"
+        android:title="Search"
+        app:showAsAction="always" />
     <item
         android:id="@+id/item_samplebadge"
+        android:title="@null"
         app:actionLayout="@layout/menu_action_item_badge"
-        app:showAsAction="always"
-        android:title="@null"/>
+        app:showAsAction="always" />
 
+    <item
+        android:id="@+id/item_sort"
+        android:icon="@android:drawable/ic_menu_sort_alphabetically"
+        android:title="Sort"
+        app:showAsAction="always" />
 </menu>

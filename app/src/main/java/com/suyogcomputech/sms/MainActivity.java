@@ -14,32 +14,27 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
-import com.mikepenz.actionitembadge.library.ActionItemBadge;
-import com.mikepenz.actionitembadge.library.utils.BadgeStyle;
-import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.suyogcomputech.adapter.ExpandableListAdapter;
-import com.suyogcomputech.fragment.DoctorListFragment;
-import com.suyogcomputech.fragment.GroceryFragment;
-import com.suyogcomputech.fragment.InsuranceListFragment;
-import com.suyogcomputech.fragment.LawyerListFragment;
-import com.suyogcomputech.fragment.ListEventFragment;
-import com.suyogcomputech.fragment.MyOrderFragment;
-import com.suyogcomputech.fragment.ShoppingFragment;
+import com.suyogcomputech.app_fragments.DoctorListFragment;
+import com.suyogcomputech.app_fragments.EShopCategoryFragment;
+import com.suyogcomputech.app_fragments.GroceryFragment;
+import com.suyogcomputech.app_fragments.InsuranceListFragment;
+import com.suyogcomputech.app_fragments.LawyerListFragment;
+import com.suyogcomputech.app_fragments.ListEventFragment;
+import com.suyogcomputech.app_fragments.MyOrderFragment;
 import com.suyogcomputech.helper.AppConstants;
-import com.suyogcomputech.helper.ConnectionDetector;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ExpandableListView.OnChildClickListener{
 
     Toolbar toolbar;
     private DrawerLayout mDrawerLayout;
@@ -50,9 +45,7 @@ public class MainActivity extends AppCompatActivity {
     ExpandableListAdapter listAdapter;
     List<String> listDataHeader;
 
-    private BadgeStyle style = ActionItemBadge.BadgeStyles.RED.getStyle();
-    private int badgeCount = 0;
-    ConnectionDetector detector;
+
 
     Fragment fragment;
     FragmentManager fragmentManager;
@@ -75,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
             toolbar.setTitleTextColor(Color.WHITE);
             fragmentManager = getSupportFragmentManager();
             setSupportActionBar(toolbar);
-            fragment = new ShoppingFragment();
+            fragment = new EShopCategoryFragment();
             fragmentManager.beginTransaction().replace(R.id.frame, fragment).commit();
 
             expListView = (ExpandableListView) findViewById(R.id.lvExp);
@@ -83,134 +76,9 @@ public class MainActivity extends AppCompatActivity {
             listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
             expListView.setAdapter(listAdapter);
             drawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
-            mDrawerLayout.setDrawerListener(drawerToggle);
-            expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-                @Override
-                public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                    switch (groupPosition) {
-                        case 0:
-                            switch (childPosition) {
-                                case 0:
-                                    fragment = new ShoppingFragment();
-                                    toolbar.setTitle("e-Shopping");
-                                    toolbar.setTitleTextColor(Color.WHITE);
-                                    mDrawerLayout.closeDrawer(GravityCompat.START);
-                                    break;
-                                case 1:
-                                    fragment = new MyOrderFragment();
-                                    toolbar.setTitle("My Order");
-                                    toolbar.setTitleTextColor(Color.WHITE);
-                                    mDrawerLayout.closeDrawer(GravityCompat.START);
-                                    break;
+            mDrawerLayout.addDrawerListener(drawerToggle);
+            expListView.setOnChildClickListener(this);
 
-                                default:
-                                    break;
-                            }
-                            break;
-
-                        case 1:
-                            switch (childPosition) {
-                                case 0:
-                                    fragment = new ListEventFragment();
-                                    toolbar.setTitle("Event Management");
-                                    toolbar.setTitleTextColor(Color.WHITE);
-                                    mDrawerLayout.closeDrawer(GravityCompat.START);
-                                    break;
-                                case 1:
-                                    Toast.makeText(MainActivity.this, "My Booking", Toast.LENGTH_SHORT).show();
-                                    mDrawerLayout.closeDrawer(GravityCompat.START);
-                                    break;
-
-                                default:
-                                    break;
-                            }
-                            break;
-
-                        case 2:
-                            switch (childPosition) {
-                                case 0:
-                                    fragment = new GroceryFragment();
-                                    toolbar.setTitle("Grocery");
-                                    toolbar.setTitleTextColor(Color.WHITE);
-                                    mDrawerLayout.closeDrawer(GravityCompat.START);
-                                    break;
-                                case 1:
-                                    fragment = new MyOrderFragment();
-                                    toolbar.setTitle("My Order");
-                                    toolbar.setTitleTextColor(Color.WHITE);
-                                    mDrawerLayout.closeDrawer(GravityCompat.START);
-                                    break;
-
-                                default:
-                                    break;
-                            }
-                            break;
-                        case 3:
-                            switch (childPosition) {
-                                case 0:
-                                    fragment = new DoctorListFragment();
-                                    toolbar.setTitle("Doctor");
-                                    toolbar.setTitleTextColor(Color.WHITE);
-                                    mDrawerLayout.closeDrawer(GravityCompat.START);
-                                    break;
-                                case 1:
-                                    Toast.makeText(MainActivity.this, "My Appointment", Toast.LENGTH_SHORT).show();
-                                    mDrawerLayout.closeDrawer(GravityCompat.START);
-                                    break;
-
-                                default:
-                                    break;
-                            }
-                            break;
-                        case 4:
-                            switch (childPosition) {
-                                case 0:
-                                    fragment = new LawyerListFragment();
-                                    toolbar.setTitle("Lawyer");
-                                    toolbar.setTitleTextColor(Color.WHITE);
-                                    mDrawerLayout.closeDrawer(GravityCompat.START);
-                                    break;
-                                case 1:
-                                    Toast.makeText(MainActivity.this, "My Appointment", Toast.LENGTH_SHORT).show();
-                                    mDrawerLayout.closeDrawer(GravityCompat.START);
-                                    break;
-
-                                default:
-                                    break;
-                            }
-                            break;
-                        case 5:
-                            switch (childPosition) {
-                                case 0:
-                                    fragment = new InsuranceListFragment();
-                                    toolbar.setTitle("Insurance");
-                                    toolbar.setTitleTextColor(Color.WHITE);
-                                    mDrawerLayout.closeDrawer(GravityCompat.START);
-                                    break;
-                                case 1:
-                                    Toast.makeText(MainActivity.this, "Status", Toast.LENGTH_SHORT).show();
-                                    mDrawerLayout.closeDrawer(GravityCompat.START);
-                                    break;
-
-                                default:
-                                    break;
-                            }
-                            break;
-
-                        default:
-                            break;
-                    }
-                    try {
-                        fragmentManager.beginTransaction().replace(R.id.frame, fragment).commit();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    mDrawerLayout.closeDrawer(expListView);
-                    return false;
-                }
-            });
-
-            detector = new ConnectionDetector(MainActivity.this);
         }
     }
 
@@ -236,15 +104,6 @@ public class MainActivity extends AppCompatActivity {
         drawerToggle.onConfigurationChanged(newConfig);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-
-        ActionItemBadge.update(this, menu.findItem(R.id.item_samplebadge), FontAwesome.Icon.faw_shopping_cart, style, badgeCount);
-
-        return true;
-    }
 
     private void prepareListData() {
         listDataHeader = new ArrayList<String>();
@@ -293,10 +152,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void addItemToCart(String name) {
-        badgeCount++;
-        invalidateOptionsMenu();
-    }
+
 
     private boolean checkUserData() {
         SharedPreferences sharedpreferences = getSharedPreferences(AppConstants.USERPREFS, Context.MODE_PRIVATE);
@@ -308,6 +164,129 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onChildClick(ExpandableListView expandableListView, View view, int groupPosition, int childPosition, long l) {
+        switch (groupPosition) {
+            case 0:
+                switch (childPosition) {
+                    case 0:
+                        fragment = new EShopCategoryFragment();
+                        toolbar.setTitle("e-Shopping");
+                        toolbar.setTitleTextColor(Color.WHITE);
+                        mDrawerLayout.closeDrawer(GravityCompat.START);
+                        break;
+                    case 1:
+                        fragment = new MyOrderFragment();
+                        toolbar.setTitle("My Order");
+                        toolbar.setTitleTextColor(Color.WHITE);
+                        mDrawerLayout.closeDrawer(GravityCompat.START);
+                        break;
+
+                    default:
+                        break;
+                }
+                break;
+
+            case 1:
+                switch (childPosition) {
+                    case 0:
+                        fragment = new ListEventFragment();
+                        toolbar.setTitle("Event Management");
+                        toolbar.setTitleTextColor(Color.WHITE);
+                        mDrawerLayout.closeDrawer(GravityCompat.START);
+                        break;
+                    case 1:
+                        Toast.makeText(MainActivity.this, "My Booking", Toast.LENGTH_SHORT).show();
+                        mDrawerLayout.closeDrawer(GravityCompat.START);
+                        break;
+
+                    default:
+                        break;
+                }
+                break;
+
+            case 2:
+                switch (childPosition) {
+                    case 0:
+                        fragment = new GroceryFragment();
+                        toolbar.setTitle("Grocery");
+                        toolbar.setTitleTextColor(Color.WHITE);
+                        mDrawerLayout.closeDrawer(GravityCompat.START);
+                        break;
+                    case 1:
+                        fragment = new MyOrderFragment();
+                        toolbar.setTitle("My Order");
+                        toolbar.setTitleTextColor(Color.WHITE);
+                        mDrawerLayout.closeDrawer(GravityCompat.START);
+                        break;
+
+                    default:
+                        break;
+                }
+                break;
+            case 3:
+                switch (childPosition) {
+                    case 0:
+                        fragment = new DoctorListFragment();
+                        toolbar.setTitle("Doctor");
+                        toolbar.setTitleTextColor(Color.WHITE);
+                        mDrawerLayout.closeDrawer(GravityCompat.START);
+                        break;
+                    case 1:
+                        Toast.makeText(MainActivity.this, "My Appointment", Toast.LENGTH_SHORT).show();
+                        mDrawerLayout.closeDrawer(GravityCompat.START);
+                        break;
+
+                    default:
+                        break;
+                }
+                break;
+            case 4:
+                switch (childPosition) {
+                    case 0:
+                        fragment = new LawyerListFragment();
+                        toolbar.setTitle("Lawyer");
+                        toolbar.setTitleTextColor(Color.WHITE);
+                        mDrawerLayout.closeDrawer(GravityCompat.START);
+                        break;
+                    case 1:
+                        Toast.makeText(MainActivity.this, "My Appointment", Toast.LENGTH_SHORT).show();
+                        mDrawerLayout.closeDrawer(GravityCompat.START);
+                        break;
+
+                    default:
+                        break;
+                }
+                break;
+            case 5:
+                switch (childPosition) {
+                    case 0:
+                        fragment = new InsuranceListFragment();
+                        toolbar.setTitle("Insurance");
+                        toolbar.setTitleTextColor(Color.WHITE);
+                        mDrawerLayout.closeDrawer(GravityCompat.START);
+                        break;
+                    case 1:
+                        Toast.makeText(MainActivity.this, "Status", Toast.LENGTH_SHORT).show();
+                        mDrawerLayout.closeDrawer(GravityCompat.START);
+                        break;
+
+                    default:
+                        break;
+                }
+                break;
+
+            default:
+                break;
+        }
+        try {
+            fragmentManager.beginTransaction().replace(R.id.frame, fragment).commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        mDrawerLayout.closeDrawer(expListView);
+        return false;
+    }
 }
 
 
