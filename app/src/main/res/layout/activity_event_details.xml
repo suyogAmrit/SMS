@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbarEventDetails"
         android:layout_width="match_parent"
@@ -10,32 +11,24 @@
         android:background="?attr/colorPrimary"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Next"
-        android:id="@+id/brnNext"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:onClick="btnNextEvent"/>
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Total"
-        android:id="@+id/txtTotalPrice"
-        android:layout_above="@+id/brnNext"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="10dp"/>
+        android:text="Event name"
+        android:id="@+id/txtEventName"
+        android:layout_below="@+id/toolbarEventDetails"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
+
 
     <ListView
+        android:id="@+id/lstEventDetails"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/lstEventDetails"
-        android:layout_below="@+id/toolbarEventDetails"
-        android:layout_above="@+id/txtTotalPrice"
-        android:layout_marginBottom="10dp"/>
+        android:layout_below="@+id/txtEventName"
+        android:layout_marginTop="10dp"/>
 
 
 </RelativeLayout>
