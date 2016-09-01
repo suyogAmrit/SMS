@@ -44,7 +44,7 @@ public class DatePickerFragment extends DialogFragment
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
 
-        String date= AppConstants.updateDate(day, month, year);
+        String date= AppHelper.updateDate(day, month, year);
         mGetDate.onGetDate(date);
     }
 }

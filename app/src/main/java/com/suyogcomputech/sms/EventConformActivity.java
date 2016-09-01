@@ -65,14 +65,14 @@ public class EventConformActivity extends AppCompatActivity implements DatePicke
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    AppConstants.getDatePicker(getSupportFragmentManager());
+                    AppHelper.getDatePicker(getSupportFragmentManager());
                 }
             }
         });
         edEventDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppConstants.getDatePicker(getSupportFragmentManager());
+                AppHelper.getDatePicker(getSupportFragmentManager());
             }
         });
     }

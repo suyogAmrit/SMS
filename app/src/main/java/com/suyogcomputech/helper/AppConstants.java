@@ -105,4 +105,49 @@ public final class AppConstants {
     public static final String SIZEAVAILABLE5 = "size5_available";
     public static final String SIZEAVAILABLE6 = "size6_available";
     public static final String AVGRATING = "avg_rating";
+
+
+    //Event Request Table
+    public static final String EVENT_REQ_SERIAL_NO = "sl_no";
+    public static final String EVENT_REQ_APPT_ID = "appt_id";
+    public static final String EVENT_REQ_FLAT_NO = "flat_no";
+    public static final String EVENT_REQ_DATE = "Event_Request_date";
+    public static final String EVENT_REQ_PROPOSE_DATE= "Event_Propose_date";
+    public static final String EVENT_REQ_ESTIMATE_QUANTITY= "Estmated_Qty";
+    public static final String EVENT_REQ_UNIT = "Unti";
+    public static final String EVENT_REQ_PROPOSE_DESC = "Proposed_Desc";
+    public static final String EVENT_REQ_ESTIMATED_BUDGET= "Estimated_Budget";
+    public static final String EVENT_REQ_STATUS= "Event_Request_status";
+
+    //    em.Event_mng_name,em.Event_Mng_Org_Name,em.Event_Mng_org_address,em.Event_Mng_phno
+//    ,em.Event_Mng_cell_phno,em.Event_Mng_email,ES.Event_Desc from dbo.Event_Manager_tb as em
+    public static final String EVENT_MANAGER_NAME = "Event_mng_name";
+    public static final String EVENT_ORGANIZATION_NAME= "Event_Mng_Org_Name";
+    //public static final String EVENT_DESCRIPTION = "Event_Desc";
+    public static final String EVENT_ORGANIZATION_ADDRESS = "Event_Mng_org_address";
+    public static final String EVENT_MANAGER_PHONE= "Event_Mng_phno";
+    public static final String EVENT_MANAGER_MOBILE= "Event_Mng_cell_phno";
+    public static final String EVENT_MANAGER_EMAIL = "Event_Mng_email";
+
+    //Event Description Table
+    public static final String EVENT_ID = "Event_id";
+    public static final String EVENT_TYPE_ID = "Event_Type_id";
+    public static final String EVENT_MANAGER_USER_ID = "Event_Mng_user_id";
+    public static final String EVENT_DESCRIPTION  = "Event_Desc";
+
+    //Event Type Table
+    public static final String EVENT_SERIAL_NO = "slno";
+    public static final String EVENT_TYPE = "Event_Type";
+    public static final String EVENT_TYPE_IMAGE = "Event_Type_image";
+    public static final String QUERY = "query";
+
+    public static final String APARTMENT_ID= "appt_id";
+    public static final String FLAT_NO= "flat_no";
+    public static final String SPECIALIST_ID = "SpecialityID";
+    public static final String SPECIALIST_NAME = "SpecialityName";
+    public static final String SPECIALIST_IMAGE = "SpecialyImage";
+    public static final String DOCTOR_ID = "DoctorID";
+    public static final String DESIGNATION = "designation";
+
+
 }
