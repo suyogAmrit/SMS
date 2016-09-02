@@ -20,7 +20,7 @@ public class BookDoctorAdapter extends BaseAdapter {
     Context context;
     ArrayList<Appointment> list;
     String startTime,endTime,place,price;
-
+//
     public BookDoctorAdapter(Context context, ArrayList<Appointment> appointmentsList)  {
         super();
         this.context = context;
