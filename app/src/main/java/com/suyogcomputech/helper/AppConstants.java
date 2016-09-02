@@ -150,4 +150,5 @@ public final class AppConstants {
     public static final String DESIGNATION = "designation";
 
 
+    public static final String INSURANCE_ID = "insurance_id";
 }

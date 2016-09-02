@@ -12,7 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.suyogcomputech.adapter.InsuranceAdapter;
+import com.suyogcomputech.adapter.InsuranceTypeAdapter;
 import com.suyogcomputech.helper.AppConstants;
 import com.suyogcomputech.helper.AppHelper;
 import com.suyogcomputech.helper.ConnectionClass;
@@ -31,12 +31,14 @@ public class InsuranceTypeActivity extends AppCompatActivity{
     RecyclerView rcvInsurance;
     ConnectionClass connectionClass;
     ArrayList<Insurance> list;
-    InsuranceAdapter adapter;
+    InsuranceTypeAdapter adapter;
     Toolbar toolbar;
+    String insuranceId;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
+        insuranceId=getIntent().getExtras().getString(AppConstants.INSURANCE_ID);
         toolbar = (Toolbar) findViewById(R.id.toolbarEventList);
         toolbar.setTitle("Insurance Type");
         toolbar.setTitleTextColor(Color.WHITE);
@@ -75,9 +77,10 @@ public class InsuranceTypeActivity extends AppCompatActivity{
                     insurance.setInsuranceId(rs.getString("insurance_id"));
                     insurance.setInsuranceType(rs.getString("insurance_type"));
                     insurance.setInsuranceFeature(rs.getString("feature"));
+                    insurance.setInsuranceTypeSlNo(rs.getString("sl_no"));
                     list.add(insurance);
                 }
-                adapter = new InsuranceAdapter(list, InsuranceTypeActivity.this);
+                adapter = new InsuranceTypeAdapter(list, InsuranceTypeActivity.this);
                 rcvInsurance.setAdapter(adapter);
                 rcvInsurance.setHasFixedSize(true);
                 LinearLayoutManager glm = new LinearLayoutManager(InsuranceTypeActivity.this);
@@ -92,8 +95,8 @@ public class InsuranceTypeActivity extends AppCompatActivity{
         protected ResultSet doInBackground(String... params) {
             try {
                 Connection con = connectionClass.connect();
-                String query = "select insurance_id,insurance_type,feature from Insurance_Type\n" +
-                        "where insurance_id=1";
+                String query = "select sl_no,insurance_id,insurance_type,feature from Insurance_Type\n" +
+                        "where insurance_id="+Integer.parseInt(insuranceId)+"";
                 Log.i(AppConstants.QUERY, query);
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery(query);

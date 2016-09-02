@@ -7,10 +7,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.suyogcomputech.helper.Insurance;
+import com.suyogcomputech.sms.InsuranceRequestActivity;
 import com.suyogcomputech.sms.InsuranceTypeActivity;
 import com.suyogcomputech.sms.R;
 
@@ -43,13 +45,15 @@ public class InsuranceTypeAdapter extends RecyclerView.Adapter<InsuranceTypeAdap
         final Insurance myItem = myItems.get(position);
         holder.itemView.setSelected(focusedItem == position);
         holder.getLayoutPosition();
-        holder.txtInsuranceType.setText(myItem.getInsuranceName());
-        holder.rlInsurance.setOnClickListener(new View.OnClickListener() {
+        holder.txtInsuranceType.setText(myItem.getInsuranceType());
+        holder.txtInsuranceFeature.setText(myItem.getInsuranceFeature());
+        holder.btnBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("Insurance Id",myItem.getInsuranceId());
-                Intent intent=new Intent(myContext,InsuranceTypeActivity.class);
+                Log.i("InsuranceTypeIs",myItem.getInsuranceTypeSlNo());
+                Intent intent=new Intent(myContext,InsuranceRequestActivity.class);
                 myContext.startActivity(intent);
+
             }
         });
 
@@ -61,13 +65,17 @@ public class InsuranceTypeAdapter extends RecyclerView.Adapter<InsuranceTypeAdap
     }
 
     public class ShowTariffsViewHolder extends RecyclerView.ViewHolder {
-        TextView txtInsuranceType;
+        TextView txtInsuranceType,txtInsuranceFeature;
         RelativeLayout rlInsurance;
+        Button btnBook;
 
         public ShowTariffsViewHolder(View itemView) {
             super(itemView);
             this.txtInsuranceType=(TextView)itemView.findViewById(R.id.txtInsuranceType);
             this.rlInsurance=(RelativeLayout)itemView.findViewById(R.id.rlInsurance);
+            this.txtInsuranceFeature=(TextView)itemView.findViewById(R.id.txtFeature);
+            this.btnBook=(Button)itemView.findViewById(R.id.btnBookInsurance);
+
         }
     }
 }

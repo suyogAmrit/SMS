@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.suyogcomputech.helper.AppConstants;
 import com.suyogcomputech.helper.Insurance;
 import com.suyogcomputech.sms.InsuranceTypeActivity;
 import com.suyogcomputech.sms.R;
@@ -48,6 +50,7 @@ public class InsuranceAdapter extends RecyclerView.Adapter<InsuranceAdapter.Show
             public void onClick(View view) {
                 Log.i("Insurance Id",myItem.getInsuranceId());
                 Intent intent=new Intent(myContext,InsuranceTypeActivity.class);
+                intent.putExtra(AppConstants.INSURANCE_ID,myItem.getInsuranceId());
                 myContext.startActivity(intent);
             }
         });
