@@ -71,6 +71,8 @@
             android:parentActivityName=".MainActivity"/>
         <activity android:name=".InsuranceTypeActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".InsuranceRequestActivity"
+            android:screenOrientation="portrait"/>
 
     </application>
 
