@@ -1,4 +1,4 @@
-package com.suyogcomputech.fragment;
+package com.suyogcomputech.app_fragments;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -7,20 +7,21 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
-import com.suyogcomputech.adapter.EventAdapter;
 import com.suyogcomputech.adapter.MyBookingAdapter;
+import com.suyogcomputech.adapter.MyReportsAdapter;
 import com.suyogcomputech.helper.AppConstants;
 import com.suyogcomputech.helper.AppHelper;
 import com.suyogcomputech.helper.ConnectionClass;
+import com.suyogcomputech.helper.Doctor;
 import com.suyogcomputech.helper.Event;
 import com.suyogcomputech.sms.R;
 
@@ -30,14 +31,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-
 /**
- * Created by Pintu on 8/25/2016.
+ * Created by Pintu on 8/31/2016.
  */
-public class MyEventBookingFragment extends Fragment {
+public class MyReportsFragment extends Fragment {
     RecyclerView rcvEventBook;
-    MyBookingAdapter adapter;
-    ArrayList<Event> list;
+    MyReportsAdapter adapter;
+    ArrayList<Doctor> list;
     ConnectionClass connectionClass;
     String uniqueUserId;
 
@@ -72,13 +72,13 @@ public class MyEventBookingFragment extends Fragment {
                 dialog.dismiss();
                 list = new ArrayList<>();
                 while (rs.next()) {
-                    Event event = new Event();
-                    event.setEventName(rs.getString(AppConstants.EVENT_TYPE));
-                    event.setEventDate(rs.getString(AppConstants.EVENT_REQ_PROPOSE_DATE));
-                    event.setCompanyName(rs.getString(AppConstants.EVENT_ORGANIZATION_NAME));
-                    list.add(event);
+                    Doctor doctor = new Doctor();
+                    doctor.setType(rs.getString(AppConstants.EVENT_TYPE));
+                    doctor.setRequestDate(rs.getString(AppConstants.EVENT_REQ_PROPOSE_DATE));
+                    doctor.setSpecialistImageUrl(rs.getString(AppConstants.EVENT_ORGANIZATION_NAME));
+                    list.add(doctor);
                 }
-                adapter = new MyBookingAdapter(list, getActivity());
+                adapter = new MyReportsAdapter(list, getActivity());
                 rcvEventBook.setAdapter(adapter);
                 rcvEventBook.setHasFixedSize(true);
                 LinearLayoutManager llm = new LinearLayoutManager(getActivity());

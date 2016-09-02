@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?><!--<HorizontalScrollView --><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent"--><!--android:id="@+id/horizontalScrollView2">-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="1dp">
+    <TextView
+        android:id="@+id/txtStartTime"
+        android:layout_width="130dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="2dp"
+        android:background="#ffd8d8de"
+        android:gravity="center"
+        android:text="Start"
+        android:textSize="17sp" />
+
+
+    <TextView
+        android:id="@+id/txtEndTime"
+        android:layout_width="130dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="2sp"
+        android:background="#ffb7b7bd"
+        android:gravity="center"
+        android:text="Time"
+        android:textSize="17sp"/>
+
+    <TextView
+        android:id="@+id/txtPlace"
+        android:layout_width="220dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="2dp"
+        android:background="#ffd8d8de"
+        android:gravity="center"
+        android:text="Place"
+        android:textSize="17sp"/>
+
+    <TextView
+        android:id="@+id/txtPrice"
+        android:layout_width="130dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="2dp"
+        android:background="#ffb7b7bd"
+        android:gravity="center"
+        android:text="Price"
+        android:textSize="17sp"/>
+
+
+    <Button
+        android:id="@+id/btnBookNow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:text="Book Now" />
+</LinearLayout>

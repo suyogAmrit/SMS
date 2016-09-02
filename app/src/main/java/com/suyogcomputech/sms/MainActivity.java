@@ -20,13 +20,13 @@ import android.widget.ExpandableListView;
 import android.widget.Toast;
 
 import com.suyogcomputech.adapter.ExpandableListAdapter;
-import com.suyogcomputech.app_fragments.DoctorListFragment;
 import com.suyogcomputech.app_fragments.EShopCategoryFragment;
 import com.suyogcomputech.app_fragments.GroceryFragment;
-import com.suyogcomputech.app_fragments.InsuranceListFragment;
 import com.suyogcomputech.app_fragments.LawyerListFragment;
-import com.suyogcomputech.app_fragments.ListEventFragment;
+import com.suyogcomputech.app_fragments.MyAppointmentFragment;
 import com.suyogcomputech.app_fragments.MyOrderFragment;
+import com.suyogcomputech.app_fragments.MyEventBookingFragment;
+import com.suyogcomputech.app_fragments.MyReportsFragment;
 import com.suyogcomputech.helper.AppConstants;
 
 import java.util.ArrayList;
@@ -134,6 +134,7 @@ public class MainActivity extends AppCompatActivity implements ExpandableListVie
         List<String> doctor = new ArrayList<String>();
         doctor.add("Doctor List");
         doctor.add("My appointment");
+        doctor.add("My Reports");
 
         List<String> lawyer = new ArrayList<String>();
         lawyer.add("Lawyer List");
@@ -190,13 +191,14 @@ public class MainActivity extends AppCompatActivity implements ExpandableListVie
             case 1:
                 switch (childPosition) {
                     case 0:
-                        fragment = new ListEventFragment();
-                        toolbar.setTitle("Event Management");
-                        toolbar.setTitleTextColor(Color.WHITE);
+                        Intent intent=new Intent(MainActivity.this,EventListActivity.class);
+                        startActivity(intent);
                         mDrawerLayout.closeDrawer(GravityCompat.START);
                         break;
                     case 1:
-                        Toast.makeText(MainActivity.this, "My Booking", Toast.LENGTH_SHORT).show();
+                        fragment = new MyEventBookingFragment();
+                        toolbar.setTitle("My Booking");
+                        toolbar.setTitleTextColor(Color.WHITE);
                         mDrawerLayout.closeDrawer(GravityCompat.START);
                         break;
 
@@ -227,13 +229,20 @@ public class MainActivity extends AppCompatActivity implements ExpandableListVie
             case 3:
                 switch (childPosition) {
                     case 0:
-                        fragment = new DoctorListFragment();
-                        toolbar.setTitle("Doctor");
-                        toolbar.setTitleTextColor(Color.WHITE);
+                        Intent intent=new Intent(MainActivity.this,SpecialistActivity.class);
+                        startActivity(intent);
                         mDrawerLayout.closeDrawer(GravityCompat.START);
                         break;
                     case 1:
-                        Toast.makeText(MainActivity.this, "My Appointment", Toast.LENGTH_SHORT).show();
+                        fragment = new MyAppointmentFragment();
+                        toolbar.setTitle("My Appointment");
+                        toolbar.setTitleTextColor(Color.WHITE);
+                        mDrawerLayout.closeDrawer(GravityCompat.START);
+                        break;
+                    case 2:
+                        fragment = new MyReportsFragment();
+                        toolbar.setTitle("My Reports");
+                        toolbar.setTitleTextColor(Color.WHITE);
                         mDrawerLayout.closeDrawer(GravityCompat.START);
                         break;
 
@@ -261,9 +270,8 @@ public class MainActivity extends AppCompatActivity implements ExpandableListVie
             case 5:
                 switch (childPosition) {
                     case 0:
-                        fragment = new InsuranceListFragment();
-                        toolbar.setTitle("Insurance");
-                        toolbar.setTitleTextColor(Color.WHITE);
+                        Intent intent=new Intent(MainActivity.this,InsuranceActivity.class);
+                        startActivity(intent);
                         mDrawerLayout.closeDrawer(GravityCompat.START);
                         break;
                     case 1:

@@ -36,14 +36,7 @@
         <activity
             android:name=".ShoppingCartItem"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".EventDetailsActivity"
-            android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".EventConformActivity"
-            android:parentActivityName=".EventDetailsActivity"
-            android:screenOrientation="portrait" />
+
 
         <activity
             android:name=".ProductListActivity"
@@ -52,6 +45,33 @@
         <activity
             android:name=".ProductDetailsActivity"
             android:screenOrientation="portrait" />
+
+        <activity android:name=".EventListActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity"/>
+        <activity
+            android:name=".EventDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".SailorDetailsActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".EventConformActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".SpecialistActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity"/>
+        <activity android:name=".DoctorActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".DoctorDetailsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".BookDoctorActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".InsuranceActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity"/>
+        <activity android:name=".InsuranceTypeActivity"
+            android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>

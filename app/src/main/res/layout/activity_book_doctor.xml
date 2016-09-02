@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbarBook"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    <EditText
+        android:id="@+id/edAppointmentDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbarBook"
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/et_background"
+        android:hint="Enter Appointment Date"
+        android:padding="7dp"
+        android:singleLine="true" />
+
+    <Button
+        android:id="@+id/btnCheck"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edAppointmentDate"
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:onClick="btnAppointmentTime"
+        android:text="Check Appointment Time" />
+
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/btnCheck"
+        android:layout_marginTop="30dp"
+        android:visibility="gone">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="1dp">
+                <TextView
+                    android:id="@+id/txtStartTime"
+                    android:layout_width="130dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="2dp"
+                    android:background="#ffd8d8de"
+                    android:gravity="center"
+                    android:text="Start Time"
+                    android:textSize="17sp" />
+
+
+                <TextView
+                    android:id="@+id/txtEndTime"
+                    android:layout_width="130dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="2sp"
+                    android:background="#ffb7b7bd"
+                    android:gravity="center"
+                    android:text="End Time"
+                    android:textSize="17sp"/>
+
+                <TextView
+                    android:id="@+id/txtPlace"
+                    android:layout_width="220dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="2dp"
+                    android:background="#ffd8d8de"
+                    android:gravity="center"
+                    android:text="Place"
+                    android:textSize="17sp"/>
+
+                <TextView
+                    android:id="@+id/txtPrice"
+                    android:layout_width="130dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="2dp"
+                    android:background="#ffb7b7bd"
+                    android:gravity="center"
+                    android:text="Price"
+                    android:textSize="17sp"/>
+
+
+                <TextView
+                    android:layout_width="130dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="7dp"
+                    android:background="#ffb7b7bd"
+                    android:gravity="center"
+                    android:text="Book Now"
+                    android:textSize="17sp"/>
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/lstBookDoctor"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+
+</RelativeLayout>

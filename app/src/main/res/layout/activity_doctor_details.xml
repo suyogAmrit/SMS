@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scrollView2"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbarDoctorDetails"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/txtName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:text="Name"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+
+            <ImageButton
+                android:id="@+id/imgDoctor"
+                android:layout_width="120dp"
+                android:layout_height="150dp"
+                android:layout_below="@+id/txtName"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/ic_empty"
+                android:scaleType="fitXY" />
+
+            <TextView
+                android:id="@+id/txtQualification"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/txtAge"
+                android:layout_alignTop="@+id/imgDoctor"
+                android:text="Qualification"
+                android:textColor="@color/black"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/txtAge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtQualification"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_toEndOf="@+id/imgDoctor"
+                android:text="Age"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/txtAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/txtAge"
+                android:layout_below="@+id/txtAge"
+                android:layout_marginTop="10dp"
+                android:text="Address"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/txtDesignationDoctor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/imgDoctor"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:text="Designation"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/txtExperienceDoctor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtDesignationDoctor"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:text="Experience"
+                android:textSize="17sp" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Book Appointment"
+                android:background="@drawable/button_booknow"
+                android:textColor="@color/white"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:layout_below="@+id/txtExperienceDoctor"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="20dp"
+                android:onClick="btnBookAppointment"/>
+
+
+        </RelativeLayout>
+    </LinearLayout>
+</ScrollView>
