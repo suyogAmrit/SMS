@@ -151,4 +151,6 @@ public final class AppConstants {
 
 
     public static final String INSURANCE_ID = "insurance_id";
+    public static final String INSURANCE_TYPE_ID = "insurance_type_Id";
+
 }

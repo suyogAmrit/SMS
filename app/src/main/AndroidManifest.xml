@@ -76,6 +76,8 @@
         <activity android:name=".SpecialistLawerActivity"
             android:screenOrientation="portrait"
             android:parentActivityName=".MainActivity"/>
+        <activity android:name=".LawyerActivity"
+            android:screenOrientation="portrait"/>
 
     </application>
 

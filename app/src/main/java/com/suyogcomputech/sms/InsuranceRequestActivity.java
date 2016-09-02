@@ -1,6 +1,9 @@
 package com.suyogcomputech.sms;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -35,20 +38,23 @@ import java.util.List;
 public class InsuranceRequestActivity extends AppCompatActivity {
     Toolbar toolbar;
     ConnectionClass connectionClass;
-    ArrayList<Insurance> listInsurance;
     List<StringWithTag> list;
+    String apptId, flatNo, uniqueUserId,insuranceId,insuranceTermId,insuranceTypeId;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_insurance);
+        insuranceId=getIntent().getExtras().getString(AppConstants.INSURANCE_ID);
+        insuranceTypeId=getIntent().getExtras().getString(AppConstants.INSURANCE_TYPE_ID);
         toolbar = (Toolbar) findViewById(R.id.toolbarInsuranceRequest);
         toolbar.setTitle("Insurance Request");
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
         connectionClass = new ConnectionClass();
-        getInsuranceDetails();
+        getInsuranceTerms();
+        getFlatDetails();
     }
-    private void getInsuranceDetails() {
+    private void getInsuranceTerms() {
         if (AppHelper.isConnectingToInternet(InsuranceRequestActivity.this)) {
             new GetInsuranceDetails().execute();
         } else
@@ -71,15 +77,10 @@ public class InsuranceRequestActivity extends AppCompatActivity {
             super.onPostExecute(rs);
             try {
                 dialog.dismiss();
-                listInsurance = new ArrayList<>();
                 list = new ArrayList<StringWithTag>();
                 while (rs.next()) {
-                    Insurance insurance = new Insurance();
                     list.add(new StringWithTag(rs.getString("term"),rs.getString("sl_no")));
-                    insurance.setInsuranceId(rs.getString("insurance_id"));
-                    insurance.setInsuranceTerm(rs.getString("term"));
-                    insurance.setInsuranceTermSlno(rs.getString("sl_no"));
-                    listInsurance.add(insurance);
+
                 }
                 ArrayAdapter<StringWithTag> adap = new ArrayAdapter<StringWithTag> (InsuranceRequestActivity.this, android.R.layout.simple_spinner_item, list);
                 Spinner spnInsurance=(Spinner)findViewById(R.id.spinnerInsuranceTerm);
@@ -89,6 +90,7 @@ public class InsuranceRequestActivity extends AppCompatActivity {
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                         StringWithTag s = (StringWithTag) adapterView.getItemAtPosition(i);
                         Object tag = s.tag;
+                        insuranceTermId=tag.toString();
                         Log.i("bjhasd",tag.toString());
                     }
 
@@ -112,6 +114,57 @@ public class InsuranceRequestActivity extends AppCompatActivity {
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
                 return rs;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+    private void getFlatDetails() {
+        if (AppHelper.isConnectingToInternet(InsuranceRequestActivity.this)) {
+            new GetFlatDetails().execute();
+        } else
+            Toast.makeText(InsuranceRequestActivity.this, AppConstants.dialog_message, Toast.LENGTH_LONG).show();
+    }
+
+    private class GetFlatDetails extends AsyncTask<String, Void, ResultSet> {
+        ProgressDialog dialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog = new ProgressDialog(InsuranceRequestActivity.this);
+            dialog.setTitle(AppConstants.progress_dialog_title);
+            dialog.setMessage(AppConstants.processed_report);
+            dialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(ResultSet rs) {
+            super.onPostExecute(rs);
+            try {
+                dialog.dismiss();
+                while (rs.next()) {
+                    apptId = rs.getString(AppConstants.APARTMENT_ID);
+                    flatNo = rs.getString(AppConstants.FLAT_NO);
+                    Log.i("Apartment", apptId);
+                    Log.i("Flat", flatNo);
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        protected ResultSet doInBackground(String... params) {
+            try {
+                Connection con = connectionClass.connect();
+                String query = "SELECT appt_id,flat_no FROM flat_user_Details WHERE user_id='" + findUserId() + "'";
+                Log.i(AppConstants.QUERY, query);
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery(query);
+                return rs;
 
 
             } catch (SQLException e) {
@@ -120,6 +173,64 @@ public class InsuranceRequestActivity extends AppCompatActivity {
 
 
             return null;
+        }
+    }
+    //code for find Find Flat User Details
+    private String findUserId() {
+        SharedPreferences sharedpreferences = getSharedPreferences(AppConstants.USERPREFS, Context.MODE_PRIVATE);
+        uniqueUserId = sharedpreferences.getString(AppConstants.USERID, AppConstants.NOT_AVAILABLE);
+        return uniqueUserId;
+    }
+
+    public void btnBookInsurance(View view) {
+        if (AppHelper.isConnectingToInternet(InsuranceRequestActivity.this)) {
+            new InsertInsurance().execute();
+        } else
+            Toast.makeText(InsuranceRequestActivity.this, AppConstants.dialog_message, Toast.LENGTH_LONG).show();
+    }
+    public class InsertInsurance extends AsyncTask<Void, Void, Boolean> {
+        ProgressDialog dialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog = new ProgressDialog(InsuranceRequestActivity.this);
+            dialog.setTitle(AppConstants.progress_dialog_title);
+            dialog.setMessage(AppConstants.processed_report);
+            dialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            dialog.dismiss();
+            if (aBoolean) {
+                Toast.makeText(InsuranceRequestActivity.this, "Booking Completed Successfully", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(InsuranceRequestActivity.this, SpecialistActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY);
+                startActivity(intent);
+            }else {
+                Toast.makeText(InsuranceRequestActivity.this, "Something Went Wrong Please Try Again...", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            try {
+                Connection con = connectionClass.connect();
+                String query = "Insert into Insurance_Req_tab(appt_id,flat_no,user_id,insurance_id,insurance_type_id,insurance_term_id,status) values('"+apptId+"','"+flatNo+"','"+findUserId()+"',"+Integer.parseInt(insuranceId)+","+Integer.parseInt(insuranceTypeId)+","+Integer.parseInt(insuranceTermId)+",0)" ;
+                Log.i(AppConstants.QUERY, query);
+                Statement stmt = con.createStatement();
+                int result = stmt.executeUpdate(query);
+                if (result == 1) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (Exception ex) {
+                Log.i("Exception",ex.getMessage());
+            }
+            return false;
         }
     }
 

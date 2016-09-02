@@ -16,7 +16,19 @@
         android:id="@+id/spinnerInsuranceTerm"
         android:layout_below="@+id/toolbarInsuranceRequest"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="77dp" />
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="10dp"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Book Insurance"
+        android:id="@+id/btnBookInsurance"
+        android:layout_below="@+id/spinnerInsuranceTerm"
+        android:layout_alignParentStart="true"
+        android:layout_margin="10dp"
+        android:onClick="btnBookInsurance"/>
 
 
 </RelativeLayout>

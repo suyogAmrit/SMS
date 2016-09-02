@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.suyogcomputech.helper.AppConstants;
 import com.suyogcomputech.helper.Insurance;
 import com.suyogcomputech.sms.InsuranceRequestActivity;
 import com.suyogcomputech.sms.InsuranceTypeActivity;
@@ -52,6 +53,8 @@ public class InsuranceTypeAdapter extends RecyclerView.Adapter<InsuranceTypeAdap
             public void onClick(View view) {
                 Log.i("InsuranceTypeIs",myItem.getInsuranceTypeSlNo());
                 Intent intent=new Intent(myContext,InsuranceRequestActivity.class);
+                intent.putExtra(AppConstants.INSURANCE_ID,myItem.getInsuranceId());
+                intent.putExtra(AppConstants.INSURANCE_TYPE_ID,myItem.getInsuranceTypeSlNo());
                 myContext.startActivity(intent);
 
             }

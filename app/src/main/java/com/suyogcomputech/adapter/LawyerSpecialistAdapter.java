@@ -20,6 +20,7 @@ import com.suyogcomputech.helper.AppConstants;
 import com.suyogcomputech.helper.Lawyer;
 import com.suyogcomputech.helper.MySingleton;
 import com.suyogcomputech.sms.DoctorActivity;
+import com.suyogcomputech.sms.LawyerActivity;
 import com.suyogcomputech.sms.R;
 
 import java.util.List;
@@ -62,11 +63,11 @@ public class LawyerSpecialistAdapter extends RecyclerView.Adapter<LawyerSpeciali
         holder.tvSpecialistType.setText(myItem.getLawyerSpecialist());
         BitmapFactory.Options opts = new BitmapFactory.Options();
         opts.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(myItem.getSpecialistImage(), opts);
+        BitmapFactory.decodeFile(myItem.getSpecialistImageUrl(), opts);
         opts.inJustDecodeBounds = false;
 
         Picasso.with(myContext)
-                .load("http://192.168.12.100/APMS" + myItem.getSpecialistImage())
+                .load("http://192.168.12.100/APMS" + myItem.getSpecialistImageUrl())
                 .error(R.drawable.ic_empty)
                 .placeholder(R.drawable.backgroundd)
                 .resize(screenWidth / 2, 300)
@@ -76,7 +77,7 @@ public class LawyerSpecialistAdapter extends RecyclerView.Adapter<LawyerSpeciali
             @Override
             public void onClick(View view) {
                 Log.i("SpecialistId", myItem.getSpecialistId());
-                Intent intent = new Intent(myContext, DoctorActivity.class);
+                Intent intent = new Intent(myContext, LawyerActivity.class);
                 intent.putExtra(AppConstants.SPECIALIST_ID, myItem.getSpecialistId());
                 intent.putExtra(AppConstants.SPECIALIST_NAME, myItem.getLawyerSpecialist());
                 myContext.startActivity(intent);

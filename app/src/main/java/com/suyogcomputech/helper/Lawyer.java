@@ -6,7 +6,66 @@ package com.suyogcomputech.helper;
 public class Lawyer {
     String lawyerId;
     String lawyerSpecialist;
-    String specialistImage;
+
+    public String getLawyerImageUrl() {
+        return lawyerImageUrl;
+    }
+
+    public void setLawyerImageUrl(String lawyerImageUrl) {
+        this.lawyerImageUrl = lawyerImageUrl;
+    }
+
+    String lawyerImageUrl;
+    String SpecialistImageUrl;
+    String qualification;
+    String experience;
+    String address;
+    String designation;
+    String specialistId;
+
+    public String getSpecialistImageUrl() {
+        return SpecialistImageUrl;
+    }
+
+    public void setSpecialistImageUrl(String specialistImageUrl) {
+        SpecialistImageUrl = specialistImageUrl;
+    }
+
+
+
+    public String getQualification() {
+        return qualification;
+    }
+
+    public void setQualification(String qualification) {
+        this.qualification = qualification;
+    }
+
+    public String getExperience() {
+        return experience;
+    }
+
+    public void setExperience(String experience) {
+        this.experience = experience;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getDesignation() {
+        return designation;
+    }
+
+    public void setDesignation(String designation) {
+        this.designation = designation;
+    }
+
+
 
     public String getSpecialistId() {
         return specialistId;
@@ -16,13 +75,6 @@ public class Lawyer {
         this.specialistId = specialistId;
     }
 
-    public String getSpecialistImage() {
-        return specialistImage;
-    }
-
-    public void setSpecialistImage(String specialistImage) {
-        this.specialistImage = specialistImage;
-    }
 
     public String getLawyerId() {
         return lawyerId;
@@ -40,5 +92,7 @@ public class Lawyer {
         this.lawyerSpecialist = lawyerSpecialist;
     }
 
-    String specialistId;
+
+
+
 }
