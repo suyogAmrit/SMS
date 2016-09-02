@@ -22,7 +22,6 @@ import android.widget.Toast;
 import com.suyogcomputech.adapter.ExpandableListAdapter;
 import com.suyogcomputech.app_fragments.EShopCategoryFragment;
 import com.suyogcomputech.app_fragments.GroceryFragment;
-import com.suyogcomputech.app_fragments.LawyerListFragment;
 import com.suyogcomputech.app_fragments.MyAppointmentFragment;
 import com.suyogcomputech.app_fragments.MyOrderFragment;
 import com.suyogcomputech.app_fragments.MyEventBookingFragment;
@@ -253,9 +252,8 @@ public class MainActivity extends AppCompatActivity implements ExpandableListVie
             case 4:
                 switch (childPosition) {
                     case 0:
-                        fragment = new LawyerListFragment();
-                        toolbar.setTitle("Lawyer");
-                        toolbar.setTitleTextColor(Color.WHITE);
+                        Intent intent=new Intent(MainActivity.this,SpecialistLawerActivity.class);
+                        startActivity(intent);
                         mDrawerLayout.closeDrawer(GravityCompat.START);
                         break;
                     case 1:
