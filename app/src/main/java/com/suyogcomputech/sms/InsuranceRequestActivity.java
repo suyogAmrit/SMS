@@ -82,7 +82,7 @@ public class InsuranceRequestActivity extends AppCompatActivity {
                     list.add(new StringWithTag(rs.getString("term"),rs.getString("sl_no")));
 
                 }
-                ArrayAdapter<StringWithTag> adap = new ArrayAdapter<StringWithTag> (InsuranceRequestActivity.this, android.R.layout.simple_spinner_dropdown_item, list);
+                ArrayAdapter<StringWithTag> adap = new ArrayAdapter<StringWithTag> (InsuranceRequestActivity.this, R.layout.spinner_item, list);
                 Spinner spnInsurance=(Spinner)findViewById(R.id.spinnerInsuranceTerm);
                 spnInsurance.setAdapter(adap);
                 spnInsurance.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
