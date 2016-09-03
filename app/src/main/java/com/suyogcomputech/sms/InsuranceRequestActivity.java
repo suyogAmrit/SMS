@@ -82,7 +82,7 @@ public class InsuranceRequestActivity extends AppCompatActivity {
                     list.add(new StringWithTag(rs.getString("term"),rs.getString("sl_no")));
 
                 }
-                ArrayAdapter<StringWithTag> adap = new ArrayAdapter<StringWithTag> (InsuranceRequestActivity.this, android.R.layout.simple_spinner_item, list);
+                ArrayAdapter<StringWithTag> adap = new ArrayAdapter<StringWithTag> (InsuranceRequestActivity.this, android.R.layout.simple_spinner_dropdown_item, list);
                 Spinner spnInsurance=(Spinner)findViewById(R.id.spinnerInsuranceTerm);
                 spnInsurance.setAdapter(adap);
                 spnInsurance.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -99,7 +99,6 @@ public class InsuranceRequestActivity extends AppCompatActivity {
 
                     }
                 });
-
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -206,7 +205,7 @@ public class InsuranceRequestActivity extends AppCompatActivity {
             dialog.dismiss();
             if (aBoolean) {
                 Toast.makeText(InsuranceRequestActivity.this, "Booking Completed Successfully", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(InsuranceRequestActivity.this, SpecialistActivity.class);
+                Intent intent = new Intent(InsuranceRequestActivity.this, SpecialistLawerActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY);
                 startActivity(intent);
             }else {

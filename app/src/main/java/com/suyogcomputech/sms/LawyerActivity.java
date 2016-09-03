@@ -11,25 +11,17 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.Toast;
-
-import com.suyogcomputech.adapter.DoctorAdapter;
 import com.suyogcomputech.adapter.LawyerAdapter;
-import com.suyogcomputech.adapter.LawyerSpecialistAdapter;
 import com.suyogcomputech.helper.AppConstants;
 import com.suyogcomputech.helper.AppHelper;
 import com.suyogcomputech.helper.ConnectionClass;
-import com.suyogcomputech.helper.Doctor;
 import com.suyogcomputech.helper.Lawyer;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-/**
- * Created by Pintu on 8/26/2016.
- */
 public class LawyerActivity extends AppCompatActivity {
     ConnectionClass connectionClass;
     RecyclerView rcvLawyer;
@@ -57,11 +49,9 @@ public class LawyerActivity extends AppCompatActivity {
             new Specialist().execute();
         } else
             Toast.makeText(LawyerActivity.this, AppConstants.dialog_message, Toast.LENGTH_LONG).show();
-
     }
     private class Specialist extends AsyncTask<Lawyer, Void, ResultSet> {
         ProgressDialog dialog;
-
 
         @Override
         protected void onPreExecute() {
@@ -88,9 +78,7 @@ public class LawyerActivity extends AppCompatActivity {
                     lawyer.setDesignation(designation);
                     list.add(lawyer);
                 }
-
                 adapter = new LawyerAdapter(list, LawyerActivity.this);
-
                 rcvLawyer.setAdapter(adapter);
                 rcvLawyer.setHasFixedSize(true);
                 LinearLayoutManager glm = new LinearLayoutManager(LawyerActivity.this);
