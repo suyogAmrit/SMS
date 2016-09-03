@@ -78,6 +78,8 @@
             android:parentActivityName=".MainActivity"/>
         <activity android:name=".LawyerActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".LawyerDetailsActivity"/>
+        <activity android:name=".BookLawyerActivity"/>
 
     </application>
 

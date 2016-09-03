@@ -147,6 +147,7 @@ public final class AppConstants {
     public static final String SPECIALIST_NAME = "SpecialityName";
     public static final String SPECIALIST_IMAGE = "SpecialyImage";
     public static final String DOCTOR_ID = "DoctorID";
+    public static final String LAWYER_ID = "LawyerID";
     public static final String DESIGNATION = "designation";
 
 

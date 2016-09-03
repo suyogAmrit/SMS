@@ -22,7 +22,9 @@ import com.suyogcomputech.helper.Doctor;
 import com.suyogcomputech.helper.Lawyer;
 import com.suyogcomputech.helper.MySingleton;
 import com.suyogcomputech.sms.BookDoctorActivity;
+import com.suyogcomputech.sms.BookLawyerActivity;
 import com.suyogcomputech.sms.DoctorDetailsActivity;
+import com.suyogcomputech.sms.LawyerDetailsActivity;
 import com.suyogcomputech.sms.R;
 
 import java.util.ArrayList;
@@ -83,8 +85,9 @@ public class LawyerAdapter extends RecyclerView.Adapter<LawyerAdapter.LawerHolde
         holder.btnViewProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(myContext,DoctorDetailsActivity.class);
-                intent.putExtra(AppConstants.DOCTOR_ID,myItem.getLawyerId());
+//                Log.i("ssss",myItem.getSpecialistId());
+                Intent intent=new Intent(myContext,LawyerDetailsActivity.class);
+                intent.putExtra(AppConstants.LAWYER_ID,myItem.getSpecialistId());
                 intent.putExtra(AppConstants.DESIGNATION,myItem.getDesignation());
                 myContext.startActivity(intent);
             }
@@ -92,8 +95,8 @@ public class LawyerAdapter extends RecyclerView.Adapter<LawyerAdapter.LawerHolde
         holder.btnBookAppointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(myContext,BookDoctorActivity.class);
-                intent.putExtra(AppConstants.DOCTOR_ID,myItem.getLawyerId());
+                Intent intent=new Intent(myContext,BookLawyerActivity.class);
+                intent.putExtra(AppConstants.LAWYER_ID,myItem.getSpecialistId());
                 myContext.startActivity(intent);
             }
         });
