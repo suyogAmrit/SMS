@@ -1,17 +1,29 @@
 package com.suyogcomputech.sms;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mikepenz.actionitembadge.library.ActionItemBadge;
 import com.mikepenz.actionitembadge.library.utils.BadgeStyle;
@@ -20,6 +32,7 @@ import com.suyogcomputech.adapter.ProductListAdapter;
 import com.suyogcomputech.helper.AppConstants;
 import com.suyogcomputech.helper.AppHelper;
 import com.suyogcomputech.helper.ConnectionClass;
+import com.suyogcomputech.helper.MyComparator;
 import com.suyogcomputech.helper.Product;
 import com.suyogcomputech.helper.ProductDetails;
 
@@ -27,11 +40,12 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by suyogcomputech on 23/08/16.
  */
-public class ProductListActivity extends AppCompatActivity {
+public class ProductListActivity extends AppCompatActivity  {
     Toolbar tbProduct;
     RecyclerView rvPdroducts;
     GetProducts taskGetProducts;
@@ -39,6 +53,8 @@ public class ProductListActivity extends AppCompatActivity {
     ProductListAdapter adapter;
     private BadgeStyle style = ActionItemBadge.BadgeStyles.RED.getStyle();
     private int badgeCount = 0;
+    private ArrayList<ProductDetails> productDetailList,productDetailsArrayList,productDetailsesnew;
+    String query;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,6 +71,7 @@ public class ProductListActivity extends AppCompatActivity {
         tbProduct.setTitle(subDesc);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        productDetailList = new ArrayList<>();
         rvPdroducts = (RecyclerView) findViewById(R.id.rv_product);
         adapter = new ProductListAdapter(ProductListActivity.this);
         GridLayoutManager glm = new GridLayoutManager(ProductListActivity.this, 2, GridLayoutManager.VERTICAL, false);
@@ -68,9 +85,43 @@ public class ProductListActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.main_menu, menu);
         ActionItemBadge.update(ProductListActivity.this, menu.findItem(R.id.item_samplebadge), FontAwesome.Icon.faw_shopping_cart, style, badgeCount);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.item_search));
+        //EditText editText = (EditText)searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filter(newText);
+                return false;
+            }
+        });
+        searchView.setIconified(true);
         return true;
+    }
+    private void filter(String newText) {
+        query = newText.toLowerCase();
+        productDetailsArrayList.clear();
+        adapter.clear();
+        //adapter.notifyDataSetChanged();
+        if (query.length()!=0){
+                for (ProductDetails productDetails1 : productDetailList){
+                    String text = productDetails1.getBrand().toLowerCase();
+                    Log.d("","");
+                    if (text.contains(query)){
+                        productDetailsArrayList.add(productDetails1);
+                    }
+                }
+        }else {
+            productDetailsArrayList.addAll(productDetailList);
+        }
+        adapter.addProducts(productDetailsArrayList);
     }
 
     @Override
@@ -80,7 +131,45 @@ public class ProductListActivity extends AppCompatActivity {
             finish();
             return true;
         }
+        if (item.getItemId()==R.id.item_sort){
+            shoeHighLowDilog();
+            return true;
+        }
         return false;
+    }
+
+    private void shoeHighLowDilog() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ProductListActivity.this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.low_high_layout, null);
+        dialogBuilder.setView(dialogView);
+        RadioGroup radioGroup = (RadioGroup)dialogView.findViewById(R.id.radioGroup1) ;
+        RadioButton lowHigh = (RadioButton) dialogView.findViewById(R.id.lowHigh);
+        RadioButton highLow = (RadioButton) dialogView.findViewById(R.id.highLow);
+        final AlertDialog alertDialog = dialogBuilder.create();
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId==R.id.lowHigh){
+                        //Toast.makeText(ProductListActivity.this,"Low To high",Toast.LENGTH_SHORT).show();
+                    //productDetailsesnew.clear();
+                    adapter.clear();
+                    Collections.sort(productDetailsesnew,new MyComparator());
+                    adapter.addProducts(productDetailsesnew);
+                    adapter.notifyDataSetChanged();
+                    alertDialog.dismiss();
+                }
+                if (checkedId==R.id.highLow){
+                    //productDetailsesnew.clear();
+                    adapter.clear();
+                    Collections.sort(productDetailsesnew,new MyComparator());
+                    adapter.addProducts(productDetailsesnew);
+                    adapter.notifyDataSetChanged();
+                    alertDialog.dismiss();
+                }
+            }
+        });
+        alertDialog.show();
     }
 
     private class GetProducts extends AsyncTask<Void, Void, ArrayList<ProductDetails>> {
@@ -101,6 +190,12 @@ public class ProductListActivity extends AppCompatActivity {
             dialog.dismiss();
             if (productDetailses.size() > 0) {
                 adapter.addProducts(productDetailses);
+                productDetailList.addAll(productDetailses);
+                productDetailsArrayList = new ArrayList<>(productDetailList);
+                productDetailsesnew = new ArrayList<>();
+                productDetailsesnew.addAll(productDetailsArrayList);
+                //productDetailsArrayList.addAll(productDetailList);
+                Log.v("",""+productDetailsArrayList.size());
             }
         }
 
@@ -187,7 +282,6 @@ public class ProductListActivity extends AppCompatActivity {
                     list.add(p);
                 }
                 connection.close();
-
                 return list;
             } catch (Exception e) {
                 Log.i("Exception", e.getMessage());

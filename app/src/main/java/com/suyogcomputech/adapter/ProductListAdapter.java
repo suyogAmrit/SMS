@@ -105,6 +105,11 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         notifyDataSetChanged();
     }
 
+    public void clear() {
+        list.clear();
+        notifyDataSetChanged();
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         CardView cvParent;
         TextView tvBrand, tvPrice, tvShortDesc, tvOffer, productCutPrice;
