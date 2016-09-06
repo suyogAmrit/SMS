@@ -17,7 +17,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import com.suyogcomputech.adapter.InsuranceTypeAdapter;
 import com.suyogcomputech.helper.AppConstants;
 import com.suyogcomputech.helper.AppHelper;
@@ -164,13 +163,9 @@ public class InsuranceRequestActivity extends AppCompatActivity {
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
                 return rs;
-
-
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-
-
             return null;
         }
     }
