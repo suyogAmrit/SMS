@@ -76,7 +76,6 @@ public class BookLawyerActivity extends AppCompatActivity implements DatePickerF
 //                }
 //            }
 //        });
-        String sss="sss";
         edReqDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
