@@ -21,6 +21,7 @@ import com.suyogcomputech.helper.AppConstants;
 import com.suyogcomputech.helper.Lawyer;
 import com.suyogcomputech.helper.MySingleton;
 
+import com.suyogcomputech.sms.BookLawyerActivity;
 import com.suyogcomputech.sms.R;
 
 import java.util.ArrayList;
@@ -89,9 +90,9 @@ public class LawyerAdapter extends RecyclerView.Adapter<LawyerAdapter.LawerHolde
         holder.btnBookAppointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent=new Intent(myContext,BookLawyerActivity.class);
-//                intent.putExtra(AppConstants.LAWYER_ID,myItem.getSpecialistId());
-//                myContext.startActivity(intent);
+                Intent intent=new Intent(myContext,BookLawyerActivity.class);
+                intent.putExtra(AppConstants.LAWYER_ID,myItem.getSpecialistId());
+                myContext.startActivity(intent);
             }
         });
     }
