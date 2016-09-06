@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -80,7 +81,8 @@ public class InsuranceActivity extends AppCompatActivity{
                 adapter = new InsuranceAdapter(list, InsuranceActivity.this);
                 rcvInsurance.setAdapter(adapter);
                 rcvInsurance.setHasFixedSize(true);
-                LinearLayoutManager glm = new LinearLayoutManager(InsuranceActivity.this);
+//                LinearLayoutManager glm = new LinearLayoutManager(InsuranceActivity.this);
+                GridLayoutManager glm=new GridLayoutManager(InsuranceActivity.this,null,2,2);
                 rcvInsurance.setLayoutManager(glm);
 
             } catch (SQLException e) {

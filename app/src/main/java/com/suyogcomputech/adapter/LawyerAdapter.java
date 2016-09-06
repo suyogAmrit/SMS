@@ -22,6 +22,7 @@ import com.suyogcomputech.helper.Lawyer;
 import com.suyogcomputech.helper.MySingleton;
 
 import com.suyogcomputech.sms.BookLawyerActivity;
+import com.suyogcomputech.sms.LawyerDetailsActivity;
 import com.suyogcomputech.sms.R;
 
 import java.util.ArrayList;
@@ -80,11 +81,11 @@ public class LawyerAdapter extends RecyclerView.Adapter<LawyerAdapter.LawerHolde
         holder.btnViewProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Log.i("ssss",myItem.getSpecialistId());
-//                Intent intent=new Intent(myContext,LawyerDetailsActivity.class);
-//                intent.putExtra(AppConstants.LAWYER_ID,myItem.getSpecialistId());
-//                intent.putExtra(AppConstants.DESIGNATION,myItem.getDesignation());
-//                myContext.startActivity(intent);
+                Log.i("ssss",myItem.getSpecialistId());
+                Intent intent=new Intent(myContext,LawyerDetailsActivity.class);
+                intent.putExtra(AppConstants.LAWYER_ID,myItem.getSpecialistId());
+                intent.putExtra(AppConstants.DESIGNATION,myItem.getDesignation());
+                myContext.startActivity(intent);
             }
         });
         holder.btnBookAppointment.setOnClickListener(new View.OnClickListener() {

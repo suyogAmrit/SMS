@@ -27,7 +27,7 @@ import java.util.ArrayList;
 /**
  * Created by Pintu on 9/2/2016.
  */
-public class InsuranceTypeActivity extends AppCompatActivity{
+public class  InsuranceTypeActivity extends AppCompatActivity{
     RecyclerView rcvInsurance;
     ConnectionClass connectionClass;
     ArrayList<Insurance> list;
