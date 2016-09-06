@@ -67,14 +67,14 @@ public class BookDoctorActivity extends AppCompatActivity implements DatePickerF
         setSupportActionBar(toolbar);
 
         edReqDate = (EditText) findViewById(R.id.edAppointmentDate);
-        edReqDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    AppHelper.getDatePicker(getSupportFragmentManager());
-                }
-            }
-        });
+//        edReqDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (hasFocus) {
+//                    AppHelper.getDatePicker(getSupportFragmentManager());
+//                }
+//            }
+//        });
         edReqDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
