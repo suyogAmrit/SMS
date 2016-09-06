@@ -1,15 +1,15 @@
 package com.suyogcomputech.sms;
 
-import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -19,11 +19,9 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mikepenz.actionitembadge.library.ActionItemBadge;
 import com.mikepenz.actionitembadge.library.utils.BadgeStyle;
@@ -32,20 +30,18 @@ import com.suyogcomputech.adapter.ProductListAdapter;
 import com.suyogcomputech.helper.AppConstants;
 import com.suyogcomputech.helper.AppHelper;
 import com.suyogcomputech.helper.ConnectionClass;
-import com.suyogcomputech.helper.MyComparator;
-import com.suyogcomputech.helper.Product;
 import com.suyogcomputech.helper.ProductDetails;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * Created by suyogcomputech on 23/08/16.
  */
-public class ProductListActivity extends AppCompatActivity  {
+public class ProductListActivity extends AppCompatActivity {
     Toolbar tbProduct;
     RecyclerView rvPdroducts;
     GetProducts taskGetProducts;
@@ -53,8 +49,9 @@ public class ProductListActivity extends AppCompatActivity  {
     ProductListAdapter adapter;
     private BadgeStyle style = ActionItemBadge.BadgeStyles.RED.getStyle();
     private int badgeCount = 0;
-    private ArrayList<ProductDetails> productDetailList,productDetailsArrayList,productDetailsesnew;
+    private ArrayList<ProductDetails> productDetailList, productDetailsArrayList, productDetailsesnew, productDetailsesListOfData;
     String query;
+    RadioGroup radioGroup;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,6 +78,10 @@ public class ProductListActivity extends AppCompatActivity  {
             taskGetProducts = new GetProducts();
             taskGetProducts.execute();
         }
+        productDetailsesListOfData = new ArrayList<>();
+        if (AppHelper.isConnectingToInternet(ProductListActivity.this)) {
+            new FetchbadgeNumber().execute();
+        }
     }
 
     @Override
@@ -105,20 +106,21 @@ public class ProductListActivity extends AppCompatActivity  {
         searchView.setIconified(true);
         return true;
     }
+
     private void filter(String newText) {
         query = newText.toLowerCase();
         productDetailsArrayList.clear();
         adapter.clear();
         //adapter.notifyDataSetChanged();
-        if (query.length()!=0){
-                for (ProductDetails productDetails1 : productDetailList){
-                    String text = productDetails1.getBrand().toLowerCase();
-                    Log.d("","");
-                    if (text.contains(query)){
-                        productDetailsArrayList.add(productDetails1);
-                    }
+        if (query.length() != 0) {
+            for (ProductDetails productDetails1 : productDetailList) {
+                String text = productDetails1.getBrand().toLowerCase();
+                Log.d("", "");
+                if (text.contains(query)) {
+                    productDetailsArrayList.add(productDetails1);
                 }
-        }else {
+            }
+        } else {
             productDetailsArrayList.addAll(productDetailList);
         }
         adapter.addProducts(productDetailsArrayList);
@@ -131,47 +133,74 @@ public class ProductListActivity extends AppCompatActivity  {
             finish();
             return true;
         }
-        if (item.getItemId()==R.id.item_sort){
-            shoeHighLowDilog();
+        if (item.getItemId() == R.id.item_sort) {
+            showProductSortDialog();
             return true;
         }
         return false;
     }
 
-    private void shoeHighLowDilog() {
+    private void showProductSortDialog() {
+        SharedPreferences shr = getSharedPreferences(AppConstants.SORTPREFS, MODE_PRIVATE);
+        int sortDesc = shr.getInt(AppConstants.SORTDESC, 0);
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ProductListActivity.this);
         LayoutInflater inflater = this.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.low_high_layout, null);
         dialogBuilder.setView(dialogView);
-        RadioGroup radioGroup = (RadioGroup)dialogView.findViewById(R.id.radioGroup1) ;
-        RadioButton lowHigh = (RadioButton) dialogView.findViewById(R.id.lowHigh);
-        RadioButton highLow = (RadioButton) dialogView.findViewById(R.id.highLow);
+        radioGroup = (RadioGroup) dialogView.findViewById(R.id.radioGroup1);
+        final RadioButton lowHigh = (RadioButton) dialogView.findViewById(R.id.rb_low_high);
+        final RadioButton highLow = (RadioButton) dialogView.findViewById(R.id.rb_high_low);
+        switch (sortDesc) {
+            case 1:
+                lowHigh.setChecked(true);
+                break;
+            case 2:
+                highLow.setChecked(true);
+                break;
+        }
+        dialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                if (lowHigh.isChecked() || highLow.isChecked()) {
+                    adapter.clear();
+                    new GetProducts().execute();
+                }
+            }
+        });
         final AlertDialog alertDialog = dialogBuilder.create();
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId==R.id.lowHigh){
-                        //Toast.makeText(ProductListActivity.this,"Low To high",Toast.LENGTH_SHORT).show();
-                    //productDetailsesnew.clear();
-                    adapter.clear();
-                    Collections.sort(productDetailsesnew,new MyComparator());
-                    adapter.addProducts(productDetailsesnew);
-                    adapter.notifyDataSetChanged();
-                    alertDialog.dismiss();
-                }
-                if (checkedId==R.id.highLow){
-                    //productDetailsesnew.clear();
-                    adapter.clear();
-                    Collections.sort(productDetailsesnew,new MyComparator());
-                    adapter.addProducts(productDetailsesnew);
-                    adapter.notifyDataSetChanged();
-                    alertDialog.dismiss();
+                switch (checkedId) {
+                    case R.id.rb_high_low:
+                        saveSorting(2);
+                        break;
+                    case R.id.rb_low_high:
+                        saveSorting(1);
+                        break;
                 }
             }
         });
         alertDialog.show();
     }
 
+    private void saveSorting(int i) {
+        SharedPreferences shr = getSharedPreferences(AppConstants.SORTPREFS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = shr.edit();
+        editor.putInt(AppConstants.SORTDESC, i);
+        editor.apply();
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SharedPreferences shr = getSharedPreferences(AppConstants.SORTPREFS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = shr.edit();
+        editor.clear();
+        editor.apply();
+    }
     private class GetProducts extends AsyncTask<Void, Void, ArrayList<ProductDetails>> {
         ProgressDialog dialog;
 
@@ -193,9 +222,9 @@ public class ProductListActivity extends AppCompatActivity  {
                 productDetailList.addAll(productDetailses);
                 productDetailsArrayList = new ArrayList<>(productDetailList);
                 productDetailsesnew = new ArrayList<>();
-                productDetailsesnew.addAll(productDetailsArrayList);
+                productDetailsesnew.addAll(productDetailList);
                 //productDetailsArrayList.addAll(productDetailList);
-                Log.v("",""+productDetailsArrayList.size());
+                Log.v("", "" + productDetailsArrayList.size());
             }
         }
 
@@ -216,6 +245,16 @@ public class ProductListActivity extends AppCompatActivity  {
                         " left outer join Eshop_Sellor_tb as s on s.sellor_user_id = p.prod_Sel_id\n" +
                         " left outer join Eshop_Prod_Size_tb as sz on sz.prod_id = p.prod_id\n" +
                         " where sub_cat_id='" + subCategory + "' and cat_id='" + category + "'";
+                SharedPreferences shr = getSharedPreferences(AppConstants.SORTPREFS, MODE_PRIVATE);
+                int sortDesc = shr.getInt(AppConstants.SORTDESC, 0);
+                switch (sortDesc) {
+                    case 1:
+                        query = query + " ORDER BY p.price ASC";
+                        break;
+                    case 2:
+                        query = query + " ORDER BY p.price DESC";
+                        break;
+                }
                 Log.i("PrdQry", query);
 
                 Statement statement = connection.createStatement();
@@ -289,4 +328,48 @@ public class ProductListActivity extends AppCompatActivity  {
             }
         }
     }
+    private class FetchbadgeNumber extends AsyncTask<Void, Void, Integer> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Integer doInBackground(Void... params) {
+
+            try {
+                ConnectionClass connectionClass = new ConnectionClass();
+                Connection connection = connectionClass.connect();
+                SharedPreferences sharedpreferences = getSharedPreferences(AppConstants.USERPREFS, Context.MODE_PRIVATE);
+                String uniqueUserId = sharedpreferences.getString(AppConstants.USERID, AppConstants.NOT_AVAILABLE);
+                String query = "SELECT COUNT(*) as count_row FROM Eshop_cart_tb where " + AppConstants.USERID + "='" + uniqueUserId + "'";
+                Log.i("Query", query);
+                Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery(query);
+//                    badgeCount = resultSet.getRow();
+                resultSet.next();
+                String count = resultSet.getString("count_row");
+                Log.v("count", count);
+                badgeCount = Integer.valueOf(count);
+            } catch (SQLException e) {
+                Log.i("Except", e.getMessage());
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            super.onPostExecute(integer);
+            invalidateOptionsMenu();
+        }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        invalidateOptionsMenu();
+    }
 }
+

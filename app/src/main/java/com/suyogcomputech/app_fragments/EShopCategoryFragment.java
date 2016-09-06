@@ -1,7 +1,9 @@
 package com.suyogcomputech.app_fragments;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -31,6 +33,7 @@ import com.suyogcomputech.sms.ShoppingCartItem;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
@@ -50,6 +53,9 @@ public class EShopCategoryFragment extends Fragment implements ExpandableListVie
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        if (AppHelper.isConnectingToInternet(getActivity())) {
+            new FetchbadgeNumber().execute();
+        }
     }
 
     @Override
@@ -181,6 +187,43 @@ public class EShopCategoryFragment extends Fragment implements ExpandableListVie
                 return null;
             }
 
+        }
+    }
+    private class FetchbadgeNumber extends AsyncTask<Void, Void, Integer> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Integer doInBackground(Void... params) {
+
+            try {
+                ConnectionClass connectionClass = new ConnectionClass();
+                Connection connection = connectionClass.connect();
+                SharedPreferences sharedpreferences = getActivity().getSharedPreferences(AppConstants.USERPREFS, Context.MODE_PRIVATE);
+                String uniqueUserId = sharedpreferences.getString(AppConstants.USERID, AppConstants.NOT_AVAILABLE);
+                String query = "SELECT COUNT(*) as count_row FROM Eshop_cart_tb where " + AppConstants.USERID + "='" + uniqueUserId + "'";
+                Log.i("Query", query);
+                Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery(query);
+//                    badgeCount = resultSet.getRow();
+                resultSet.next();
+                String count = resultSet.getString("count_row");
+                Log.v("count", count);
+                badgeCount = Integer.valueOf(count);
+            } catch (SQLException e) {
+                Log.i("Except", e.getMessage());
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            super.onPostExecute(integer);
+            getActivity().invalidateOptionsMenu();
         }
     }
 }

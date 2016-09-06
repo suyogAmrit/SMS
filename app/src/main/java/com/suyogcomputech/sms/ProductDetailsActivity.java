@@ -3,48 +3,30 @@ package com.suyogcomputech.sms;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.drawable.LayerDrawable;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.DialogPreference;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDialog;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.Display;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mikepenz.actionitembadge.library.ActionItemBadge;
 import com.mikepenz.actionitembadge.library.utils.BadgeStyle;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
-import com.squareup.picasso.Picasso;
 import com.suyogcomputech.adapter.ImagePagerAdapter;
-import com.suyogcomputech.app_fragments.ImageFragment;
 import com.suyogcomputech.helper.AppConstants;
 import com.suyogcomputech.helper.AppHelper;
 import com.suyogcomputech.helper.ConnectionClass;
@@ -52,12 +34,10 @@ import com.suyogcomputech.helper.ProductDetails;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Created by suyogcomputech on 31/08/16.
@@ -66,10 +46,10 @@ public class ProductDetailsActivity extends AppCompatActivity {
     String productId;
     //GetProductDetails taskGetProductDetails;
     ViewPager imgPager;
-    private TextView product_title,product_price,product_cutting_price,productDiscount,product_offer_desc,sizeWithText;
-    private Button infoButton;
+    private TextView product_title, product_price, product_cutting_price, productDiscount, product_offer_desc, sizeWithText;
+    private Button infoButton, addToCartButton;
     private RadioGroup productSizeRadioGroup;
-    private RadioButton small,medium,large,extraLarge,doubleExtraLarge,tripleExtraLarge;
+    private RadioButton small, medium, large, extraLarge, doubleExtraLarge, tripleExtraLarge;
     FrameLayout product_frame;
     ProductDetails productDetails;
     private BadgeStyle style = ActionItemBadge.BadgeStyles.RED.getStyle();
@@ -84,41 +64,45 @@ public class ProductDetailsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");
-        product_title = (TextView)findViewById(R.id.product_title);
-        product_price = (TextView)findViewById(R.id.product_price);
-        product_cutting_price = (TextView)findViewById(R.id.product_cutting_price);
-        productDiscount = (TextView)findViewById(R.id.productDiscount);
-        infoButton = (Button)findViewById(R.id.infoButton);
-        product_offer_desc = (TextView)findViewById(R.id.product_offer_desc);
-        productSizeRadioGroup = (RadioGroup)findViewById(R.id.product_size_radio_group);
-        small = (RadioButton)findViewById(R.id.small);
-        medium = (RadioButton)findViewById(R.id.mideuim);
-        large = (RadioButton)findViewById(R.id.large);
-        extraLarge = (RadioButton)findViewById(R.id.extraLarge);
-        doubleExtraLarge = (RadioButton)findViewById(R.id.doubleExtraLarge);
-        tripleExtraLarge = (RadioButton)findViewById(R.id.tripleExtraLarge);
-        sizeWithText = (TextView)findViewById(R.id.sizeWithText);
-        product_frame = (FrameLayout)findViewById(R.id.product_frame);
+        product_title = (TextView) findViewById(R.id.product_title);
+        product_price = (TextView) findViewById(R.id.product_price);
+        product_cutting_price = (TextView) findViewById(R.id.product_cutting_price);
+        productDiscount = (TextView) findViewById(R.id.productDiscount);
+        infoButton = (Button) findViewById(R.id.infoButton);
+        product_offer_desc = (TextView) findViewById(R.id.product_offer_desc);
+        productSizeRadioGroup = (RadioGroup) findViewById(R.id.product_size_radio_group);
+        small = (RadioButton) findViewById(R.id.small);
+        medium = (RadioButton) findViewById(R.id.mideuim);
+        large = (RadioButton) findViewById(R.id.large);
+        extraLarge = (RadioButton) findViewById(R.id.extraLarge);
+        doubleExtraLarge = (RadioButton) findViewById(R.id.doubleExtraLarge);
+        tripleExtraLarge = (RadioButton) findViewById(R.id.tripleExtraLarge);
+        sizeWithText = (TextView) findViewById(R.id.sizeWithText);
+        product_frame = (FrameLayout) findViewById(R.id.product_frame);
         imgPager = (ViewPager) findViewById(R.id.image_pager);
+        addToCartButton = (Button) findViewById(R.id.addToCartButton);
         /*productId = getIntent().getExtras().getString(AppConstants.PRDID);
         if (AppHelper.isConnectingToInternet(ProductDetailsActivity.this)) {
             taskGetProductDetails = new GetProductDetails();
             taskGetProductDetails.execute();
         }*/
+        if (AppHelper.isConnectingToInternet(ProductDetailsActivity.this)) {
+            new FetchbadgeNumber().execute();
+        }
         productDetails = getIntent().getParcelableExtra(AppConstants.EXTRA_PROCUCT_DETAILS);
-        Log.v("","");
+        Log.v("", "");
         updateUi();
     }
 
     private void updateUi() {
         ImagePagerAdapter imagePagerAdapter = new ImagePagerAdapter(ProductDetailsActivity.this, productDetails.getImages());
         imgPager.setAdapter(imagePagerAdapter);
-        CirclePageIndicator indicator = (CirclePageIndicator)findViewById(R.id.indicator);
+        CirclePageIndicator indicator = (CirclePageIndicator) findViewById(R.id.indicator);
         indicator.setViewPager(imgPager);
         Log.d("", productDetails.getImages().get(0));
-        product_title.setText(productDetails.getBrand()+" "+productDetails.getTitle());
-        product_cutting_price.setText(AppConstants.RUPEESYM +productDetails.getPrice());
-        productDiscount.setText(Integer.valueOf(productDetails.getOfferPer())+"% off");
+        product_title.setText(productDetails.getBrand() + " " + productDetails.getTitle());
+        product_cutting_price.setText(AppConstants.RUPEESYM + productDetails.getPrice());
+        productDiscount.setText(Integer.valueOf(productDetails.getOfferPer()) + "% off");
         product_offer_desc.setText(productDetails.getOfferDesc());
         small.setText(productDetails.getSizes().get(0));
         medium.setText(productDetails.getSizes().get(1));
@@ -126,19 +110,19 @@ public class ProductDetailsActivity extends AppCompatActivity {
         extraLarge.setText(productDetails.getSizes().get(3));
         doubleExtraLarge.setText(productDetails.getSizes().get(4));
         tripleExtraLarge.setText(productDetails.getSizes().get(5));
-        if (productDetails.getFromDate() != null && productDetails.getToDate() != null ) {
+        if (productDetails.getFromDate() != null && productDetails.getToDate() != null) {
             if (AppHelper.compareDate(productDetails.getFromDate(), productDetails.getToDate())) {
                 double actualPrice = Double.valueOf(productDetails.getPrice()) - (Double.valueOf(productDetails.getPrice()) * Double.valueOf(productDetails.getOfferPer())) / 100;
                 product_price.setText(AppConstants.RUPEESYM + actualPrice);
                 product_frame.setVisibility(View.VISIBLE);
                 product_cutting_price.setText(AppConstants.RUPEESYM + productDetails.getPrice());
                 productDiscount.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 product_price.setText(AppConstants.RUPEESYM + Double.valueOf(productDetails.getPrice()));
                 product_frame.setVisibility(View.GONE);
                 productDiscount.setVisibility(View.GONE);
             }
-        }else {
+        } else {
             product_price.setText(AppConstants.RUPEESYM + Double.valueOf(productDetails.getPrice()));
             product_frame.setVisibility(View.GONE);
             productDiscount.setVisibility(View.GONE);
@@ -146,57 +130,57 @@ public class ProductDetailsActivity extends AppCompatActivity {
         productSizeRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId==R.id.small){
-                    if (productDetails.getSizeAvailable().get(0) == 0){
+                if (checkedId == R.id.small) {
+                    if (productDetails.getSizeAvailable().get(0) == 0) {
                         small.setEnabled(false);
                         small.setSelected(false);
-                        sizeWithText.setText("Size "+productDetails.getSizes().get(0) );
-                    }else {
+                        sizeWithText.setText("Size " + productDetails.getSizes().get(0));
+                    } else {
                         sizeWithText.setText("Size    Only " + productDetails.getSizeAvailable().get(0) + " left");
                     }
                 }
-                if (checkedId==R.id.mideuim){
-                    if (productDetails.getSizeAvailable().get(1) == 0){
+                if (checkedId == R.id.mideuim) {
+                    if (productDetails.getSizeAvailable().get(1) == 0) {
                         small.setEnabled(false);
                         small.setSelected(false);
-                        sizeWithText.setText("Size "+productDetails.getSizes().get(1) );
-                    }else {
+                        sizeWithText.setText("Size " + productDetails.getSizes().get(1));
+                    } else {
                         sizeWithText.setText("Size    Only " + productDetails.getSizeAvailable().get(1) + " left");
                     }
                 }
-                if (checkedId==R.id.large){
-                    if (productDetails.getSizeAvailable().get(2) == 0){
+                if (checkedId == R.id.large) {
+                    if (productDetails.getSizeAvailable().get(2) == 0) {
                         small.setEnabled(false);
                         small.setSelected(false);
-                        sizeWithText.setText("Size "+productDetails.getSizes().get(2) );
-                    }else {
+                        sizeWithText.setText("Size " + productDetails.getSizes().get(2));
+                    } else {
                         sizeWithText.setText("Size    Only " + productDetails.getSizeAvailable().get(2) + " left");
                     }
                 }
-                if (checkedId==R.id.extraLarge){
-                    if (productDetails.getSizeAvailable().get(3) == 0){
+                if (checkedId == R.id.extraLarge) {
+                    if (productDetails.getSizeAvailable().get(3) == 0) {
                         small.setEnabled(false);
                         small.setSelected(false);
-                        sizeWithText.setText("Size "+productDetails.getSizes().get(3) );
-                    }else {
+                        sizeWithText.setText("Size " + productDetails.getSizes().get(3));
+                    } else {
                         sizeWithText.setText("Size    Only " + productDetails.getSizeAvailable().get(3) + " left");
                     }
                 }
-                if (checkedId==R.id.doubleExtraLarge){
-                    if (productDetails.getSizeAvailable().get(4) == 0){
+                if (checkedId == R.id.doubleExtraLarge) {
+                    if (productDetails.getSizeAvailable().get(4) == 0) {
                         small.setEnabled(false);
                         small.setSelected(false);
-                        sizeWithText.setText("Size "+productDetails.getSizes().get(4) );
-                    }else {
+                        sizeWithText.setText("Size " + productDetails.getSizes().get(4));
+                    } else {
                         sizeWithText.setText("Size    Only " + productDetails.getSizeAvailable().get(4) + " left");
                     }
                 }
-                if (checkedId==R.id.tripleExtraLarge){
-                    if (productDetails.getSizeAvailable().get(5) == 0){
+                if (checkedId == R.id.tripleExtraLarge) {
+                    if (productDetails.getSizeAvailable().get(5) == 0) {
                         small.setEnabled(false);
                         small.setSelected(false);
-                        sizeWithText.setText("Size "+productDetails.getSizes().get(5) );
-                    }else {
+                        sizeWithText.setText("Size " + productDetails.getSizes().get(5));
+                    } else {
                         sizeWithText.setText("Size    Only " + productDetails.getSizeAvailable().get(5) + " left");
                     }
                 }
@@ -216,12 +200,18 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 dilog.create().show();
             }
         });
+        addToCartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AddCartTask().execute();
+            }
+        });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.menu_product_cart,menu);
+        getMenuInflater().inflate(R.menu.menu_product_cart, menu);
         ActionItemBadge.update(ProductDetailsActivity.this, menu.findItem(R.id.addcart), FontAwesome.Icon.faw_shopping_cart, style, badgeCount);
         return true;
     }
@@ -229,17 +219,99 @@ public class ProductDetailsActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
-        if (item.getItemId()==android.R.id.home){
-             finish();
+        if (item.getItemId() == android.R.id.home) {
+            finish();
             return true;
         }
-        if (item.getItemId()==R.id.addcart){
+        if (item.getItemId() == R.id.addcart) {
             return true;
         }
         return false;
     }
+    private class AddCartTask extends AsyncTask<Void, Void, Boolean> {
+        ProgressDialog dialog;
 
-   /*private class GetProductDetails extends AsyncTask<Void, Void, ProductDetails>  {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog = new ProgressDialog(ProductDetailsActivity.this);
+            dialog.setTitle(AppConstants.progress_dialog_title);
+            dialog.setMessage(AppConstants.addingToCart);
+            dialog.show();
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            try {
+                ConnectionClass connectionClass = new ConnectionClass();
+                Connection connection = connectionClass.connect();
+                SharedPreferences sharedpreferences = getSharedPreferences(AppConstants.USERPREFS, Context.MODE_PRIVATE);
+                String uniqueUserId = sharedpreferences.getString(AppConstants.USERID, AppConstants.NOT_AVAILABLE);
+                String query = "insert into Eshop_cart_tb (user_id,prod_id,Quantity,Status) values ('" + uniqueUserId + "','" + productDetails.getId() + "','" + productDetails.getMaxQtyInCart() + "','" + productDetails.getStatus() + "');";
+                //   Statement statement = connection.createStatement();
+                Log.i("query", query);
+                PreparedStatement statement = connection.prepareStatement(query);
+                //ResultSet resultSet = statement.executeQuery(query);
+                long resSet = statement.executeUpdate();
+                if (resSet > 0) {
+                    return true;
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return false;
+            }
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean isExecuted) {
+            super.onPostExecute(isExecuted);
+            if (isExecuted) {
+                Toast.makeText(ProductDetailsActivity.this, "Item Added successfully", Toast.LENGTH_SHORT).show();
+            }
+            dialog.dismiss();
+            new FetchbadgeNumber().execute();
+        }
+    }
+
+    private class FetchbadgeNumber extends AsyncTask<Void, Void, Integer> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Integer doInBackground(Void... params) {
+
+            try {
+                ConnectionClass connectionClass = new ConnectionClass();
+                Connection connection = connectionClass.connect();
+                SharedPreferences sharedpreferences = getSharedPreferences(AppConstants.USERPREFS, Context.MODE_PRIVATE);
+                String uniqueUserId = sharedpreferences.getString(AppConstants.USERID, AppConstants.NOT_AVAILABLE);
+                String query = "SELECT COUNT(*) as count_row FROM Eshop_cart_tb where " + AppConstants.USERID + "='" + uniqueUserId + "'";
+                Log.i("Query", query);
+                Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery(query);
+//                    badgeCount = resultSet.getRow();
+                    resultSet.next();
+                String count = resultSet.getString("count_row");
+                Log.v("count", count);
+                badgeCount = Integer.valueOf(count);
+            } catch (SQLException e) {
+                Log.i("Except", e.getMessage());
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            super.onPostExecute(integer);
+            invalidateOptionsMenu();
+        }
+    }
+    /*private class GetProductDetails extends AsyncTask<Void, Void, ProductDetails>  {
         ProgressDialog dialog;
 
         @Override

@@ -159,4 +159,8 @@ public final class AppConstants {
     public static final String INSURANCE_TYPE_ID = "insurance_type_Id";
 
 
+    public static final String SORTPREFS = "product_sort_prefs";
+    public static final String SORTDESC = "sort_desc";
+    public static final String addingToCart="Adding to cart...";
+    public static final String COUNTROW = "count_row";
 }

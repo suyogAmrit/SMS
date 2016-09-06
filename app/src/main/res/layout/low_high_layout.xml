@@ -10,14 +10,14 @@
         android:layout_height="wrap_content">
 
         <RadioButton
-            android:id="@+id/lowHigh"
+            android:id="@+id/rb_low_high"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="false"
             android:text="Low-High" />
 
         <RadioButton
-            android:id="@+id/highLow"
+            android:id="@+id/rb_high_low"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="High-Low"
