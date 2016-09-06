@@ -18,13 +18,9 @@ import android.widget.TextView;
 import com.android.volley.toolbox.ImageLoader;
 import com.squareup.picasso.Picasso;
 import com.suyogcomputech.helper.AppConstants;
-import com.suyogcomputech.helper.Doctor;
 import com.suyogcomputech.helper.Lawyer;
 import com.suyogcomputech.helper.MySingleton;
-import com.suyogcomputech.sms.BookDoctorActivity;
-import com.suyogcomputech.sms.BookLawyerActivity;
-import com.suyogcomputech.sms.DoctorDetailsActivity;
-import com.suyogcomputech.sms.LawyerDetailsActivity;
+
 import com.suyogcomputech.sms.R;
 
 import java.util.ArrayList;
@@ -61,9 +57,7 @@ public class LawyerAdapter extends RecyclerView.Adapter<LawyerAdapter.LawerHolde
     public void onBindViewHolder(LawerHolder holder, int position) {
         final Lawyer myItem = myItems.get(position);
         holder.itemView.setSelected(focusedItem == position);
-
         holder.getLayoutPosition();
-
         myImageLoader = MySingleton.getInstance(myContext).getImageLoader();
         holder.txtDoctorName.setText(myItem.getLawyerSpecialist());
         holder.txtExperience.setText(myItem.getExperience());
@@ -86,18 +80,18 @@ public class LawyerAdapter extends RecyclerView.Adapter<LawyerAdapter.LawerHolde
             @Override
             public void onClick(View view) {
 //                Log.i("ssss",myItem.getSpecialistId());
-                Intent intent=new Intent(myContext,LawyerDetailsActivity.class);
-                intent.putExtra(AppConstants.LAWYER_ID,myItem.getSpecialistId());
-                intent.putExtra(AppConstants.DESIGNATION,myItem.getDesignation());
-                myContext.startActivity(intent);
+//                Intent intent=new Intent(myContext,LawyerDetailsActivity.class);
+//                intent.putExtra(AppConstants.LAWYER_ID,myItem.getSpecialistId());
+//                intent.putExtra(AppConstants.DESIGNATION,myItem.getDesignation());
+//                myContext.startActivity(intent);
             }
         });
         holder.btnBookAppointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(myContext,BookLawyerActivity.class);
-                intent.putExtra(AppConstants.LAWYER_ID,myItem.getSpecialistId());
-                myContext.startActivity(intent);
+//                Intent intent=new Intent(myContext,BookLawyerActivity.class);
+//                intent.putExtra(AppConstants.LAWYER_ID,myItem.getSpecialistId());
+//                myContext.startActivity(intent);
             }
         });
     }
