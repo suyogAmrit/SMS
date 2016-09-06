@@ -79,7 +79,6 @@ public class InsuranceRequestActivity extends AppCompatActivity {
                 list = new ArrayList<StringWithTag>();
                 while (rs.next()) {
                     list.add(new StringWithTag(rs.getString("term"),rs.getString("sl_no")));
-
                 }
                 ArrayAdapter<StringWithTag> adap = new ArrayAdapter<StringWithTag> (InsuranceRequestActivity.this, R.layout.spinner_item, list);
                 Spinner spnInsurance=(Spinner)findViewById(R.id.spinnerInsuranceTerm);
@@ -90,7 +89,6 @@ public class InsuranceRequestActivity extends AppCompatActivity {
                         StringWithTag s = (StringWithTag) adapterView.getItemAtPosition(i);
                         Object tag = s.tag;
                         insuranceTermId=tag.toString();
-                        Log.i("bjhasd",tag.toString());
                     }
 
                     @Override
