@@ -205,7 +205,7 @@ public class InsuranceRequestActivity extends AppCompatActivity {
             dialog.dismiss();
             if (aBoolean) {
                 Toast.makeText(InsuranceRequestActivity.this, "Booking Completed Successfully", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(InsuranceRequestActivity.this, SpecialistLawerActivity.class);
+                Intent intent = new Intent(InsuranceRequestActivity.this, InsuranceActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY);
                 startActivity(intent);
             }else {
