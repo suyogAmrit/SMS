@@ -17,7 +17,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import com.suyogcomputech.adapter.InsuranceTypeAdapter;
 import com.suyogcomputech.helper.AppConstants;
 import com.suyogcomputech.helper.AppHelper;
@@ -80,7 +79,6 @@ public class InsuranceRequestActivity extends AppCompatActivity {
                 list = new ArrayList<StringWithTag>();
                 while (rs.next()) {
                     list.add(new StringWithTag(rs.getString("term"),rs.getString("sl_no")));
-
                 }
                 ArrayAdapter<StringWithTag> adap = new ArrayAdapter<StringWithTag> (InsuranceRequestActivity.this, R.layout.spinner_item, list);
                 Spinner spnInsurance=(Spinner)findViewById(R.id.spinnerInsuranceTerm);
@@ -91,7 +89,6 @@ public class InsuranceRequestActivity extends AppCompatActivity {
                         StringWithTag s = (StringWithTag) adapterView.getItemAtPosition(i);
                         Object tag = s.tag;
                         insuranceTermId=tag.toString();
-                        Log.i("bjhasd",tag.toString());
                     }
 
                     @Override
@@ -164,13 +161,9 @@ public class InsuranceRequestActivity extends AppCompatActivity {
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
                 return rs;
-
-
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-
-
             return null;
         }
     }
