@@ -156,4 +156,7 @@ public final class AppConstants {
     public static final String EXTRA_PROCUCT_DETAILS = "EXTRA_PROCUCT_DETAILS";
 
 
+    public static final String INSURANCE_TYPE_ID = "insurance_type_Id";
+
+
 }
