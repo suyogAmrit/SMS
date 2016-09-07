@@ -124,18 +124,12 @@ public class GroceryFragment extends Fragment implements ExpandableListView.OnCh
 
             return null;
         }
-        protected void onPreExecute(){
-            super.onPreExecute();
-            dialog = new ProgressDialog(getActivity());
-            dialog.setTitle(AppConstants.dialog_title);
-            dialog.setMessage(AppConstants.CATMSG);
-            dialog.show();
-        }
-        protected void onPoseExecute(ArrayList<EGroceryCategory> eGroceryCategories){
+
+        @Override
+        protected void onPostExecute(ArrayList<EGroceryCategory> eGroceryCategories) {
             super.onPostExecute(eGroceryCategories);
             dialog.dismiss();
             Log.i("Size", String.valueOf(eGroceryCategories.get(0).getSubCategories().size()));
-
             try {
                 list = eGroceryCategories;
                 GroceryAdapter adapter = new GroceryAdapter(getActivity(), list);
@@ -146,81 +140,15 @@ public class GroceryFragment extends Fragment implements ExpandableListView.OnCh
                 Toast.makeText(getActivity(), AppConstants.TRYAGAIN, Toast.LENGTH_SHORT).show();
             }
         }
+
+        protected void onPreExecute(){
+            super.onPreExecute();
+            dialog = new ProgressDialog(getActivity());
+            dialog.setTitle(AppConstants.dialog_title);
+            dialog.setMessage(AppConstants.CATMSG);
+            dialog.show();
+        }
+
     }
-
-
-//    private class FetchFacilities extends AsyncTask<String, Void, String> {
-//        ProgressDialog dialog;
-//
-//        @Override
-//        protected String doInBackground(String... params) {
-//            try {
-//                URL url = new URL(params[0]);
-//                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-//                // urlConnection.setConnectTimeout(30000);
-//                urlConnection.setDoInput(true);
-//                BufferedReader in = new BufferedReader(
-//                        new InputStreamReader(urlConnection.getInputStream()));
-//                String inputLine;
-//                StringBuilder response = new StringBuilder();
-//
-//                while ((inputLine = in.readLine()) != null) {
-//                    response.append(inputLine);
-//                }
-//                in.close();
-//                return response.toString();
-//
-//            } catch (MalformedURLException e) {
-//                e.printStackTrace();
-//            } catch (SocketTimeoutException e) {
-//                return null;
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//
-//            return null;
-//        }
-//
-//        @Override
-//        protected void onPreExecute() {
-//            super.onPreExecute();
-//            dialog = new ProgressDialog(getActivity());
-//            dialog.setTitle(AppConstants.progress_dialog_title);
-//            dialog.setMessage(AppConstants.progress_dialog_message);
-//            dialog.show();
-//        }
-//
-//        @Override
-//        protected void onPostExecute(String s) {
-//            super.onPostExecute(s);
-//            try {
-//                dialog.dismiss();
-//                Log.i("response", s);
-//                JSONObject objJson = new JSONObject(s);
-//                JSONArray jsonArray = new JSONArray(objJson.getString(AppConstants.FACILITIES));
-//                list = new ArrayList<>();
-//                for (int i = 0; i < jsonArray.length(); i++) {
-//                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-//                    Grocery grocery = new Grocery();
-//                    grocery.setName(jsonObject.getString(AppConstants.TITLE));
-//                    grocery.setImage_url(jsonObject.getString(AppConstants.IMAGE));
-//                    list.add(grocery);
-//                }
-//
-//                adapter = new GroceryAdapter(list, getActivity());
-//                rcvGrocery.setAdapter(adapter);
-//                rcvGrocery.setHasFixedSize(true);
-//                GridLayoutManager glm = new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false);
-//                rcvGrocery.setLayoutManager(glm);
-//
-//            } catch (NullPointerException e) {
-//                Toast.makeText(getActivity(), AppConstants.null_pointer_message, Toast.LENGTH_LONG).show();
-//                getActivity().finish();
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            } catch (IllegalArgumentException ex) {
-//            }
-//        }
-//    }
 }
 
