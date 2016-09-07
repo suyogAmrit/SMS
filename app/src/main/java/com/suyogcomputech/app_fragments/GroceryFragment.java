@@ -11,11 +11,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
 import android.widget.Toast;
 
 import com.suyogcomputech.adapter.GroceryAdapter;
 import com.suyogcomputech.helper.AppConstants;
+import com.suyogcomputech.helper.ConnectionClass;
 import com.suyogcomputech.helper.ConnectionDetector;
+import com.suyogcomputech.helper.EGroceryCategory;
+import com.suyogcomputech.helper.EGrocerySubCategory;
+import com.suyogcomputech.helper.EShopCategory;
 import com.suyogcomputech.helper.Grocery;
 import com.suyogcomputech.sms.R;
 
@@ -30,22 +35,29 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 /**
  * Created by Pintu on 8/11/2016.
  */
-public class GroceryFragment extends Fragment {
+public class GroceryFragment extends Fragment implements ExpandableListView.OnChildClickListener {
     ConnectionDetector detector;
     RecyclerView rcvGrocery;
     GroceryAdapter adapter;
-    ArrayList<Grocery> list;
+    ArrayList<EGroceryCategory> list;
+    ExpandableListView expLvCatgory;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_grocery_item, container, false);
+        View view = inflater.inflate(R.layout.fragment_eshop_category, container, false);
         detector = new ConnectionDetector(getActivity());
         rcvGrocery = (RecyclerView) view.findViewById(R.id.rcvGrocery);
+        expLvCatgory = (ExpandableListView) view.findViewById(R.id.exLvCategory);
         if (detector.isConnectingToInternet()) {
             new FetchFacilities().execute();
         } else
@@ -55,15 +67,84 @@ public class GroceryFragment extends Fragment {
         return view;
     }
 
-    private class FetchFacilities extends AsyncTask<Void,Void,String> {
+    @Override
+    public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+        return false;
+    }
+
+    private class FetchFacilities extends AsyncTask<Void,Void,ArrayList<EGroceryCategory>> {
+        ProgressDialog dialog;
 
         @Override
-        protected String doInBackground(Void... voids) {
+        protected ArrayList<EGroceryCategory> doInBackground(Void... voids) {
+
+            try {
+                ConnectionClass connectionClass=new ConnectionClass();
+                Connection connection=connectionClass.connect();
+                String query="select * from Grocery_Cat_table";
+                Statement statement=connection.createStatement();
+                ResultSet resultSet=statement.executeQuery(query);
+                ArrayList<EGroceryCategory> list = new ArrayList<>();
+                while(resultSet.next())
+                {
+                    String catId = resultSet.getString(AppConstants.CATID);
+                    String catDesc = resultSet.getString(AppConstants.CATDESC);
+
+                    String query_sub_cat="select * from Grocery_Sub_Cat_table where cat_id="+catId;
+                    Statement statement1=connection.createStatement();
+                    ResultSet resultSetSubcat=statement1.executeQuery(query_sub_cat);
+                    ArrayList<EGrocerySubCategory> shopSubCategories = new ArrayList<>();
+
+                    while(resultSetSubcat.next())
+                    {
+                        Log.i("iddd",resultSetSubcat.getString("sub_cat_desc"));
+                        EGrocerySubCategory shopSubCategory=new EGrocerySubCategory();
+
+                        shopSubCategory.setCatId(catId);
+                        shopSubCategory.setSubCatDesc(resultSetSubcat.getString(AppConstants.SUBCATDESC));
+                        shopSubCategory.setSubcatId(resultSetSubcat.getString(AppConstants.SUBCATID));
+
+                        shopSubCategories.add(shopSubCategory);
+                    }
+
+                    EGroceryCategory category = new EGroceryCategory();
+                    category.setCatId(catId);
+                    category.setCaDesc(catDesc);
+                    category.setSubCategories(shopSubCategories);
+
+                    list.add(category);
+
+
+                }
+                return list;
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
             return null;
         }
-        protected void onPreExecute(){super.onPreExecute();}
-        protected void onPoseExecute(String s){
-            super.onPostExecute(s);
+        protected void onPreExecute(){
+            super.onPreExecute();
+            dialog = new ProgressDialog(getActivity());
+            dialog.setTitle(AppConstants.dialog_title);
+            dialog.setMessage(AppConstants.CATMSG);
+            dialog.show();
+        }
+        protected void onPoseExecute(ArrayList<EGroceryCategory> eGroceryCategories){
+            super.onPostExecute(eGroceryCategories);
+            dialog.dismiss();
+            Log.i("Size", String.valueOf(eGroceryCategories.get(0).getSubCategories().size()));
+
+            try {
+                list = eGroceryCategories;
+                GroceryAdapter adapter = new GroceryAdapter(getActivity(), list);
+                expLvCatgory.setAdapter(adapter);
+                expLvCatgory.setOnChildClickListener(GroceryFragment.this);
+            }
+            catch (NullPointerException e){
+                Toast.makeText(getActivity(), AppConstants.TRYAGAIN, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
