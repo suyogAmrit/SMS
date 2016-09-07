@@ -29,7 +29,7 @@ import com.suyogcomputech.helper.EShopCategory;
 import com.suyogcomputech.helper.EShopSubCategory;
 import com.suyogcomputech.sms.ProductListActivity;
 import com.suyogcomputech.sms.R;
-import com.suyogcomputech.sms.ShoppingCartItem;
+import com.suyogcomputech.sms.ShoppingCartItemActivity;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -69,7 +69,7 @@ public class EShopCategoryFragment extends Fragment implements ExpandableListVie
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.item_samplebadge) {
-            Intent i = new Intent(getActivity(), ShoppingCartItem.class);
+            Intent i = new Intent(getActivity(), ShoppingCartItemActivity.class);
             startActivity(i);
         }
         return true;
@@ -98,6 +98,12 @@ public class EShopCategoryFragment extends Fragment implements ExpandableListVie
         if (taskGetCategoryList != null && taskGetCategoryList.getStatus() != AsyncTask.Status.FINISHED) {
             taskGetCategoryList.cancel(true);
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        new FetchbadgeNumber().execute();
     }
 
     @Override

@@ -163,4 +163,5 @@ public final class AppConstants {
     public static final String SORTDESC = "sort_desc";
     public static final String addingToCart="Adding to cart...";
     public static final String COUNTROW = "count_row";
+    public static final String PROD_ID = "prod_id";
 }
