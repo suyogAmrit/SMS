@@ -31,9 +31,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Pintu on 9/2/2016.
- */
 public class InsuranceRequestActivity extends AppCompatActivity {
     Toolbar toolbar;
     ConnectionClass connectionClass;
