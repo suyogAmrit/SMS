@@ -81,7 +81,7 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".LawyerDetailsActivity"/>
         <activity android:name=".BookLawyerActivity"/>
-
+<activity android:name=".GroceryListActivity"/>
     </application>
 
 </manifest>

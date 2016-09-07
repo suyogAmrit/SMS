@@ -1,6 +1,7 @@
 package com.suyogcomputech.app_fragments;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -22,6 +23,8 @@ import com.suyogcomputech.helper.EGroceryCategory;
 import com.suyogcomputech.helper.EGrocerySubCategory;
 import com.suyogcomputech.helper.EShopCategory;
 import com.suyogcomputech.helper.Grocery;
+import com.suyogcomputech.helper.StringWithTag;
+import com.suyogcomputech.sms.GroceryListActivity;
 import com.suyogcomputech.sms.R;
 
 import org.json.JSONArray;
@@ -69,6 +72,16 @@ public class GroceryFragment extends Fragment implements ExpandableListView.OnCh
 
     @Override
     public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+        String catId=list.get(groupPosition).getCatId();
+        String subCatId=list.get(groupPosition).getSubCategories().get(childPosition).getSubcatId();
+        String subcatdesc=list.get(groupPosition).getSubCategories().get(childPosition).getSubCatDesc();
+
+        Intent intent=new Intent(getActivity(),GroceryListActivity.class);
+        intent.putExtra(AppConstants.CATID,catId);
+        intent.putExtra(AppConstants.SUBCATID,subCatId);
+        intent.putExtra(AppConstants.SUBCATDESC,subcatdesc);
+        startActivity(intent);
+
         return false;
     }
 
@@ -130,6 +143,7 @@ public class GroceryFragment extends Fragment implements ExpandableListView.OnCh
             super.onPostExecute(eGroceryCategories);
             dialog.dismiss();
             Log.i("Size", String.valueOf(eGroceryCategories.get(0).getSubCategories().size()));
+
             try {
                 list = eGroceryCategories;
                 GroceryAdapter adapter = new GroceryAdapter(getActivity(), list);
@@ -140,7 +154,7 @@ public class GroceryFragment extends Fragment implements ExpandableListView.OnCh
                 Toast.makeText(getActivity(), AppConstants.TRYAGAIN, Toast.LENGTH_SHORT).show();
             }
         }
-
+        @Override
         protected void onPreExecute(){
             super.onPreExecute();
             dialog = new ProgressDialog(getActivity());
@@ -148,7 +162,6 @@ public class GroceryFragment extends Fragment implements ExpandableListView.OnCh
             dialog.setMessage(AppConstants.CATMSG);
             dialog.show();
         }
-
     }
 }
 
