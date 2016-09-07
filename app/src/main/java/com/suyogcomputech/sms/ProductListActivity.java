@@ -328,6 +328,13 @@ public class ProductListActivity extends AppCompatActivity {
             }
         }
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        new FetchbadgeNumber().execute();
+    }
+
     private class FetchbadgeNumber extends AsyncTask<Void, Void, Integer> {
         @Override
         protected void onPreExecute() {

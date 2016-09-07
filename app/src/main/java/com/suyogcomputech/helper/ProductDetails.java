@@ -16,6 +16,16 @@ public class ProductDetails implements Parcelable{
     String offerStatus;
     String imageStatus;
     String sellerName;
+
+    public String getSizeProduct() {
+        return sizeProduct;
+    }
+
+    public void setSizeProduct(String sizeProduct) {
+        this.sizeProduct = sizeProduct;
+    }
+
+    String sizeProduct;
     ArrayList<String> images;
     ArrayList<String> sizes;
     ArrayList<Integer> sizeAvailable;

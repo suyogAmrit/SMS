@@ -43,7 +43,7 @@ import java.sql.Statement;
  * Created by suyogcomputech on 31/08/16.
  */
 public class ProductDetailsActivity extends AppCompatActivity {
-    String productId;
+    String productSize;
     //GetProductDetails taskGetProductDetails;
     ViewPager imgPager;
     private TextView product_title, product_price, product_cutting_price, productDiscount, product_offer_desc, sizeWithText;
@@ -54,10 +54,13 @@ public class ProductDetailsActivity extends AppCompatActivity {
     ProductDetails productDetails;
     private BadgeStyle style = ActionItemBadge.BadgeStyles.RED.getStyle();
     private int badgeCount = 0;
+    int selectedId=0;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        productSize="";
         setContentView(R.layout.activity_product_details);
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
@@ -86,9 +89,9 @@ public class ProductDetailsActivity extends AppCompatActivity {
             taskGetProductDetails = new GetProductDetails();
             taskGetProductDetails.execute();
         }*/
-        if (AppHelper.isConnectingToInternet(ProductDetailsActivity.this)) {
-            new FetchbadgeNumber().execute();
-        }
+//        if (AppHelper.isConnectingToInternet(ProductDetailsActivity.this)) {
+//            new FetchbadgeNumber().execute();
+//        }
         productDetails = getIntent().getParcelableExtra(AppConstants.EXTRA_PROCUCT_DETAILS);
         Log.v("", "");
         updateUi();
@@ -132,37 +135,45 @@ public class ProductDetailsActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.small) {
                     if (productDetails.getSizeAvailable().get(0) == 0) {
+
                         small.setEnabled(false);
                         small.setSelected(false);
                         sizeWithText.setText("Size " + productDetails.getSizes().get(0));
                     } else {
+                        productSize="S";
                         sizeWithText.setText("Size    Only " + productDetails.getSizeAvailable().get(0) + " left");
                     }
                 }
                 if (checkedId == R.id.mideuim) {
                     if (productDetails.getSizeAvailable().get(1) == 0) {
+
                         small.setEnabled(false);
                         small.setSelected(false);
                         sizeWithText.setText("Size " + productDetails.getSizes().get(1));
                     } else {
+                        productSize="M";
                         sizeWithText.setText("Size    Only " + productDetails.getSizeAvailable().get(1) + " left");
                     }
                 }
                 if (checkedId == R.id.large) {
                     if (productDetails.getSizeAvailable().get(2) == 0) {
+
                         small.setEnabled(false);
                         small.setSelected(false);
                         sizeWithText.setText("Size " + productDetails.getSizes().get(2));
                     } else {
+                        productSize="L";
                         sizeWithText.setText("Size    Only " + productDetails.getSizeAvailable().get(2) + " left");
                     }
                 }
                 if (checkedId == R.id.extraLarge) {
                     if (productDetails.getSizeAvailable().get(3) == 0) {
+
                         small.setEnabled(false);
                         small.setSelected(false);
                         sizeWithText.setText("Size " + productDetails.getSizes().get(3));
                     } else {
+                        productSize="XL";
                         sizeWithText.setText("Size    Only " + productDetails.getSizeAvailable().get(3) + " left");
                     }
                 }
@@ -172,15 +183,19 @@ public class ProductDetailsActivity extends AppCompatActivity {
                         small.setSelected(false);
                         sizeWithText.setText("Size " + productDetails.getSizes().get(4));
                     } else {
+                        productSize="XXL";
+
                         sizeWithText.setText("Size    Only " + productDetails.getSizeAvailable().get(4) + " left");
                     }
                 }
                 if (checkedId == R.id.tripleExtraLarge) {
                     if (productDetails.getSizeAvailable().get(5) == 0) {
+
                         small.setEnabled(false);
                         small.setSelected(false);
                         sizeWithText.setText("Size " + productDetails.getSizes().get(5));
                     } else {
+                        productSize="XXXL";
                         sizeWithText.setText("Size    Only " + productDetails.getSizeAvailable().get(5) + " left");
                     }
                 }
@@ -203,9 +218,15 @@ public class ProductDetailsActivity extends AppCompatActivity {
         addToCartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AddCartTask().execute();
+                selectedId = productSizeRadioGroup.getCheckedRadioButtonId();
+                if (productSizeRadioGroup.getCheckedRadioButtonId()==-1){
+                    Toast.makeText(ProductDetailsActivity.this, "Please select Size", Toast.LENGTH_SHORT).show();
+                }else {
+                    new AddCartTask().execute();
+                }
             }
         });
+
     }
 
     @Override
@@ -224,6 +245,9 @@ public class ProductDetailsActivity extends AppCompatActivity {
             return true;
         }
         if (item.getItemId() == R.id.addcart) {
+            Intent intent = new Intent(ProductDetailsActivity.this,ShoppingCartItemActivity.class);
+            intent.putExtra(AppConstants.PROD_ID,productDetails.getId());
+            startActivity(intent);
             return true;
         }
         return false;
@@ -247,13 +271,24 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 Connection connection = connectionClass.connect();
                 SharedPreferences sharedpreferences = getSharedPreferences(AppConstants.USERPREFS, Context.MODE_PRIVATE);
                 String uniqueUserId = sharedpreferences.getString(AppConstants.USERID, AppConstants.NOT_AVAILABLE);
-                String query = "insert into Eshop_cart_tb (user_id,prod_id,Quantity,Status) values ('" + uniqueUserId + "','" + productDetails.getId() + "','" + productDetails.getMaxQtyInCart() + "','" + productDetails.getStatus() + "');";
-                //   Statement statement = connection.createStatement();
+                String query="update Eshop_cart_tb set Quantity=Quantity+1\n" +
+                        "where user_id='"+uniqueUserId+"' and prod_id='"+productDetails.getId()+"' and size='"+productSize+"'";
+
                 Log.i("query", query);
                 PreparedStatement statement = connection.prepareStatement(query);
-                //ResultSet resultSet = statement.executeQuery(query);
                 long resSet = statement.executeUpdate();
-                if (resSet > 0) {
+                Log.i("Result", String.valueOf(resSet));
+                if (resSet <= 0) {
+                    String insertQuery = "insert into Eshop_cart_tb (user_id,prod_id,Quantity,Status,size) values ('" + uniqueUserId + "','" + productDetails.getId() + "','" + 1 + "','" + productDetails.getStatus()+ "','" +productSize +"'" + ");";
+                    PreparedStatement statementInsert = connection.prepareStatement(insertQuery);
+                    long resSetInsert = statementInsert.executeUpdate();
+                    Log.i("Result", String.valueOf(resSetInsert));
+                    if (resSetInsert>0){
+                        connection.close();
+                        return true;
+                    }
+                }else {
+                    connection.close();
                     return true;
                 }
             } catch (SQLException e) {
@@ -270,6 +305,14 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 Toast.makeText(ProductDetailsActivity.this, "Item Added successfully", Toast.LENGTH_SHORT).show();
             }
             dialog.dismiss();
+            new FetchbadgeNumber().execute();
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (AppHelper.isConnectingToInternet(ProductDetailsActivity.this)) {
             new FetchbadgeNumber().execute();
         }
     }

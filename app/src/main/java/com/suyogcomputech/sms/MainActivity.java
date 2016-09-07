@@ -14,7 +14,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
@@ -85,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements ExpandableListVie
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.item_samplebadge) {
-            Intent i = new Intent(MainActivity.this, ShoppingCartItem.class);
+            Intent i = new Intent(MainActivity.this, ShoppingCartItemActivity.class);
             startActivity(i);
         }
         return true;
