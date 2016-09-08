@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbarEditProduct"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    <TextView
+        android:id="@+id/txtBrandName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbarEditProduct"
+        android:padding="7dp"
+        android:text="Item Brand"
+        android:textSize="17sp" />
+
+    <LinearLayout
+        android:id="@+id/linSize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtBrandName"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/toolbarEditProduct"
+            android:padding="7dp"
+            android:text=" Select size"
+            android:textSize="17sp" />
+
+        <RadioGroup
+            android:id="@+id/product_size_radio_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rd_bg"
+                android:button="@null"
+                android:checked="false"
+                android:gravity="center"
+                android:textSize="12sp" />
+
+            <RadioButton
+                android:id="@+id/mideuim"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/rd_bg"
+                android:button="@null"
+                android:checked="false"
+                android:gravity="center"
+                android:textSize="12sp" />
+
+            <RadioButton
+                android:id="@+id/large"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/rd_bg"
+                android:button="@null"
+                android:checked="false"
+                android:gravity="center"
+                android:textSize="12sp" />
+
+            <RadioButton
+                android:id="@+id/extraLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/rd_bg"
+                android:button="@null"
+                android:checked="false"
+                android:gravity="center"
+                android:textSize="12sp" />
+
+            <RadioButton
+                android:id="@+id/doubleExtraLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/rd_bg"
+                android:button="@null"
+                android:checked="false"
+                android:gravity="center"
+                android:textSize="12sp" />
+
+            <RadioButton
+                android:id="@+id/tripleExtraLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/rd_bg"
+                android:button="@null"
+                android:checked="false"
+                android:gravity="center"
+                android:textSize="12sp" />
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linSpn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linSize"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/toolbarEditProduct"
+            android:padding="7dp"
+            android:text="Select Quantity"
+            android:textSize="17sp" />
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/spnQuantity"></Spinner>
+    </LinearLayout>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linSpn"
+        android:layout_margin="7dp"
+        android:text="Edit"
+        android:background="@drawable/button_booknow"
+        android:textSize="17sp"
+        android:textColor="@color/white"
+        android:onClick="btnEditProduct"/>
+
+</RelativeLayout>

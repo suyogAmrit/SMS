@@ -65,7 +65,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");
         product_title = (TextView) findViewById(R.id.product_title);
         product_price = (TextView) findViewById(R.id.product_price);
