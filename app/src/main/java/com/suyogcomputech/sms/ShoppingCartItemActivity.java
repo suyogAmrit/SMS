@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.suyogcomputech.adapter.CartItemAdapter;
@@ -42,8 +43,8 @@ public class ShoppingCartItemActivity extends AppCompatActivity{
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        productId=getIntent().getExtras().getString(AppConstants.PROD_ID);
-        new FetchCartItems().execute();
+        //productId=getIntent().getExtras().getString(AppConstants.PROD_ID);
+            new FetchCartItems().execute();
     }
 
     @Override
@@ -72,10 +73,10 @@ public class ShoppingCartItemActivity extends AppCompatActivity{
                         "o.to_date,o.offer_per from Eshop_Prod_table as p\n" +
                         "inner join Eshop_cart_tb as e on(p.prod_id=e.prod_id)\n" +
                         "inner join Eshop_Offer_tb as o on(p.prod_id=o.prod_id)\n" +
-                        "where p.prod_id='"+productId+"' and e.Status=1 and e.user_id='"+findUserId()+"'";
+                        " and e.Status=1 and e.user_id='"+findUserId()+"'";
+                Log.v("Query",query);
                 Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
-
                 return resultSet;
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -89,7 +90,6 @@ public class ShoppingCartItemActivity extends AppCompatActivity{
             try {
                 list=new ArrayList<>();
                 while (rs.next()){
-
                     ProductDetails details=new ProductDetails();
                     details.setTitle(rs.getString("prod_title"));
                     details.setBrand(rs.getString("prod_brand"));

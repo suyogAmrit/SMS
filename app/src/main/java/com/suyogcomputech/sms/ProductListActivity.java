@@ -3,6 +3,7 @@ package com.suyogcomputech.sms;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -52,6 +53,8 @@ public class ProductListActivity extends AppCompatActivity {
     private ArrayList<ProductDetails> productDetailList, productDetailsArrayList, productDetailsesnew, productDetailsesListOfData;
     String query;
     RadioGroup radioGroup;
+    ProgressDialog dialog;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,6 +77,7 @@ public class ProductListActivity extends AppCompatActivity {
         GridLayoutManager glm = new GridLayoutManager(ProductListActivity.this, 2, GridLayoutManager.VERTICAL, false);
         rvPdroducts.setLayoutManager(glm);
         rvPdroducts.setAdapter(adapter);
+        dialog = new ProgressDialog(ProductListActivity.this);
         if (AppHelper.isConnectingToInternet(ProductListActivity.this)) {
             taskGetProducts = new GetProducts();
             taskGetProducts.execute();
@@ -135,6 +139,11 @@ public class ProductListActivity extends AppCompatActivity {
         }
         if (item.getItemId() == R.id.item_sort) {
             showProductSortDialog();
+            return true;
+        }
+        if (item.getItemId()==R.id.item_samplebadge){
+            Intent intent = new Intent(ProductListActivity.this,ShoppingCartItemActivity.class);
+            startActivity(intent);
             return true;
         }
         return false;
@@ -200,14 +209,22 @@ public class ProductListActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = shr.edit();
         editor.clear();
         editor.apply();
+        if ( dialog!=null && dialog.isShowing() ){
+            dialog.cancel();
+        }
     }
-    private class GetProducts extends AsyncTask<Void, Void, ArrayList<ProductDetails>> {
-        ProgressDialog dialog;
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if ( dialog!=null && dialog.isShowing() ){
+            dialog.cancel();
+        }
+    }
 
+    private class GetProducts extends AsyncTask<Void, Void, ArrayList<ProductDetails>> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog = new ProgressDialog(ProductListActivity.this);
             dialog.setMessage(AppConstants.dialog_title);
             dialog.setMessage(AppConstants.PRDMSG);
             dialog.show();

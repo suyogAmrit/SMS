@@ -84,10 +84,11 @@ public class MainActivity extends AppCompatActivity implements ExpandableListVie
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.item_samplebadge) {
-            Intent i = new Intent(MainActivity.this, ShoppingCartItemActivity.class);
-            startActivity(i);
+            Intent intent = new Intent(MainActivity.this,ShoppingCartItemActivity.class);
+            startActivity(intent);
+           return true;
         }
-        return true;
+        return false;
     }
 
 

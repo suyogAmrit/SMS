@@ -246,7 +246,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         }
         if (item.getItemId() == R.id.addcart) {
             Intent intent = new Intent(ProductDetailsActivity.this,ShoppingCartItemActivity.class);
-            intent.putExtra(AppConstants.PROD_ID,productDetails.getId());
+            //intent.putExtra(AppConstants.PROD_ID,productDetails.getId());
             startActivity(intent);
             return true;
         }

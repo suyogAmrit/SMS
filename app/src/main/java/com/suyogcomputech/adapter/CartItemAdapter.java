@@ -43,7 +43,7 @@ public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.CartV
         holder.getLayoutPosition();
 
         holder.txtBrandName.setText(myItem.getBrand()+" "+myItem.getTitle());
-        holder.txtBrandSize.setText(myItem.getSizeProduct());
+        holder.txtBrandSize.setText("Size "+myItem.getSizeProduct());
         holder.txtDisPer.setText(myItem.getOfferPer()+"% off");
         holder.txtNo.setText(myItem.getQuantity());
         Picasso.with(context).load(myItem.getMainImage()).into(holder.imgProduct);

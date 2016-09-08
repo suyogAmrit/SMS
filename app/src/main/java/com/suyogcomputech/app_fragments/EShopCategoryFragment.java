@@ -27,6 +27,7 @@ import com.suyogcomputech.helper.AppHelper;
 import com.suyogcomputech.helper.ConnectionClass;
 import com.suyogcomputech.helper.EShopCategory;
 import com.suyogcomputech.helper.EShopSubCategory;
+import com.suyogcomputech.helper.ProductDetails;
 import com.suyogcomputech.sms.ProductListActivity;
 import com.suyogcomputech.sms.R;
 import com.suyogcomputech.sms.ShoppingCartItemActivity;
@@ -69,15 +70,11 @@ public class EShopCategoryFragment extends Fragment implements ExpandableListVie
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.item_samplebadge) {
-            Intent i = new Intent(getActivity(), ShoppingCartItemActivity.class);
-            startActivity(i);
+            Intent intent = new Intent(getActivity(),ShoppingCartItemActivity.class);
+            startActivity(intent);
+            return true;
         }
-        return true;
-    }
-
-    public void addItemToCart(String name) {
-        badgeCount++;
-        getActivity().invalidateOptionsMenu();
+        return false;
     }
 
     @Nullable
@@ -207,13 +204,10 @@ public class EShopCategoryFragment extends Fragment implements ExpandableListVie
             try {
                 ConnectionClass connectionClass = new ConnectionClass();
                 Connection connection = connectionClass.connect();
-                SharedPreferences sharedpreferences = getActivity().getSharedPreferences(AppConstants.USERPREFS, Context.MODE_PRIVATE);
-                String uniqueUserId = sharedpreferences.getString(AppConstants.USERID, AppConstants.NOT_AVAILABLE);
-                String query = "SELECT COUNT(*) as count_row FROM Eshop_cart_tb where " + AppConstants.USERID + "='" + uniqueUserId + "'";
+                String query = "SELECT COUNT(*) as count_row FROM Eshop_cart_tb where " + AppConstants.USERID + "='" + findUserId() + "'";
                 Log.i("Query", query);
                 Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
-//                    badgeCount = resultSet.getRow();
                 resultSet.next();
                 String count = resultSet.getString("count_row");
                 Log.v("count", count);
@@ -231,5 +225,10 @@ public class EShopCategoryFragment extends Fragment implements ExpandableListVie
             super.onPostExecute(integer);
             getActivity().invalidateOptionsMenu();
         }
+    }
+    private String findUserId(){
+        SharedPreferences sharedpreferences = getActivity().getSharedPreferences(AppConstants.USERPREFS, Context.MODE_PRIVATE);
+        String uniqueUserId = sharedpreferences.getString(AppConstants.USERID, AppConstants.NOT_AVAILABLE);
+        return uniqueUserId;
     }
 }

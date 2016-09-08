@@ -29,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText edPassword, edUserName;
     String uId, psw, name, emailId, uniqueId, type, available, result;
     Login taskLogin;
+    ProgressDialog dialog;
 
     public final static boolean isValidEmail(CharSequence target) {
         return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
@@ -40,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         edUserName = (EditText) findViewById(R.id.edUserId);
         edPassword = (EditText) findViewById(R.id.edPsw);
-
+        dialog = new ProgressDialog(LoginActivity.this);
 
     }
 
@@ -75,13 +76,27 @@ public class LoginActivity extends AppCompatActivity {
         //}
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if ( dialog!=null && dialog.isShowing() ){
+            dialog.cancel();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if ( dialog!=null && dialog.isShowing() ){
+            dialog.cancel();
+        }
+    }
+
     private class Login extends AsyncTask<Void, Void, Boolean> {
-        ProgressDialog dialog;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog = new ProgressDialog(LoginActivity.this);
             dialog.setTitle(AppConstants.progress_dialog_title);
             dialog.setMessage(AppConstants.processed_report);
             dialog.show();
