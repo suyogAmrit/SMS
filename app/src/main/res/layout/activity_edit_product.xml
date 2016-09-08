@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent">
 
     <android.support.v7.widget.Toolbar
@@ -15,7 +16,6 @@
         android:id="@+id/txtBrandName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbarEditProduct"
         android:padding="7dp"
         android:text="Item Brand"
         android:textSize="17sp" />
@@ -123,19 +123,19 @@
             android:text="Select Quantity"
             android:textSize="17sp" />
         <Spinner
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/spnQuantity"></Spinner>
     </LinearLayout>
     <Button
+        android:id="@+id/saveButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/linSpn"
         android:layout_margin="7dp"
-        android:text="Edit"
+        android:text="Save"
         android:background="@drawable/button_booknow"
         android:textSize="17sp"
-        android:textColor="@color/white"
-        android:onClick="btnEditProduct"/>
+        android:textColor="@color/white" />
 
-</RelativeLayout>
+</LinearLayout>

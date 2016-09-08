@@ -134,7 +134,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.small) {
                     if (productDetails.getSizeAvailable().get(0) == 0) {
-
                         small.setEnabled(false);
                         small.setSelected(false);
                         sizeWithText.setText("Size " + productDetails.getSizes().get(0));

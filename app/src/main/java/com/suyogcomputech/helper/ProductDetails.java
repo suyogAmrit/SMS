@@ -17,6 +17,16 @@ public class ProductDetails implements Parcelable{
     String imageStatus;
     String sellerName;
 
+    public String getSerielNo() {
+        return serielNo;
+    }
+
+    public void setSerielNo(String serielNo) {
+        this.serielNo = serielNo;
+    }
+
+    String serielNo;
+
     public String getSizeProduct() {
         return sizeProduct;
     }
@@ -65,6 +75,8 @@ public class ProductDetails implements Parcelable{
         features = in.readString();
         otherDetails = in.readString();
         sizeAvailable = (ArrayList<Integer>) in.readSerializable();
+        sizeProduct = in.readString();
+        serielNo = in.readString();
     }
 
     @Override
@@ -97,6 +109,8 @@ public class ProductDetails implements Parcelable{
         dest.writeString(features);
         dest.writeString(otherDetails);
         dest.writeSerializable(sizeAvailable);
+        dest.writeString(sizeProduct);
+        dest.writeString(serielNo);
     }
     @Override
     public int describeContents() {
