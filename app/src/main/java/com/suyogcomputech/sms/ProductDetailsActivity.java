@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,6 +56,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private BadgeStyle style = ActionItemBadge.BadgeStyles.RED.getStyle();
     private int badgeCount = 0;
     int selectedId=0;
+    private RatingBar ratingProduct;
 
 
     @Override
@@ -83,6 +85,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         product_frame = (FrameLayout) findViewById(R.id.product_frame);
         imgPager = (ViewPager) findViewById(R.id.image_pager);
         addToCartButton = (Button) findViewById(R.id.addToCartButton);
+        ratingProduct = (RatingBar)findViewById(R.id.ratingProduct);
         /*productId = getIntent().getExtras().getString(AppConstants.PRDID);
         if (AppHelper.isConnectingToInternet(ProductDetailsActivity.this)) {
             taskGetProductDetails = new GetProductDetails();
@@ -102,6 +105,12 @@ public class ProductDetailsActivity extends AppCompatActivity {
         CirclePageIndicator indicator = (CirclePageIndicator) findViewById(R.id.indicator);
         indicator.setViewPager(imgPager);
         Log.d("", productDetails.getImages().get(0));
+        if (productDetails.getRating()==0){
+            ratingProduct.setVisibility(View.GONE);
+        }else {
+            ratingProduct.setVisibility(View.VISIBLE);
+            ratingProduct.setRating(productDetails.getRating());
+        }
         product_title.setText(productDetails.getBrand() + " " + productDetails.getTitle());
         product_cutting_price.setText(AppConstants.RUPEESYM + productDetails.getPrice());
         productDiscount.setText(Integer.valueOf(productDetails.getOfferPer()) + "% off");
