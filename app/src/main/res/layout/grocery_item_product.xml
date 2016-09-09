@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/background"
+    android:padding="2dp">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/item_prod_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/iv_product"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fresco:placeholderImage="@android:drawable/ic_menu_gallery" />
+
+            <TextView
+                android:id="@+id/tv_prod_brand"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iv_product"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="1dp"
+                android:maxLines="1"
+                android:text="BRAND"
+                android:textColor="@color/mygrey"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/tv_prod_brand"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="1dp"
+                android:id="@+id/lin">
+                <!--<TextView-->
+                    <!--android:id="@+id/tv_prod_price"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="PRICE"-->
+                    <!--android:textStyle="bold"-->
+                    <!--android:textColor="@color/mygrey"-->
+                    <!--/>-->
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:id="@+id/offer_frame">
+                    <!--<View-->
+                        <!--android:layout_width="50dp"-->
+                        <!--android:layout_height="1dp"-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:background="@color/black"/>-->
+                    <TextView
+                        android:id="@+id/productCutPrice"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:text="rs 949"
+                        android:textSize="13sp" />
+                </FrameLayout>
+
+                <!--<TextView-->
+                    <!--android:id="@+id/tv_prod_offer"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_alignBaseline="@+id/tv_prod_price"-->
+                    <!--android:layout_toEndOf="@+id/tv_prod_price"-->
+                    <!--android:text="offer"-->
+                    <!--android:layout_marginLeft="3dp"-->
+                    <!--android:textSize="16sp"-->
+                    <!--android:textColor="@color/maroon"/>-->
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/tv_prod_sort_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/lin"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="1dp"
+                android:maxLines="1"
+                android:text="short desc"
+                android:textSize="14sp"
+                android:textColor="@color/mylightgrey"/>
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>
