@@ -112,10 +112,11 @@ public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.ViewH
             TotalViewHolder totalViewHolder = (TotalViewHolder) holder;
             double amount = 0;
             for (int j=0;j<myItems.size();j++){
-                amount = amount + Double.valueOf(myItems.get(j).getPrice());
+                amount = amount + Double .valueOf(myItems.get(j).getPrice());
             }
-            totalViewHolder.txtCartTotal.setText(AppConstants.RUPEESYM+amount);
-            totalViewHolder.txtTotalPayble.setText(AppConstants.RUPEESYM+amount);
+            double amountlast = amount+ Double.valueOf(myItems.get(myItems.size()-1).getPrice());
+            totalViewHolder.txtCartTotal.setText(AppConstants.RUPEESYM+amountlast);
+            totalViewHolder.txtTotalPayble.setText(AppConstants.RUPEESYM+amountlast);
         }
      }
 
