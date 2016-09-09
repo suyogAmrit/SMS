@@ -197,7 +197,7 @@ public class ShoppingCartItemActivity extends AppCompatActivity{
         return uniqueUserId;
     }
     public void totalPriceCount(){
-        toatlBillCardLayout.setVisibility(View.VISIBLE);
+        toatlBillCardLayout.setVisibility(View.GONE);
         txtTotalPayble.setText(txtCartTotal.getText().toString());
         //txtSubTotal.setText(AppConstants.RUPEESYM+(Double.valueOf(txtCartTotal.getText().toString())-Double.valueOf(txtDiscountTotal.getText().toString())));
     }

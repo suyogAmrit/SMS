@@ -33,10 +33,12 @@ import java.util.ArrayList;
 /**
  * Created by Suyog on 9/7/2016.
  */
-public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.CartViewHolder>{
+public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.ViewHolder>{
     ArrayList<ProductDetails> myItems;
     private Context context;
     int focusedItem = 0;
+    public  static final int TYPE_ITEMS = 0;
+    public  static final int TYPE_CALCULATE = 1;
 
     public CartItemAdapter(Context context,ArrayList<ProductDetails> list) {
         this.context = context;
@@ -44,62 +46,90 @@ public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.CartV
     }
 
     @Override
-    public CartViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.item_product_details, parent, false);
-        return new CartViewHolder(view);
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+//        LayoutInflater inflater = LayoutInflater.from(context);
+//        View view = inflater.inflate(R.layout.item_product_details, parent, false);
+//        return new CartViewHolder(view);
+        View view;
+        if (viewType == TYPE_ITEMS){
+            view = LayoutInflater.from(context).inflate(R.layout.item_product_details,parent,false);
+            return new CartViewHolder(view);
+        }if (viewType == TYPE_CALCULATE){
+            view = LayoutInflater.from(context).inflate(R.layout.total_calculation_layout,parent,false);
+            return new TotalViewHolder(view);
+        }
+        return null;
     }
 
     @Override
-    public void onBindViewHolder(final CartViewHolder holder, int position) {
-        final ProductDetails myItem = myItems.get(position);
-        holder.itemView.setSelected(focusedItem == position);
-        holder.getLayoutPosition();
-        holder.txtBrandName.setText(myItem.getBrand()+" "+myItem.getTitle());
-        holder.txtBrandSize.setText("Size "+myItem.getSizeProduct());
-        holder.txtDisPer.setText("("+myItem.getOfferPer()+"% off)");
-        holder.txtNo.setText(myItem.getQuantity());
-        Picasso.with(context).load(myItem.getMainImage()).into(holder.imgProduct);
-        if (myItem.getFromDate() != null && myItem.getToDate() != null && AppHelper.compareDate(myItem.getFromDate(), myItem.getToDate())) {
-            double actualPrice = Double.valueOf(myItem.getPrice()) - (Double.valueOf(myItem.getPrice()) * Double.valueOf(myItem.getOfferPer())) / 100;
-            double finalPrice = actualPrice * Integer.valueOf(myItem.getQuantity());
-            holder.txtProdPrice.setText(AppConstants.RUPEESYM + finalPrice);
-            holder.frameItem.setVisibility(View.VISIBLE);
-            holder.txtDisPer.setVisibility(View.VISIBLE);
-        }else {
-            double finalRupee = Double.valueOf(myItem.getPrice()) * Integer.valueOf(myItem.getQuantity());
-            //holder.txtProdPrice.setText(AppConstants.RUPEESYM + Double.valueOf(myItem.getPrice()));
-            holder.txtProdPrice.setText(AppConstants.RUPEESYM + finalRupee);
-            holder.frameItem.setVisibility(View.GONE);
-            holder.txtDisPer.setVisibility(View.GONE);
-        }
-        //holder.txtProdPrice.setText(myItem.getPrice());
-        double finalAmount = Double.valueOf(myItem.getPrice()) * Integer.valueOf(myItem.getQuantity());
-       // holder.txtOffer.setText(myItem.getPrice());
-        holder.txtOffer.setText(""+finalAmount);
-        holder.editText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ProductDetails productDetail = myItems.get(holder.getAdapterPosition());
-                Intent intent = new Intent(context, EditSelectedProductActivity.class);
-                intent.putExtra(AppConstants.EXTRA_PRODUCT_EDIT,productDetail);
-                Log.i("ProdId",productDetail.getId());
-                context.startActivity(intent);
-            }
-        });
-        holder.removeText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((ShoppingCartItemActivity)context).deleteItem(myItem.getSerielNo());
+    public void onBindViewHolder(final ViewHolder holder, int position) {
+        if (holder instanceof CartViewHolder){
+                    CartViewHolder cartViewHolder = (CartViewHolder) holder;
+                final ProductDetails myItem = myItems.get(position);
+                holder.itemView.setSelected(focusedItem == position);
+                holder.getLayoutPosition();
+                    cartViewHolder.txtBrandName.setText(myItem.getBrand()+" "+myItem.getTitle());
+                    cartViewHolder.txtBrandSize.setText("Size "+myItem.getSizeProduct());
+                    cartViewHolder.txtDisPer.setText("("+myItem.getOfferPer()+"% off)");
+                    cartViewHolder.txtNo.setText(myItem.getQuantity());
+                Picasso.with(context).load(myItem.getMainImage()).into(cartViewHolder.imgProduct);
+                if (myItem.getFromDate() != null && myItem.getToDate() != null && AppHelper.compareDate(myItem.getFromDate(), myItem.getToDate())) {
+                    double actualPrice = Double.valueOf(myItem.getPrice()) - (Double.valueOf(myItem.getPrice()) * Double.valueOf(myItem.getOfferPer())) / 100;
+                    double finalPrice = actualPrice * Integer.valueOf(myItem.getQuantity());
+                    cartViewHolder.txtProdPrice.setText(AppConstants.RUPEESYM + finalPrice);
+                    cartViewHolder.frameItem.setVisibility(View.VISIBLE);
+                    cartViewHolder.txtDisPer.setVisibility(View.VISIBLE);
+                }else {
+                    double finalRupee = Double.valueOf(myItem.getPrice()) * Integer.valueOf(myItem.getQuantity());
+                    //holder.txtProdPrice.setText(AppConstants.RUPEESYM + Double.valueOf(myItem.getPrice()));
+                    cartViewHolder.txtProdPrice.setText(AppConstants.RUPEESYM + finalRupee);
+                    cartViewHolder.frameItem.setVisibility(View.GONE);
+                    cartViewHolder.txtDisPer.setVisibility(View.GONE);
+                }
+                //holder.txtProdPrice.setText(myItem.getPrice());
+                double finalAmount = Double.valueOf(myItem.getPrice()) * Integer.valueOf(myItem.getQuantity());
+               // holder.txtOffer.setText(myItem.getPrice());
+                    cartViewHolder.txtOffer.setText(""+finalAmount);
+                    cartViewHolder.editText.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ProductDetails productDetail = myItems.get(holder.getAdapterPosition());
+                        Intent intent = new Intent(context, EditSelectedProductActivity.class);
+                        intent.putExtra(AppConstants.EXTRA_PRODUCT_EDIT,productDetail);
+                        Log.i("ProdId",productDetail.getId());
+                        context.startActivity(intent);
+                    }
+                });
+                    cartViewHolder.removeText.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ((ShoppingCartItemActivity)context).deleteItem(myItem.getSerielNo());
 
+                    }
+                });
+        }
+        if (holder instanceof  TotalViewHolder){
+            TotalViewHolder totalViewHolder = (TotalViewHolder) holder;
+            double amount = 0;
+            for (int j=0;j<myItems.size();j++){
+                amount = amount + Double.valueOf(myItems.get(j).getPrice());
             }
-        });
+            totalViewHolder.txtCartTotal.setText(AppConstants.RUPEESYM+amount);
+            totalViewHolder.txtTotalPayble.setText(AppConstants.RUPEESYM+amount);
+        }
      }
 
     @Override
     public int getItemCount() {
-        return myItems.size();
+        return myItems.size()+1;
     }
+
+    @Override
+    public int getItemViewType(int position) {
+        //return super.getItemViewType(position);
+        return position==myItems.size() ? TYPE_CALCULATE:TYPE_ITEMS;
+    }
+
     public void totalPrice(){
         double price = 0;
         for (int k=0; k<myItems.size();k++){
@@ -107,7 +137,13 @@ public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.CartV
         }
         ShoppingCartItemActivity.txtCartTotal.setText(AppConstants.RUPEESYM+price);
     }
-    public class CartViewHolder extends RecyclerView.ViewHolder{
+    public double getSum(double sum){
+        for(ProductDetails data: myItems){
+            sum = sum+ Double.valueOf(data.getPrice());
+        }
+        return sum;
+    }
+    public class CartViewHolder extends ViewHolder{
         ImageView imgProduct;
         TextView txtBrandName,txtBrandSize,txtProdPrice,txtDisPer,txtNo,txtOffer,removeText,editText;
         FrameLayout frameItem;
@@ -123,6 +159,22 @@ public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.CartV
             frameItem = (FrameLayout)itemView.findViewById(R.id.frameItem);
             removeText = (TextView)itemView.findViewById(R.id.removeText);
             editText = (TextView)itemView.findViewById(R.id.editText);
+        }
+    }
+    public class TotalViewHolder extends ViewHolder{
+       TextView txtCartTotal,txtDiscountTotal,txtSubTotal,txtTotalPayble;
+        public TotalViewHolder(View itemView) {
+            super(itemView);
+            txtCartTotal = (TextView)itemView.findViewById(R.id.txtCartTotal);
+            txtDiscountTotal = (TextView)itemView.findViewById(R.id.txtDiscountTotal);
+            txtSubTotal = (TextView)itemView.findViewById(R.id.txtSubTotal);
+            txtTotalPayble = (TextView)itemView.findViewById(R.id.txtTotalPayble);
+        }
+    }
+    public static class ViewHolder extends RecyclerView.ViewHolder{
+
+        public ViewHolder(View itemView) {
+            super(itemView);
         }
     }
 
