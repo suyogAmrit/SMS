@@ -13,12 +13,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.suyogcomputech.adapter.CartItemAdapter;
 import com.suyogcomputech.helper.AppConstants;
@@ -50,6 +52,7 @@ public class EditSelectedProductActivity extends AppCompatActivity {
     String checkedItemSize;
     private ArrayList<ProductDetails>detailsArrayList;
     String prodId;
+    ArrayAdapter<Integer> adapter;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,67 +107,73 @@ public class EditSelectedProductActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId==R.id.small){
                     qtySpinnerValue.clear();
+                    adapter.clear();
                     checkedItemSize = "S";
                     small.setChecked(true);
                     int sizeS = detailsArrayList.get(0).getSizeAvailable().get(0);
                     for (int i=1;i<=sizeS;i++){
                         qtySpinnerValue.add(i);
                     }
-                    Log.i("","");
+                    adapter.notifyDataSetChanged();
                 }
                 if (checkedId==R.id.mideuim){
                     qtySpinnerValue.clear();
+                    adapter.clear();
                     checkedItemSize = "M";
                     medium.setChecked(true);
                     int sizeM = detailsArrayList.get(0).getSizeAvailable().get(1);
                     for (int i=1;i<=sizeM;i++){
                         qtySpinnerValue.add(i);
                     }
-                    Log.i("","");
+                    adapter.notifyDataSetChanged();
                 }
                 if (checkedId==R.id.large){
                     qtySpinnerValue.clear();
+                    adapter.clear();
                     checkedItemSize = "L";
                     large.setChecked(true);
                     int sizeL = detailsArrayList.get(0).getSizeAvailable().get(2);
                     for (int i=1;i<=sizeL;i++){
                         qtySpinnerValue.add(i);
                     }
-                    Log.i("","");
+                    adapter.notifyDataSetChanged();
                 }
                 if (checkedId==R.id.extraLarge){
                     qtySpinnerValue.clear();
+                    adapter.clear();
                     checkedItemSize = "XL";
                     extraLarge.setChecked(true);
                     int sizeXL = detailsArrayList.get(0).getSizeAvailable().get(3);
                     for (int i=1;i<=sizeXL;i++){
                         qtySpinnerValue.add(i);
                     }
-                    Log.i("","");
+                    adapter.notifyDataSetChanged();
                 }
                 if (checkedId==R.id.doubleExtraLarge){
                     qtySpinnerValue.clear();
+                    adapter.clear();
                     checkedItemSize = "XXL";
                     doubleExtraLarge.setChecked(true);
                     int sizeXXL = detailsArrayList.get(0).getSizeAvailable().get(4);
                     for (int i=1;i<=sizeXXL;i++){
                         qtySpinnerValue.add(i);
                     }
-                    Log.i("","");
+                    adapter.notifyDataSetChanged();
                 }
                 if (checkedId==R.id.tripleExtraLarge){
                     qtySpinnerValue.clear();
+                    adapter.clear();
                     checkedItemSize = "XXXL";
                     tripleExtraLarge.setChecked(true);
                     int sizeXXXL = detailsArrayList.get(0).getSizeAvailable().get(5);
                     for (int i=1;i<=sizeXXXL;i++){
                         qtySpinnerValue.add(i);
                     }
-                    Log.i("","");
+                    adapter.notifyDataSetChanged();
                 }
             }
         });
-        ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(this,android.R.layout.simple_spinner_dropdown_item,android.R.id.text1,qtySpinnerValue);
+        adapter = new ArrayAdapter<Integer>(EditSelectedProductActivity.this,android.R.layout.simple_spinner_item,android.R.id.text1,qtySpinnerValue);
         spnQuantity.setAdapter(adapter);
         //quantity = Integer.parseInt(spnQuantity.getSelectedItem().toString());
         saveButton.setOnClickListener(new View.OnClickListener() {

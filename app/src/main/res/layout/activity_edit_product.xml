@@ -123,8 +123,8 @@
             android:text="Select Quantity"
             android:textSize="17sp" />
         <Spinner
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
             android:id="@+id/spnQuantity"></Spinner>
     </LinearLayout>
     <Button
