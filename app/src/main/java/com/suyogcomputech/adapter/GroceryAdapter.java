@@ -16,6 +16,7 @@ import android.view.WindowManager;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
@@ -107,7 +108,9 @@ public class GroceryAdapter extends BaseExpandableListAdapter {
         }
         String desc = categoryArrayList.get(groupPosition).getSubCategories().get(childPosition).getSubCatDesc();
         holder.tvDesc.setText(desc);
-        RecyclerView.LayoutParams params = new RecyclerView.LayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.MATCH_PARENT));
+//        RecyclerView.LayoutParams params = new RecyclerView.LayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.MATCH_PARENT));
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+
 
         holder.tvDesc.setLayoutParams(params);
         holder.tvDesc.setGravity(Gravity.CENTER);

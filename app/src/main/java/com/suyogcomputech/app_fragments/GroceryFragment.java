@@ -49,8 +49,6 @@ import java.util.ArrayList;
  */
 public class GroceryFragment extends Fragment implements ExpandableListView.OnChildClickListener {
     ConnectionDetector detector;
-    RecyclerView rcvGrocery;
-    GroceryAdapter adapter;
     ArrayList<EGroceryCategory> list;
     ExpandableListView expLvCatgory;
 
@@ -59,7 +57,6 @@ public class GroceryFragment extends Fragment implements ExpandableListView.OnCh
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_eshop_category, container, false);
         detector = new ConnectionDetector(getActivity());
-        rcvGrocery = (RecyclerView) view.findViewById(R.id.rcvGrocery);
         expLvCatgory = (ExpandableListView) view.findViewById(R.id.exLvCategory);
         if (detector.isConnectingToInternet()) {
             new FetchFacilities().execute();

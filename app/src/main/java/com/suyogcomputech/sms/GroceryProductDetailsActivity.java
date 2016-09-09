@@ -14,6 +14,9 @@ import com.suyogcomputech.helper.AppConstants;
 import com.suyogcomputech.helper.ConnectionClass;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * Created by Suyog on 9/8/2016.
@@ -37,22 +40,42 @@ public class GroceryProductDetailsActivity extends AppCompatActivity {
 
     }
 
-    private class GroceryDetails extends AsyncTask<Void,Void,Void> {
+    private class GroceryDetails extends AsyncTask<Void,Void,ResultSet> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
+        protected void onPostExecute(ResultSet rs) {
+            super.onPostExecute(rs);
+
+            try {
+                while(rs.next())
+                {
+                    Log.i("ssss",rs.getString("prod_title"));
+                }
+//                if(rs.getRow()>0)
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
-        protected Void doInBackground(Void... params) {
-            ConnectionClass connectionClass = new ConnectionClass();
-            Connection connection = connectionClass.connect();
-            String query="select * from Grocery_Prod_table where prod_id="+id;
+        protected ResultSet doInBackground(Void... params) {
+            try {
+                ConnectionClass connectionClass = new ConnectionClass();
+                Connection connection = connectionClass.connect();
+                String query="select * from Grocery_Prod_table where prod_id="+id;
+                Statement statement = null;
+                statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery(query);
+                return resultSet;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
 
 
             return null;
