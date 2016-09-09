@@ -119,7 +119,6 @@ public class ProductListActivity extends AppCompatActivity {
         if (query.length() != 0) {
             for (ProductDetails productDetails1 : productDetailList) {
                 String text = productDetails1.getBrand().toLowerCase();
-                Log.d("", "");
                 if (text.contains(query)) {
                     productDetailsArrayList.add(productDetails1);
                 }

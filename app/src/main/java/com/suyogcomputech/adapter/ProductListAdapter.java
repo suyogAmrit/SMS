@@ -51,7 +51,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         display.getMetrics(metrics);
         width = metrics.widthPixels / 2;
         height = metrics.heightPixels / 5 * 2;
-
     }
 
     @Override
@@ -90,7 +89,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             public void onClick(View view) {
                 ProductDetails p1 = list.get(holder.getAdapterPosition());
                 Intent iProduct = new Intent(myContext, ProductDetailsActivity.class);
-                //iProduct.putExtra(AppConstants.PRDID, p1.getId());
                 iProduct.putExtra(AppConstants.EXTRA_PROCUCT_DETAILS,p1);
                 myContext.startActivity(iProduct);
             }
@@ -131,6 +129,5 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             ivImage.getLayoutParams().width = width;
             ivImage.getLayoutParams().height = height;
         }
-
     }
 }
