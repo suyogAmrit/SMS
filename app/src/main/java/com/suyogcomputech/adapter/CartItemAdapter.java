@@ -97,7 +97,7 @@ public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.ViewH
                         Intent intent = new Intent(context, EditSelectedProductActivity.class);
                         intent.putExtra(AppConstants.EXTRA_PRODUCT_EDIT,productDetail);
                         Log.i("ProdId",productDetail.getId());
-                        context.startActivity(intent);
+                        ((ShoppingCartItemActivity) context).startActivityForResult(intent, 1);
                     }
                 });
                     cartViewHolder.removeText.setOnClickListener(new View.OnClickListener() {

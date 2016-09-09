@@ -1,7 +1,9 @@
 package com.suyogcomputech.sms;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -202,4 +204,17 @@ public class ShoppingCartItemActivity extends AppCompatActivity{
         //txtSubTotal.setText(AppConstants.RUPEESYM+(Double.valueOf(txtCartTotal.getText().toString())-Double.valueOf(txtDiscountTotal.getText().toString())));
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+
+        if (requestCode == 1) {
+            if (resultCode == Activity.RESULT_OK) {
+                Log.i("ResultCode", "123");
+                new FetchCartItems().execute();
+            }
+        }
+    }
 }

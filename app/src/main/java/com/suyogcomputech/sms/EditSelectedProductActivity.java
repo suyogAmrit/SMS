@@ -1,5 +1,6 @@
 package com.suyogcomputech.sms;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -195,6 +196,7 @@ public class EditSelectedProductActivity extends AppCompatActivity {
                    new EditCartTask().execute();
             }
         });
+
     }
 
     @Override
@@ -311,6 +313,9 @@ public class EditSelectedProductActivity extends AppCompatActivity {
             try {
                 dialog.dismiss();
                 if (aBoolean){
+                    Intent intent = new Intent(EditSelectedProductActivity.this, ShoppingCartItemActivity.class);
+                    setResult(Activity.RESULT_OK, intent);
+                    finish();
                     Toast.makeText(EditSelectedProductActivity.this, "Data Inserted Successfully", Toast.LENGTH_SHORT).show();
                 }
             }catch (NullPointerException e){

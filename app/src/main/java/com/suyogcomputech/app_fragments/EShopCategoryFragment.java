@@ -213,10 +213,9 @@ public class EShopCategoryFragment extends Fragment implements ExpandableListVie
                 Log.v("count", count);
                 badgeCount = Integer.valueOf(count);
             } catch (SQLException e) {
-                Log.i("Except", e.getMessage());
+                Log.i("Except", e.getMessage());   
                 e.printStackTrace();
             }
-
             return null;
         }
 
