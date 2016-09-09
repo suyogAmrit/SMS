@@ -83,6 +83,7 @@
         <activity android:name=".BookLawyerActivity"/>
         <activity android:name=".GroceryListActivity"/>
         <activity android:name=".EditSelectedProductActivity"/>
+        <activity android:name=".GroceryProductDetailsActivity"/>
     </application>
 
 </manifest>
