@@ -10,19 +10,24 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.IntegerRes;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.suyogcomputech.adapter.CartItemAdapter;
 import com.suyogcomputech.helper.AppConstants;
+import com.suyogcomputech.helper.AppHelper;
 import com.suyogcomputech.helper.ConnectionClass;
 import com.suyogcomputech.helper.ProductDetails;
 
@@ -30,7 +35,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by Pintu on 7/27/2016.
@@ -45,15 +52,12 @@ public class ShoppingCartItemActivity extends AppCompatActivity{
     public TextView txtDiscountTotal,txtSubTotal,txtTotalPayble;
     ProgressDialog progressDialog;
     int slNo;
+    String orderId;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
-        toolbar = (Toolbar) findViewById(R.id.toolbarCart);
-        toolbar.setTitle("My Cart");
-        toolbar.setTitleTextColor(Color.WHITE);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+       setUpToolBar();
         toatlBillCardLayout = (CardView) findViewById(R.id.toatlBillCardLayout);
         txtCartTotal = (TextView)findViewById(R.id.txtCartTotal);
         txtDiscountTotal = (TextView)findViewById(R.id.txtDiscountTotal);
@@ -62,6 +66,22 @@ public class ShoppingCartItemActivity extends AppCompatActivity{
         progressDialog = new ProgressDialog(this);
         //productId=getIntent().getExtras().getString(AppConstants.PROD_ID);
             new FetchCartItems().execute();
+    }
+    private void setUpToolBar() {
+
+        toolbar = (Toolbar) findViewById(R.id.toolbarCart);
+        toolbar.setTitle("My Cart");
+        toolbar.setTitleTextColor(Color.WHITE);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+    }
+
+    private void placeOrder() {
+        if (AppHelper.isConnectingToInternet(ShoppingCartItemActivity.this)) {
+
+        } else
+            Toast.makeText(ShoppingCartItemActivity.this, AppConstants.dialog_message, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -216,5 +236,11 @@ public class ShoppingCartItemActivity extends AppCompatActivity{
                 new FetchCartItems().execute();
             }
         }
+    }
+
+    public String createUniqueUserId(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+        String currentDateandTime = sdf.format(new Date());
+        return currentDateandTime+findUserId();
     }
 }
