@@ -52,11 +52,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:id="@+id/offer_frame">
-                    <!--<View-->
-                        <!--android:layout_width="50dp"-->
-                        <!--android:layout_height="1dp"-->
-                        <!--android:layout_gravity="center"-->
-                        <!--android:background="@color/black"/>-->
+
                     <TextView
                         android:id="@+id/productCutPrice"
                         android:layout_width="50dp"
