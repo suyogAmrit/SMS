@@ -85,7 +85,6 @@ public class DoctorActivity extends AppCompatActivity {
                     list.add(doctor);
                 }
                 adapter = new DoctorAdapter(list, DoctorActivity.this);
-
                 rcvDoctor.setAdapter(adapter);
                 rcvDoctor.setHasFixedSize(true);
                 LinearLayoutManager glm = new LinearLayoutManager(DoctorActivity.this);

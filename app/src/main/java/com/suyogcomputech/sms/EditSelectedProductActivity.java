@@ -175,11 +175,24 @@ public class EditSelectedProductActivity extends AppCompatActivity {
         });
         adapter = new ArrayAdapter<Integer>(EditSelectedProductActivity.this,android.R.layout.simple_spinner_item,android.R.id.text1,qtySpinnerValue);
         spnQuantity.setAdapter(adapter);
+        spnQuantity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                quantity=Integer.parseInt(adapterView.getSelectedItem().toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
         //quantity = Integer.parseInt(spnQuantity.getSelectedItem().toString());
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    new EditCartTask().execute();
+                Log.i("Quantity",String.valueOf(quantity));
+                Log.i("Item Size",checkedItemSize);
+                   new EditCartTask().execute();
             }
         });
     }
@@ -262,7 +275,7 @@ public class EditSelectedProductActivity extends AppCompatActivity {
             }
         }
     }
-    private class EditCartTask extends AsyncTask<Void,Void,Boolean>{
+    private class  EditCartTask extends AsyncTask<Void,Void,Boolean>{
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -277,22 +290,33 @@ public class EditSelectedProductActivity extends AppCompatActivity {
                 ConnectionClass connectionClass = new ConnectionClass();
                 Connection connection = connectionClass.connect();
                 //Statement statement = connection.createStatement();
-                String query = "Update Eshop_cart_tb set"+quantity+"size='"+checkedItemSize+"' where slno="+productDetails.getSerielNo();
+                String query = "Update Eshop_cart_tb set Quantity="+quantity+",size='"+checkedItemSize+"' where slno="+productDetails.getSerielNo();
                 Log.v("Query",query);
                 PreparedStatement statement = connection.prepareStatement(query);
                 long resSet = statement.executeUpdate();
                 Log.i("Result", String.valueOf(resSet));
+                if (resSet==1){
+                    return true;
+                }
             }catch (SQLException e){
                 e.printStackTrace();
                 return null;
             }
-            return null;
+            return false;
         }
 
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-            dialog.dismiss();
+            try {
+                dialog.dismiss();
+                if (aBoolean){
+                    Toast.makeText(EditSelectedProductActivity.this, "Data Inserted Successfully", Toast.LENGTH_SHORT).show();
+                }
+            }catch (NullPointerException e){
+
+            }
+
             //finish();
         }
     }

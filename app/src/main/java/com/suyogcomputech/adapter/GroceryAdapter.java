@@ -1,17 +1,32 @@
 package com.suyogcomputech.adapter;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
+import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.Typeface;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.RecyclerView;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.android.volley.toolbox.ImageLoader;
+import com.squareup.picasso.Picasso;
 import com.suyogcomputech.helper.EGroceryCategory;
+import com.suyogcomputech.helper.Grocery;
+import com.suyogcomputech.helper.MySingleton;
 import com.suyogcomputech.sms.R;
+
 import java.util.ArrayList;
-import android.widget.LinearLayout.LayoutParams;
+import java.util.List;
 
 /**
  * Created by suyogcomputech on 12/08/16.
@@ -92,7 +107,7 @@ public class GroceryAdapter extends BaseExpandableListAdapter {
         }
         String desc = categoryArrayList.get(groupPosition).getSubCategories().get(childPosition).getSubCatDesc();
         holder.tvDesc.setText(desc);
-        LayoutParams params = new LayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+        RecyclerView.LayoutParams params = new RecyclerView.LayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.MATCH_PARENT));
 
         holder.tvDesc.setLayoutParams(params);
         holder.tvDesc.setGravity(Gravity.CENTER);
@@ -106,5 +121,73 @@ public class GroceryAdapter extends BaseExpandableListAdapter {
     class ViewHolder {
         TextView tvDesc;
     }
+//    List<Grocery> myItems;
+//    ArrayList<EGroceryCategory> myContext;
+//    ImageLoader myImageLoader;
+//    int focusedItem = 0;
+//    private int screenWidth;
+//
+//    public GroceryAdapter(FragmentActivity myItems, ArrayList<EGroceryCategory> myContext) {
+//        this.myItems = myItems;
+//        this.myContext = myContext;
+//        WindowManager wm = (WindowManager) myItems.getSystemService();
+//        Display display = wm.getDefaultDisplay();
+//        Point size = new Point();
+//        display.getSize(size);
+//        screenWidth = size.x;
+//    }
+//
+//    @Override
+//    public GroceryAdapter.ShowTariffsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+//        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.items_grocery, null);
+//        GroceryAdapter.ShowTariffsViewHolder holder = new GroceryAdapter.ShowTariffsViewHolder(v);
+//
+//        return holder;
+//    }
+//
+//    @Override
+//    public void onBindViewHolder(GroceryAdapter.ShowTariffsViewHolder holder, int position) {
+//        final Grocery myItem = myItems.get(position);
+//        holder.itemView.setSelected(focusedItem == position);
+//
+//        holder.getLayoutPosition();
+//
+//        myImageLoader = MySingleton.getInstance(myContext).getImageLoader();
+//        holder.tvName.setText(myItem.getName());
+//        BitmapFactory.Options opts = new BitmapFactory.Options();
+//        opts.inJustDecodeBounds = true;
+//        BitmapFactory.decodeFile(myItem.getImage_url(), opts);
+//        opts.inJustDecodeBounds = false;
+//
+//        Picasso.with(myContext)
+//                .load(myItem.getImage_url())
+//                .error(R.drawable.ic_empty)
+//                .placeholder(R.drawable.backgroundd)
+//                .resize(screenWidth / 2, 300)
+//                .centerCrop()
+//                .into((holder.imgGrocery));
+//
+//
+//    }
+//
+//    @Override
+//    public int getItemCount() {
+//        return (null != myItems ? myItems.size() : 0);
+//    }
+//
+//    public class ShowTariffsViewHolder extends RecyclerView.ViewHolder {
+//        TextView tvName, tvPrice;
+//        ImageView imgGrocery;
+//        Button btnAddItem;
+//
+//        public ShowTariffsViewHolder(View itemView) {
+//            super(itemView);
+//            this.tvName = (TextView) itemView.findViewById(R.id.txtItemName);
+//            this.imgGrocery = (ImageView) itemView.findViewById(R.id.img_Grocery);
+//            this.tvPrice = (TextView) itemView.findViewById(R.id.txtItemPrice);
+//            this.btnAddItem = (Button) itemView.findViewById(R.id.btnAdditems);
+//
+//        }
+//    }
 }
 
