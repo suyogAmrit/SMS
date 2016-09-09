@@ -7,7 +7,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.suyogcomputech.helper.AppConstants;
+import com.suyogcomputech.helper.AppHelper;
 import com.suyogcomputech.helper.ConnectionDetector;
 import com.suyogcomputech.helper.OnlineShopping;
 import com.suyogcomputech.sms.R;
@@ -26,6 +29,10 @@ public class MyOrderFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_my_order, container, false);
         detector=new ConnectionDetector(getActivity());
         rcvMyOrder=(RecyclerView)view.findViewById(R.id.rcvMyOrder);
+        if (AppHelper.isConnectingToInternet(getActivity())) {
+
+        } else
+            Toast.makeText(getActivity(), AppConstants.dialog_message, Toast.LENGTH_LONG).show();
 
         return view;
     }

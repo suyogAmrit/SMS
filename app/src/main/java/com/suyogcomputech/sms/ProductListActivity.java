@@ -244,9 +244,10 @@ public class ProductListActivity extends AppCompatActivity {
                     //productDetailsArrayList.addAll(productDetailList);
                     Log.v("", "" + productDetailsArrayList.size());
                 }
-//            }else {
-//                Toast.makeText(ProductListActivity.this,"No Product",Toast.LENGTH_SHORT).show();
-//            }
+        //    }
+        else {
+                Toast.makeText(ProductListActivity.this,"No Product",Toast.LENGTH_SHORT).show();
+            }
         }
 
         @Override
