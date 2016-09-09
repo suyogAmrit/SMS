@@ -62,7 +62,7 @@
             android:screenOrientation="portrait"
             android:parentActivityName=".MainActivity"/>
         <activity android:name=".DoctorActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity android:name=".DoctorDetailsActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".BookDoctorActivity"
@@ -79,11 +79,17 @@
             android:parentActivityName=".MainActivity"/>
         <activity android:name=".LawyerActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".LawyerDetailsActivity"/>
-        <activity android:name=".BookLawyerActivity"/>
-        <activity android:name=".GroceryListActivity"/>
-        <activity android:name=".EditSelectedProductActivity"/>
+        <activity android:name=".LawyerDetailsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".BookLawyerActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".GroceryListActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".EditSelectedProductActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".GroceryProductDetailsActivity"/>
+        <activity android:name=".OrderItemActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

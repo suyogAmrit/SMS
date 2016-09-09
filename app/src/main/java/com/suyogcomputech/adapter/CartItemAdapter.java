@@ -114,9 +114,9 @@ public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.ViewH
             for (int j=0;j<myItems.size();j++){
                 amount = amount + Double .valueOf(myItems.get(j).getPrice());
             }
-            double amountlast = amount+ Double.valueOf(myItems.get(myItems.size()-1).getPrice());
-            totalViewHolder.txtCartTotal.setText(AppConstants.RUPEESYM+amountlast);
-            totalViewHolder.txtTotalPayble.setText(AppConstants.RUPEESYM+amountlast);
+            //double amountlast = amount+ Double.valueOf(myItems.get(myItems.size()-1).getPrice());
+            totalViewHolder.txtCartTotal.setText(AppConstants.RUPEESYM+amount);
+            totalViewHolder.txtTotalPayble.setText(AppConstants.RUPEESYM+amount);
         }
      }
 

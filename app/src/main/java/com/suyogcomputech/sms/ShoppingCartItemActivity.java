@@ -146,6 +146,11 @@ public class ShoppingCartItemActivity extends AppCompatActivity{
 
     }
 
+    public void placeOrder(View view) {
+        Intent intent=new Intent(ShoppingCartItemActivity.this,OrderItemActivity.class);
+        startActivity(intent);
+    }
+
     private class FetchCartItems extends AsyncTask<Void,Void,ResultSet>{
         @Override
         protected void onPreExecute() {
@@ -238,9 +243,5 @@ public class ShoppingCartItemActivity extends AppCompatActivity{
         }
     }
 
-    public String createUniqueUserId(){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-        String currentDateandTime = sdf.format(new Date());
-        return currentDateandTime+findUserId();
-    }
+
 }
