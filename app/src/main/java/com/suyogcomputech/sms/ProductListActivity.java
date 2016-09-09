@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mikepenz.actionitembadge.library.ActionItemBadge;
 import com.mikepenz.actionitembadge.library.utils.BadgeStyle;
@@ -233,15 +234,19 @@ public class ProductListActivity extends AppCompatActivity {
         protected void onPostExecute(ArrayList<ProductDetails> productDetailses) {
             super.onPostExecute(productDetailses);
             dialog.dismiss();
-            if (productDetailses.size() > 0) {
-                adapter.addProducts(productDetailses);
-                productDetailList.addAll(productDetailses);
-                productDetailsArrayList = new ArrayList<>(productDetailList);
-                productDetailsesnew = new ArrayList<>();
-                productDetailsesnew.addAll(productDetailList);
-                //productDetailsArrayList.addAll(productDetailList);
-                Log.v("", "" + productDetailsArrayList.size());
-            }
+           // if (productDetailses!=null) {
+                if (productDetailses.size() > 0) {
+                    adapter.addProducts(productDetailses);
+                    productDetailList.addAll(productDetailses);
+                    productDetailsArrayList = new ArrayList<>(productDetailList);
+                    productDetailsesnew = new ArrayList<>();
+                    productDetailsesnew.addAll(productDetailList);
+                    //productDetailsArrayList.addAll(productDetailList);
+                    Log.v("", "" + productDetailsArrayList.size());
+                }
+//            }else {
+//                Toast.makeText(ProductListActivity.this,"No Product",Toast.LENGTH_SHORT).show();
+//            }
         }
 
         @Override
