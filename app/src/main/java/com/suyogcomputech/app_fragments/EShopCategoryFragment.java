@@ -100,7 +100,9 @@ public class EShopCategoryFragment extends Fragment implements ExpandableListVie
     @Override
     public void onStart() {
         super.onStart();
-        new FetchbadgeNumber().execute();
+        if (AppHelper.isConnectingToInternet(getActivity())) {
+            new FetchbadgeNumber().execute();
+        }
     }
 
     @Override

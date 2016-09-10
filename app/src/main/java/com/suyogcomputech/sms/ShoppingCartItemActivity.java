@@ -65,10 +65,13 @@ public class ShoppingCartItemActivity extends AppCompatActivity{
         txtTotalPayble = (TextView)findViewById(R.id.txtTotalPayble);
         progressDialog = new ProgressDialog(this);
         //productId=getIntent().getExtras().getString(AppConstants.PROD_ID);
+        if (AppHelper.isConnectingToInternet(ShoppingCartItemActivity.this)) {
             new FetchCartItems().execute();
+        }else {
+            Toast.makeText(ShoppingCartItemActivity.this,"No internet Connection",Toast.LENGTH_SHORT).show();
+        }
     }
     private void setUpToolBar() {
-
         toolbar = (Toolbar) findViewById(R.id.toolbarCart);
         toolbar.setTitle("My Cart");
         toolbar.setTitleTextColor(Color.WHITE);
@@ -76,14 +79,6 @@ public class ShoppingCartItemActivity extends AppCompatActivity{
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
-
-    private void placeOrder() {
-        if (AppHelper.isConnectingToInternet(ShoppingCartItemActivity.this)) {
-
-        } else
-            Toast.makeText(ShoppingCartItemActivity.this, AppConstants.dialog_message, Toast.LENGTH_LONG).show();
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
@@ -109,7 +104,6 @@ public class ShoppingCartItemActivity extends AppCompatActivity{
     }
 
     public void deleteItem(final String serielNo) {
-
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected void onPreExecute() {

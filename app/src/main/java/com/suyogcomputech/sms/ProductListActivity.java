@@ -9,8 +9,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -20,6 +22,8 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -86,6 +90,8 @@ public class ProductListActivity extends AppCompatActivity {
         productDetailsesListOfData = new ArrayList<>();
         if (AppHelper.isConnectingToInternet(ProductListActivity.this)) {
             new FetchbadgeNumber().execute();
+        }else {
+            Toast.makeText(ProductListActivity.this,"No internet Connection",Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -96,6 +102,10 @@ public class ProductListActivity extends AppCompatActivity {
         ActionItemBadge.update(ProductListActivity.this, menu.findItem(R.id.item_samplebadge), FontAwesome.Icon.faw_shopping_cart, style, badgeCount);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.item_search));
         //EditText editText = (EditText)searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        searchView.setQueryHint("Search...");
+        EditText editText = (EditText)searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        editText.setTextColor(getResources().getColor(R.color.white));
+        editText.setHintTextColor(getResources().getColor(R.color.white));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -104,7 +114,13 @@ public class ProductListActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                filter(newText);
+                //filter(newText);
+                AppCompatDialog dialog = new AppCompatDialog(ProductListActivity.this);
+                dialog.setTitle("gggg");
+                //dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                dialog.getWindow().getAttributes().verticalMargin = -0.4F;
+                dialog.setContentView(R.layout.serch_dilog);
+                dialog.show();
                 return false;
             }
         });
@@ -354,7 +370,11 @@ public class ProductListActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        new FetchbadgeNumber().execute();
+        if (AppHelper.isConnectingToInternet(ProductListActivity.this)) {
+            new FetchbadgeNumber().execute();
+        }else {
+            Toast.makeText(ProductListActivity.this,"No internet Connection",Toast.LENGTH_SHORT).show();
+        }
     }
 
     private class FetchbadgeNumber extends AsyncTask<Void, Void, Integer> {

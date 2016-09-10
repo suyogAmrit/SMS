@@ -103,7 +103,11 @@ public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.ViewH
                     cartViewHolder.removeText.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ((ShoppingCartItemActivity)context).deleteItem(myItem.getSerielNo());
+                        if (AppHelper.isConnectingToInternet(context)) {
+                            ((ShoppingCartItemActivity) context).deleteItem(myItem.getSerielNo());
+                        }else {
+                            Toast.makeText(context,"No Internet Connection",Toast.LENGTH_SHORT).show();
+                        }
 
                     }
                 });

@@ -76,7 +76,11 @@ public class OrderItemActivity extends AppCompatActivity {
     }
 
     public void confirmOrder(View view) {
+        if (AppHelper.isConnectingToInternet(OrderItemActivity.this)) {
             new ConfirmOrderTask().execute();
+        }else {
+            Toast.makeText(OrderItemActivity.this,"No Imterent Connection",Toast.LENGTH_SHORT).show();
+        }
     }
     private class ConfirmOrderTask extends AsyncTask<Void, Void, Boolean> {
         ProgressDialog dialog;
@@ -94,7 +98,7 @@ public class OrderItemActivity extends AppCompatActivity {
         protected Boolean doInBackground(Void... params) {
             try {
                 ConnectionClass connectionClass = new ConnectionClass();
-                Connection connection = connectionClass.connect();
+                Connection connection = connectionClass. connect();
                 String query = "insert into Eshop_Order_tb (s_fname,s_address1,s_ph1,uniqueId,) Values ('"+ownerName+"','"+address+"','+"+phoneNo+"'"+createUniqueUserId()+"')";
                 PreparedStatement statement = connection.prepareStatement(query);
                 long resSet = statement.executeUpdate();

@@ -229,7 +229,9 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 if (productSizeRadioGroup.getCheckedRadioButtonId()==-1){
                     Toast.makeText(ProductDetailsActivity.this, "Please select Size", Toast.LENGTH_SHORT).show();
                 }else {
-                    new AddCartTask().execute();
+                    if (AppHelper.isConnectingToInternet(ProductDetailsActivity.this)) {
+                        new AddCartTask().execute();
+                    }
                 }
             }
         });
@@ -312,7 +314,11 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 Toast.makeText(ProductDetailsActivity.this, "Item Added successfully", Toast.LENGTH_SHORT).show();
             }
             dialog.dismiss();
-            new FetchbadgeNumber().execute();
+            if (AppHelper.isConnectingToInternet(ProductDetailsActivity.this)) {
+                new FetchbadgeNumber().execute();
+            }else {
+                Toast.makeText(ProductDetailsActivity.this,"No internet Connection",Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -321,6 +327,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
         super.onStart();
         if (AppHelper.isConnectingToInternet(ProductDetailsActivity.this)) {
             new FetchbadgeNumber().execute();
+        }else {
+            Toast.makeText(ProductDetailsActivity.this,"No internet Connection",Toast.LENGTH_SHORT).show();
         }
     }
 
