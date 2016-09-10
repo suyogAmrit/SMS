@@ -2,28 +2,29 @@ package com.suyogcomputech.sms;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.suyogcomputech.adapter.OrderItemAdapter;
-import com.suyogcomputech.adapter.SpecialistAdapter;
 import com.suyogcomputech.helper.AppConstants;
 import com.suyogcomputech.helper.AppHelper;
 import com.suyogcomputech.helper.ConnectionClass;
-import com.suyogcomputech.helper.Doctor;
 import com.suyogcomputech.helper.ProductDetails;
 
 import java.sql.Connection;
@@ -38,7 +39,7 @@ import java.util.Date;
 /**
  * Created by Suyog on 9/9/2016.
  */
-public class OrderItemActivity extends AppCompatActivity {
+public class OrderItemActivity extends AppCompatActivity implements View.OnClickListener {
     Toolbar toolbar;
     RecyclerView rcvOrder;
     private OrderItemAdapter orderAdapter;
@@ -46,7 +47,10 @@ public class OrderItemActivity extends AppCompatActivity {
     ConnectionClass connectionClass;
     String ownerName,address,phoneNo,appertment_id;
     ProgressDialog progressDialog;
-    private TextView txtName,txtPhone,txtAddress;
+    private TextView txtName,txtPhone,txtAddress,txtEditAddr;
+    private ArrayList<Integer>listItems,listQuantity;
+    int quntityOfSize=0;
+    private EditText edtName,edtAddr,edtPhone;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,12 +69,13 @@ public class OrderItemActivity extends AppCompatActivity {
         txtName = (TextView)findViewById(R.id.txtName);
         txtAddress = (TextView)findViewById(R.id.txtAddress);
         txtPhone = (TextView)findViewById(R.id.txtPhone);
+        txtEditAddr = (TextView)findViewById(R.id.txtEditAddr);
+        txtEditAddr.setOnClickListener(this);
     }
 
     private void findUserDetails() {
         if (AppHelper.isConnectingToInternet(OrderItemActivity.this)) {
             new Specialist().execute();
-
         } else
             Toast.makeText(OrderItemActivity.this, AppConstants.dialog_message, Toast.LENGTH_LONG).show();
     }
@@ -79,9 +84,26 @@ public class OrderItemActivity extends AppCompatActivity {
         if (AppHelper.isConnectingToInternet(OrderItemActivity.this)) {
             new ConfirmOrderTask().execute();
         }else {
-            Toast.makeText(OrderItemActivity.this,"No Imterent Connection",Toast.LENGTH_SHORT).show();
+            Toast.makeText(OrderItemActivity.this,"No Interent Connection",Toast.LENGTH_SHORT).show();
         }
     }
+
+    @Override
+    public void onClick(View v) {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.edit_addr, null);
+        dialogBuilder.setView(dialogView);
+        edtName = (EditText)dialogView.findViewById(R.id.edtName);
+        edtAddr = (EditText)dialogView.findViewById(R.id.editAddress);
+        edtPhone = (EditText)dialogView.findViewById(R.id.editPhone);
+        ownerName=edtName.getText().toString();
+        address = edtAddr.getText().toString();
+        phoneNo = edtPhone.getText().toString();
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.show();
+    }
+
     private class ConfirmOrderTask extends AsyncTask<Void, Void, Boolean> {
         ProgressDialog dialog;
 
@@ -99,21 +121,33 @@ public class OrderItemActivity extends AppCompatActivity {
             try {
                 ConnectionClass connectionClass = new ConnectionClass();
                 Connection connection = connectionClass. connect();
-                String query = "insert into Eshop_Order_tb (s_fname,s_address1,s_ph1,uniqueId,) Values ('"+ownerName+"','"+address+"','+"+phoneNo+"'"+createUniqueUserId()+"')";
-                PreparedStatement statement = connection.prepareStatement(query);
-                long resSet = statement.executeUpdate();
-                Log.i("Result", String.valueOf(resSet));
-                if (resSet>0){
-                    connection.close();
-                    return true;
-                }else {
-                    connection.close();
-                    return false;
+                String query="";
+                //String query = "insert into Eshop_Order_tb (s_fname,s_address1,s_ph1,uniqueId,) Values ('"+ownerName+"','"+address+"','+"+phoneNo+"'"+createUniqueUserId()+"')";
+                //String query = "insert into Eshop_Order_tb (s_fname,s_address1,s_ph1,uniqueId,quantity) Values ('"+ownerName+"','"+address+"','+"+phoneNo+"'"+createUniqueUserId()+"'"+quantites()+"')";
+                for (int k = 0;k<list.size();k++) {
+                    listItems.add(Integer.valueOf(list.get(k).getId()));
+                     query = "Insert into Eshop_Order_tb(b_fname,b_ph1,b_address1,b_email,b_country,b_city,b_zip,b_state,quantity,prod_id,uniqueId,uid,size,status1)\n" +
+                            "values('" + ownerName + "','" + phoneNo + "','" + address + "','" + "emailo@gmail.com" + "','" + "India" + "','" + "Bhubaneswar" + "','" + "5482512" + "','" + "Odisha" + "','" + totalQuantity() + "','" + k + "','" + createUniqueUserId() + "','" + findUserId() + "','" + list.get(k).getSizeProduct() + "'," + 0 + ")";
+                    PreparedStatement statement = connection.prepareStatement(query);
+                    long resSet = statement.executeUpdate();
+                    Log.i("Result", String.valueOf(resSet));
                 }
+                Log.i("QueryInsert",query);
+//                PreparedStatement statement = connection.prepareStatement(query);
+//                long resSet = statement.executeUpdate();
+//                Log.i("Result", String.valueOf(resSet));
+//                if (resSet>0){
+//                    connection.close();
+//                    return true;
+//                }else {
+//                    connection.close();
+//                    return false;
+//                }
             } catch (SQLException e) {
                 e.printStackTrace();
                 return false;
             }
+            return false;
         }
 
         @Override
@@ -200,7 +234,6 @@ public class OrderItemActivity extends AppCompatActivity {
                     phoneNo = rs.getString("extension_no");
                     address = rs.getString("appt_add");
                     appertment_id = rs.getString("appt_id");
-
                 }
                 return ownerName;
             } catch (SQLException e) {
@@ -245,9 +278,10 @@ public class OrderItemActivity extends AppCompatActivity {
                         "inner join Eshop_Offer_tb as o on(p.prod_id=o.prod_id)\n" +
                         " and e.Status=1 and e.user_id='"+findUserId()+"'";
 
-                Log.v("Query",query);
+                Log.v("QuerySelect",query);
                 Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
+                Log.v("Resetset",resultSet+"");
                 return resultSet;
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -276,6 +310,12 @@ public class OrderItemActivity extends AppCompatActivity {
                     details.setId(rs.getString("prod_id"));
                     list.add(details);
                 }
+                listItems = new ArrayList<>();
+                listQuantity = new ArrayList<>();
+                for (int i = 0;i<list.size();i++){
+                    listItems.add(Integer.valueOf(list.get(i).getId()));
+                    listQuantity.add(Integer.valueOf(list.get(i).getQuantity()));
+                }
                 rcvOrder = (RecyclerView)findViewById(R.id.rcvOrder);
                 orderAdapter = new OrderItemAdapter(OrderItemActivity.this,list);
                 rcvOrder.setHasFixedSize(true);
@@ -287,6 +327,20 @@ public class OrderItemActivity extends AppCompatActivity {
             }
 
         }
+    }
+    public int quantites(){
+        for (int j=0;j<listQuantity.size();j++){
+            quntityOfSize++;
+        }
+        return listQuantity.size();
+    }
+    public int totalQuantity(){
+        int price = 0;
+        for (int k=0; k<list.size();k++){
+            price = price+ Integer.valueOf(list.get(k).getQuantity());
+        }
+        //ShoppingCartItemActivity.txtCartTotal.setText(AppConstants.RUPEESYM+price);
+        return price;
     }
 
 }
