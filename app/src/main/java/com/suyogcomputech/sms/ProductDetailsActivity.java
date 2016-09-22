@@ -31,6 +31,7 @@ import com.suyogcomputech.adapter.ImagePagerAdapter;
 import com.suyogcomputech.helper.AppConstants;
 import com.suyogcomputech.helper.AppHelper;
 import com.suyogcomputech.helper.ConnectionClass;
+import com.suyogcomputech.helper.ItemCounter;
 import com.suyogcomputech.helper.ProductDetails;
 import com.viewpagerindicator.CirclePageIndicator;
 
@@ -355,6 +356,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 String count = resultSet.getString("count_row");
                 Log.v("count", count);
                 badgeCount = Integer.valueOf(count);
+                ItemCounter.getInstance().setItemCount(Integer.parseInt(count));
             } catch (SQLException e) {
                 Log.i("Except", e.getMessage());
                 e.printStackTrace();
@@ -366,6 +368,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
+            //badgeCount = ItemCounter.getInstance().getItemCount();
             invalidateOptionsMenu();
         }
     }

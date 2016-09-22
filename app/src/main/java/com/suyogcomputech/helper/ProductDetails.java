@@ -16,6 +16,44 @@ public class ProductDetails implements Parcelable{
     String offerStatus;
     String imageStatus;
     String sellerName;
+    String orderplaceHolderName;
+
+    public String getOrderPlaceHolderEmail() {
+        return orderPlaceHolderEmail;
+    }
+
+    public void setOrderPlaceHolderEmail(String orderPlaceHolderEmail) {
+        this.orderPlaceHolderEmail = orderPlaceHolderEmail;
+    }
+
+    public String getOrderPlaceHolderAddr() {
+        return orderPlaceHolderAddr;
+    }
+
+    public void setOrderPlaceHolderAddr(String orderPlaceHolderAddr) {
+        this.orderPlaceHolderAddr = orderPlaceHolderAddr;
+    }
+
+    public String getOrderPlaceHolderPhone() {
+        return orderPlaceHolderPhone;
+    }
+
+    public void setOrderPlaceHolderPhone(String orderPlaceHolderPhone) {
+        this.orderPlaceHolderPhone = orderPlaceHolderPhone;
+    }
+
+    String orderPlaceHolderEmail;
+    String orderPlaceHolderAddr;
+    String orderPlaceHolderPhone;
+    public String getOrderplaceHolderName() {
+        return orderplaceHolderName;
+    }
+
+    public void setOrderplaceHolderName(String orderplaceHolderName) {
+        this.orderplaceHolderName = orderplaceHolderName;
+    }
+
+
 
     public String getSerielNo() {
         return serielNo;

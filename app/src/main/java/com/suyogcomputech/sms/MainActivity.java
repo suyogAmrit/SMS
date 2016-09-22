@@ -27,6 +27,8 @@ import com.suyogcomputech.app_fragments.MyOrderFragment;
 import com.suyogcomputech.app_fragments.MyEventBookingFragment;
 import com.suyogcomputech.app_fragments.MyReportsFragment;
 import com.suyogcomputech.helper.AppConstants;
+import com.suyogcomputech.helper.AppHelper;
+import com.suyogcomputech.helper.ItemCounter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,13 +45,12 @@ public class MainActivity extends AppCompatActivity implements ExpandableListVie
     HashMap<String, List<String>> listDataChild;
     ExpandableListAdapter listAdapter;
     List<String> listDataHeader;
-
+    int badgeCount = 0;
 
 
     Fragment fragment;
     FragmentManager fragmentManager;
     String uniqueUserId;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,10 +83,20 @@ public class MainActivity extends AppCompatActivity implements ExpandableListVie
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        badgeCount = ItemCounter.getInstance().getItemCount();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.item_samplebadge) {
-            Intent intent = new Intent(MainActivity.this,ShoppingCartItemActivity.class);
-            startActivity(intent);
+            if (badgeCount>0) {
+                Intent intent = new Intent(MainActivity.this, ShoppingCartItemActivity.class);
+                startActivity(intent);
+            }else {
+                AppHelper.showAlertDilog(MainActivity.this,"","You don't have any cart items","Ok");
+            }
            return true;
         }
         return false;

@@ -14,6 +14,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDialog;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -23,6 +24,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -33,9 +35,11 @@ import com.mikepenz.actionitembadge.library.ActionItemBadge;
 import com.mikepenz.actionitembadge.library.utils.BadgeStyle;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.suyogcomputech.adapter.ProductListAdapter;
+import com.suyogcomputech.adapter.SearchAdapter;
 import com.suyogcomputech.helper.AppConstants;
 import com.suyogcomputech.helper.AppHelper;
 import com.suyogcomputech.helper.ConnectionClass;
+import com.suyogcomputech.helper.ItemCounter;
 import com.suyogcomputech.helper.ProductDetails;
 
 import java.sql.Connection;
@@ -117,9 +121,12 @@ public class ProductListActivity extends AppCompatActivity {
                 //filter(newText);
                 AppCompatDialog dialog = new AppCompatDialog(ProductListActivity.this);
                 dialog.setTitle("gggg");
-                //dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                 dialog.getWindow().getAttributes().verticalMargin = -0.4F;
                 dialog.setContentView(R.layout.serch_dilog);
+//                RecyclerView rcvSearchResult = (RecyclerView) dialog.findViewById(R.id.rcvSearchResult);
+//                rcvSearchResult.setLayoutManager(new LinearLayoutManager(ProductListActivity.this));
+//                SearchAdapter searchAdapter = new SearchAdapter(productDetailList);
+//                rcvSearchResult.setAdapter(searchAdapter);
                 dialog.show();
                 return false;
             }
@@ -375,6 +382,8 @@ public class ProductListActivity extends AppCompatActivity {
         }else {
             Toast.makeText(ProductListActivity.this,"No internet Connection",Toast.LENGTH_SHORT).show();
         }
+        //badgeCount = ItemCounter.getInstance().getItemCount();
+        //invalidateOptionsMenu();
     }
 
     private class FetchbadgeNumber extends AsyncTask<Void, Void, Integer> {

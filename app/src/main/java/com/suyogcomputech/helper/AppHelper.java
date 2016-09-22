@@ -1,10 +1,12 @@
 package com.suyogcomputech.helper;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -71,5 +73,18 @@ public class AppHelper {
             e.printStackTrace();
             return false;
         }
+    }
+    public static void showAlertDilog(Context context,String title,String message,String dissmissString){
+        AlertDialog.Builder alBuilder = new AlertDialog.Builder(context);
+        alBuilder.setTitle(title);
+        alBuilder.setMessage(message);
+        alBuilder.setPositiveButton(dissmissString, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alertDialog = alBuilder.create();
+        alertDialog.show();
     }
 }

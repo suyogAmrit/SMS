@@ -27,6 +27,7 @@ import com.suyogcomputech.helper.AppHelper;
 import com.suyogcomputech.helper.ConnectionClass;
 import com.suyogcomputech.helper.EShopCategory;
 import com.suyogcomputech.helper.EShopSubCategory;
+import com.suyogcomputech.helper.ItemCounter;
 import com.suyogcomputech.helper.ProductDetails;
 import com.suyogcomputech.sms.ProductListActivity;
 import com.suyogcomputech.sms.R;
@@ -70,8 +71,12 @@ public class EShopCategoryFragment extends Fragment implements ExpandableListVie
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.item_samplebadge) {
-            Intent intent = new Intent(getActivity(),ShoppingCartItemActivity.class);
-            startActivity(intent);
+            if (badgeCount>0) {
+                Intent intent = new Intent(getActivity(), ShoppingCartItemActivity.class);
+                startActivity(intent);
+            }else {
+                    AppHelper.showAlertDilog(getActivity(),"","You don't have any cart items","Ok");
+            }
             return true;
         }
         return false;
@@ -103,6 +108,8 @@ public class EShopCategoryFragment extends Fragment implements ExpandableListVie
         if (AppHelper.isConnectingToInternet(getActivity())) {
             new FetchbadgeNumber().execute();
         }
+        //badgeCount = ItemCounter.getInstance().getItemCount();
+        //getActivity().invalidateOptionsMenu();
     }
 
     @Override
@@ -126,7 +133,7 @@ public class EShopCategoryFragment extends Fragment implements ExpandableListVie
         protected void onPreExecute() {
             super.onPreExecute();
             dialog = new ProgressDialog(getActivity());
-            dialog.setTitle(AppConstants.dialog_title);
+            dialog.setTitle(AppConstants.progress_dialog_title);
             dialog.setMessage(AppConstants.CATMSG);
             dialog.show();
         }

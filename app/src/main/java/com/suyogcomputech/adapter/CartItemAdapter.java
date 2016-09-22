@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -113,14 +115,24 @@ public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.ViewH
                 });
         }
         if (holder instanceof  TotalViewHolder){
+            final ProductDetails myItem = myItems.get(position-1);
             TotalViewHolder totalViewHolder = (TotalViewHolder) holder;
             double amount = 0;
-            for (int j=0;j<myItems.size();j++){
-                amount = amount + Double .valueOf(myItems.get(j).getPrice());
-            }
+                for (int j = 0; j < myItems.size(); j++) {
+                    amount = amount + Double.valueOf(myItems.get(j).getPrice());
+                }
             //double amountlast = amount+ Double.valueOf(myItems.get(myItems.size()-1).getPrice());
             totalViewHolder.txtCartTotal.setText(AppConstants.RUPEESYM+amount);
+            double actualPrice = Double.valueOf(myItem.getPrice()) - (Double.valueOf(myItem.getPrice()) * Double.valueOf(myItem.getOfferPer())) / 100;
+            double finalPrice = actualPrice * Integer.valueOf(myItem.getQuantity());
+//            double disprice = 0;
+//            for (int k = 0;k<myItems.size();k++){
+//                disprice = disprice + (Double.valueOf(myItem.getPrice()) * Double.valueOf(myItem.getOfferPer()));
+//            }
+            totalViewHolder.txtDiscountTotal.setText(AppConstants.RUPEESYM+"0.00");
             totalViewHolder.txtTotalPayble.setText(AppConstants.RUPEESYM+amount);
+//            double finalPayble = amount - disprice;
+//            totalViewHolder.txtTotalPayble.setText(AppConstants.RUPEESYM+finalPayble);
         }
      }
 
