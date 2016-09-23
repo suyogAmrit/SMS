@@ -140,31 +140,48 @@
                 android:gravity="center"
                 android:weightSum="1"
                 android:orientation="horizontal">
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:id="@+id/removeText"
-                    android:text="REMOVE"
-                    android:drawableLeft="@drawable/ic_edit"
                     android:gravity="center"
                     android:layout_weight="0.5"
-                    android:clickable="true"/>
+                    android:orientation="horizontal"
+                    android:id="@+id/removeText">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_remove"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="REMOVE"
+                        android:gravity="center"
+                        android:clickable="true"/>
+                </LinearLayout>
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:text="Remove"
                     android:gravity="center"
                     android:background="@android:color/black"
                     android:clickable="true"/>
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:id="@+id/editText"
-                    android:text="EDIT"
-                    android:drawableLeft="@drawable/ic_remove"
-                    android:layout_weight="0.5"
                     android:gravity="center"
-                    android:clickable="true"/>
+                    android:layout_weight="0.5"
+                    android:orientation="horizontal"
+                    android:id="@+id/editText">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_edit"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="EDIT"
+                        android:gravity="center"
+                        android:clickable="true"/>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 

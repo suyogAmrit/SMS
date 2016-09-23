@@ -67,7 +67,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         holder.tvShortDesc.setText(p.getShortDesc().toUpperCase());
         holder.tvOffer.setText(p.getOfferPer() + "% off");
         holder.tvBrand.setText(p.getBrand());
-        Log.i(list.get(position).getFromDate(), list.get(position).getToDate());
         //if (list.get(position).getFromDate() != null && list.get(position).getToDate() != null) {
         // Log.i(String.valueOf(list.get(position)), "offer");
         if (list.get(position).getFromDate() != null && list.get(position).getToDate() != null && AppHelper.compareDate(list.get(position).getFromDate(), list.get(position).getToDate())) {

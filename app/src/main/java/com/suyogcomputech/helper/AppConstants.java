@@ -167,5 +167,6 @@ public final class AppConstants {
     public static final String SIZE = "size" ;
     public static final String QUANTITY = "Quantity";
     public static final String EXTRA_PRODUCT_EDIT = "EXTRA_PRODUCT_EDIT" ;
+    public static final String EXTRA_PRDUCTTITLE_BRAND = "EXTRA_PRDUCTTITLE_BRAND";
     public static CharSequence placingOrder="Placing order...";
 }

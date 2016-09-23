@@ -255,9 +255,12 @@ public class ProductDetailsActivity extends AppCompatActivity {
             return true;
         }
         if (item.getItemId() == R.id.addcart) {
-            Intent intent = new Intent(ProductDetailsActivity.this,ShoppingCartItemActivity.class);
-            //intent.putExtra(AppConstants.PROD_ID,productDetails.getId());
-            startActivity(intent);
+            if (badgeCount>0) {
+                Intent intent = new Intent(ProductDetailsActivity.this, ShoppingCartItemActivity.class);
+                startActivity(intent);
+            }else {
+                AppHelper.showAlertDilog(ProductDetailsActivity.this,"","You don't have any item in cart","Ok");
+            }
             return true;
         }
         return false;
@@ -356,7 +359,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 String count = resultSet.getString("count_row");
                 Log.v("count", count);
                 badgeCount = Integer.valueOf(count);
-                ItemCounter.getInstance().setItemCount(Integer.parseInt(count));
+                //ItemCounter.getInstance().setItemCount(badgeCount);
             } catch (SQLException e) {
                 Log.i("Except", e.getMessage());
                 e.printStackTrace();
@@ -368,8 +371,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
-            //badgeCount = ItemCounter.getInstance().getItemCount();
-            invalidateOptionsMenu();
+            badgeCount = integer;
+            ItemCounter.getInstance().setItemCount(badgeCount);
         }
     }
     /*private class GetProductDetails extends AsyncTask<Void, Void, ProductDetails>  {

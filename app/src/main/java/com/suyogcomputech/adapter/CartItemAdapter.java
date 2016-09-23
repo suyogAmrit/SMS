@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -100,6 +101,7 @@ public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.ViewH
                         intent.putExtra(AppConstants.EXTRA_PRODUCT_EDIT,productDetail);
                         Log.i("ProdId",productDetail.getId());
                         ((ShoppingCartItemActivity) context).startActivityForResult(intent, 1);
+                        notifyDataSetChanged();
                     }
                 });
                     cartViewHolder.removeText.setOnClickListener(new View.OnClickListener() {
@@ -125,12 +127,12 @@ public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.ViewH
             totalViewHolder.txtCartTotal.setText(AppConstants.RUPEESYM+amount);
             double actualPrice = Double.valueOf(myItem.getPrice()) - (Double.valueOf(myItem.getPrice()) * Double.valueOf(myItem.getOfferPer())) / 100;
             double finalPrice = actualPrice * Integer.valueOf(myItem.getQuantity());
-//            double disprice = 0;
-//            for (int k = 0;k<myItems.size();k++){
-//                disprice = disprice + (Double.valueOf(myItem.getPrice()) * Double.valueOf(myItem.getOfferPer()));
-//            }
-            totalViewHolder.txtDiscountTotal.setText(AppConstants.RUPEESYM+"0.00");
-            totalViewHolder.txtTotalPayble.setText(AppConstants.RUPEESYM+amount);
+            double disprice = 0;
+            for (int k = 0;k<myItems.size();k++){
+                disprice = disprice + ((Double.valueOf(myItem.getPrice()) * Double.valueOf(myItem.getOfferPer()))/100);
+            }
+            totalViewHolder.txtDiscountTotal.setText(AppConstants.RUPEESYM+disprice);
+            totalViewHolder.txtTotalPayble.setText(AppConstants.RUPEESYM+(amount-disprice));
 //            double finalPayble = amount - disprice;
 //            totalViewHolder.txtTotalPayble.setText(AppConstants.RUPEESYM+finalPayble);
         }
@@ -162,7 +164,8 @@ public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.ViewH
     }
     public class CartViewHolder extends ViewHolder{
         ImageView imgProduct;
-        TextView txtBrandName,txtBrandSize,txtProdPrice,txtDisPer,txtNo,txtOffer,removeText,editText;
+        TextView txtBrandName,txtBrandSize,txtProdPrice,txtDisPer,txtNo,txtOffer;
+        LinearLayout removeText,editText;
         FrameLayout frameItem;
         public CartViewHolder(View itemView) {
             super(itemView);
@@ -174,8 +177,8 @@ public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.ViewH
             txtNo = (TextView)itemView.findViewById(R.id.txtNo);
             txtOffer = (TextView)itemView.findViewById(R.id.txtOffer);
             frameItem = (FrameLayout)itemView.findViewById(R.id.frameItem);
-            removeText = (TextView)itemView.findViewById(R.id.removeText);
-            editText = (TextView)itemView.findViewById(R.id.editText);
+            removeText = (LinearLayout) itemView.findViewById(R.id.removeText);
+            editText = (LinearLayout) itemView.findViewById(R.id.editText);
         }
     }
     public class TotalViewHolder extends ViewHolder{

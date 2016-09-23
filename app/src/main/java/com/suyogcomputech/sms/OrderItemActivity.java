@@ -62,10 +62,9 @@ public class OrderItemActivity extends AppCompatActivity implements View.OnClick
         findUserDetails();
     }
     private void defineComponents() {
-        toolbar = (Toolbar) findViewById(R.id.toolbarOrder);
-        toolbar.setTitle("Order");
-        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Order");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         txtName = (TextView)findViewById(R.id.txtName);
         txtAddress = (TextView)findViewById(R.id.txtAddress);

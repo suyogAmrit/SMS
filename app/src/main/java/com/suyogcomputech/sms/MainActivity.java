@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,11 +15,16 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
+import com.mikepenz.actionitembadge.library.ActionItemBadge;
+import com.mikepenz.actionitembadge.library.utils.BadgeStyle;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.suyogcomputech.adapter.ExpandableListAdapter;
 import com.suyogcomputech.app_fragments.EShopCategoryFragment;
 import com.suyogcomputech.app_fragments.GroceryFragment;
@@ -28,8 +34,13 @@ import com.suyogcomputech.app_fragments.MyEventBookingFragment;
 import com.suyogcomputech.app_fragments.MyReportsFragment;
 import com.suyogcomputech.helper.AppConstants;
 import com.suyogcomputech.helper.AppHelper;
+import com.suyogcomputech.helper.ConnectionClass;
 import com.suyogcomputech.helper.ItemCounter;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,12 +56,12 @@ public class MainActivity extends AppCompatActivity implements ExpandableListVie
     HashMap<String, List<String>> listDataChild;
     ExpandableListAdapter listAdapter;
     List<String> listDataHeader;
-    int badgeCount = 0;
 
 
     Fragment fragment;
     FragmentManager fragmentManager;
     String uniqueUserId;
+    int badgeCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,34 +91,32 @@ public class MainActivity extends AppCompatActivity implements ExpandableListVie
             expListView.setOnChildClickListener(this);
 
         }
+        if (AppHelper.isConnectingToInternet(this)) {
+            new FetchbadgeNumber().execute();
+        }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        badgeCount = ItemCounter.getInstance().getItemCount();
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.item_samplebadge) {
-            if (badgeCount>0) {
                 Intent intent = new Intent(MainActivity.this, ShoppingCartItemActivity.class);
                 startActivity(intent);
-            }else {
-                AppHelper.showAlertDilog(MainActivity.this,"","You don't have any cart items","Ok");
-            }
            return true;
+        }
+        if (item.getItemId()==R.id.item_search){
+            Intent intent = new Intent(MainActivity.this, SearchProductActivity.class);
+            startActivity(intent);
         }
         return false;
     }
 
-
-
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-
         drawerToggle.syncState();
     }
 
@@ -306,6 +315,44 @@ public class MainActivity extends AppCompatActivity implements ExpandableListVie
         }
         mDrawerLayout.closeDrawer(expListView);
         return false;
+    }
+    private class FetchbadgeNumber extends AsyncTask<Void, Void, Integer> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Integer doInBackground(Void... params) {
+
+            try {
+                ConnectionClass connectionClass = new ConnectionClass();
+                Connection connection = connectionClass.connect();
+                String query = "SELECT COUNT(*) as count_row FROM Eshop_cart_tb where " + AppConstants.USERID + "='" + findUserId() + "'";
+                Log.i("Query", query);
+                Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery(query);
+                resultSet.next();
+                String count = resultSet.getString("count_row");
+                Log.v("count", count);
+                badgeCount = Integer.valueOf(count);
+            } catch (SQLException e) {
+                Log.i("Except", e.getMessage());
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            super.onPostExecute(integer);
+            invalidateOptionsMenu();
+        }
+    }
+    private String findUserId(){
+        SharedPreferences sharedpreferences = getSharedPreferences(AppConstants.USERPREFS, Context.MODE_PRIVATE);
+        String uniqueUserId = sharedpreferences.getString(AppConstants.USERID, AppConstants.NOT_AVAILABLE);
+        return uniqueUserId;
     }
 }
 

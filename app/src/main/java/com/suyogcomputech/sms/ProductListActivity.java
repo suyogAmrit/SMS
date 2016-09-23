@@ -35,7 +35,6 @@ import com.mikepenz.actionitembadge.library.ActionItemBadge;
 import com.mikepenz.actionitembadge.library.utils.BadgeStyle;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.suyogcomputech.adapter.ProductListAdapter;
-import com.suyogcomputech.adapter.SearchAdapter;
 import com.suyogcomputech.helper.AppConstants;
 import com.suyogcomputech.helper.AppHelper;
 import com.suyogcomputech.helper.ConnectionClass;
@@ -52,7 +51,7 @@ import java.util.ArrayList;
  * Created by suyogcomputech on 23/08/16.
  */
 public class ProductListActivity extends AppCompatActivity {
-    Toolbar tbProduct;
+    Toolbar toolbar;
     RecyclerView rvPdroducts;
     GetProducts taskGetProducts;
     String subCategory, category, subDesc;
@@ -64,22 +63,18 @@ public class ProductListActivity extends AppCompatActivity {
     RadioGroup radioGroup;
     ProgressDialog dialog;
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle b = getIntent().getExtras();
-        category = b.getString(AppConstants.CATID);
-        subCategory = b.getString(AppConstants.SUBCATID);
-        subDesc = b.getString(AppConstants.SUBCATDESC);
         setContentView(R.layout.activity_product_list);
-        tbProduct = (Toolbar) findViewById(R.id.tb_product);
-        TextView tvProdct = (TextView) findViewById(R.id.toolbar_title);
-        tvProdct.setText(subDesc);
-        setSupportActionBar(tbProduct);
-        tbProduct.setTitle(subDesc);
+        category = getIntent().getExtras().getString(AppConstants.CATID);
+        subCategory = getIntent().getExtras().getString(AppConstants.SUBCATID);
+        subDesc = getIntent().getExtras().getString(AppConstants.SUBCATDESC);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(subDesc);
         productDetailList = new ArrayList<>();
         rvPdroducts = (RecyclerView) findViewById(R.id.rv_product);
         adapter = new ProductListAdapter(ProductListActivity.this);
@@ -87,15 +82,14 @@ public class ProductListActivity extends AppCompatActivity {
         rvPdroducts.setLayoutManager(glm);
         rvPdroducts.setAdapter(adapter);
         dialog = new ProgressDialog(ProductListActivity.this);
-        if (AppHelper.isConnectingToInternet(ProductListActivity.this)) {
-            taskGetProducts = new GetProducts();
-            taskGetProducts.execute();
-        }
-        productDetailsesListOfData = new ArrayList<>();
+//        if (AppHelper.isConnectingToInternet(ProductListActivity.this)) {
+//            taskGetProducts = new GetProducts();
+//            taskGetProducts.execute();
+//        }
         if (AppHelper.isConnectingToInternet(ProductListActivity.this)) {
             new FetchbadgeNumber().execute();
-        }else {
-            Toast.makeText(ProductListActivity.this,"No internet Connection",Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(ProductListActivity.this, "No internet Connection", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -104,53 +98,7 @@ public class ProductListActivity extends AppCompatActivity {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.main_menu, menu);
         ActionItemBadge.update(ProductListActivity.this, menu.findItem(R.id.item_samplebadge), FontAwesome.Icon.faw_shopping_cart, style, badgeCount);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.item_search));
-        //EditText editText = (EditText)searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
-        searchView.setQueryHint("Search...");
-        EditText editText = (EditText)searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
-        editText.setTextColor(getResources().getColor(R.color.white));
-        editText.setHintTextColor(getResources().getColor(R.color.white));
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                //filter(newText);
-                AppCompatDialog dialog = new AppCompatDialog(ProductListActivity.this);
-                dialog.setTitle("gggg");
-                dialog.getWindow().getAttributes().verticalMargin = -0.4F;
-                dialog.setContentView(R.layout.serch_dilog);
-//                RecyclerView rcvSearchResult = (RecyclerView) dialog.findViewById(R.id.rcvSearchResult);
-//                rcvSearchResult.setLayoutManager(new LinearLayoutManager(ProductListActivity.this));
-//                SearchAdapter searchAdapter = new SearchAdapter(productDetailList);
-//                rcvSearchResult.setAdapter(searchAdapter);
-                dialog.show();
-                return false;
-            }
-        });
-        searchView.setIconified(true);
         return true;
-    }
-
-    private void filter(String newText) {
-        query = newText.toLowerCase();
-        productDetailsArrayList.clear();
-        adapter.clear();
-        //adapter.notifyDataSetChanged();
-        if (query.length() != 0) {
-            for (ProductDetails productDetails1 : productDetailList) {
-                String text = productDetails1.getBrand().toLowerCase();
-                if (text.contains(query)) {
-                    productDetailsArrayList.add(productDetails1);
-                }
-            }
-        } else {
-            productDetailsArrayList.addAll(productDetailList);
-        }
-        adapter.addProducts(productDetailsArrayList);
     }
 
     @Override
@@ -164,13 +112,23 @@ public class ProductListActivity extends AppCompatActivity {
             showProductSortDialog();
             return true;
         }
-        if (item.getItemId()==R.id.item_samplebadge){
-            Intent intent = new Intent(ProductListActivity.this,ShoppingCartItemActivity.class);
+        if (item.getItemId() == R.id.item_samplebadge) {
+            if (badgeCount>0) {
+                Intent intent = new Intent(ProductListActivity.this, ShoppingCartItemActivity.class);
+                startActivity(intent);
+            }else {
+                AppHelper.showAlertDilog(ProductListActivity.this,"","You don't have any item in Cart","Ok");
+            }
+            return true;
+        }
+        if (item.getItemId() == R.id.item_search) {
+            Intent intent = new Intent(ProductListActivity.this, SearchProductActivity.class);
             startActivity(intent);
             return true;
         }
         return false;
     }
+
 
     private void showProductSortDialog() {
         SharedPreferences shr = getSharedPreferences(AppConstants.SORTPREFS, MODE_PRIVATE);
@@ -232,14 +190,15 @@ public class ProductListActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = shr.edit();
         editor.clear();
         editor.apply();
-        if ( dialog!=null && dialog.isShowing() ){
+        if (dialog != null && dialog.isShowing()) {
             dialog.cancel();
         }
     }
+
     @Override
     protected void onPause() {
         super.onPause();
-        if ( dialog!=null && dialog.isShowing() ){
+        if (dialog != null && dialog.isShowing()) {
             dialog.cancel();
         }
     }
@@ -257,20 +216,19 @@ public class ProductListActivity extends AppCompatActivity {
         protected void onPostExecute(ArrayList<ProductDetails> productDetailses) {
             super.onPostExecute(productDetailses);
             dialog.dismiss();
-           // if (productDetailses!=null) {
-                if (productDetailses.size() > 0) {
-                    adapter.addProducts(productDetailses);
-                    productDetailList.addAll(productDetailses);
-                    productDetailsArrayList = new ArrayList<>(productDetailList);
-                    productDetailsesnew = new ArrayList<>();
-                    productDetailsesnew.addAll(productDetailList);
-                    //productDetailsArrayList.addAll(productDetailList);
-                    Log.v("", "" + productDetailsArrayList.size());
-                }
-        //    }
-        else {
-                Toast.makeText(ProductListActivity.this,"No Product",Toast.LENGTH_SHORT).show();
+            // if (productDetailses!=null) {
+            if (productDetailses.size() > 0) {
+                adapter.addProducts(productDetailses);
+                productDetailList.addAll(productDetailses);
+                productDetailsArrayList = new ArrayList<>(productDetailList);
+                productDetailsesnew = new ArrayList<>();
+                productDetailsesnew.addAll(productDetailList);
+                Log.v("", "" + productDetailsArrayList.size());
             }
+            else {
+                Toast.makeText(ProductListActivity.this, "No Product", Toast.LENGTH_SHORT).show();
+            }
+
         }
 
         @Override
@@ -378,12 +336,14 @@ public class ProductListActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         if (AppHelper.isConnectingToInternet(ProductListActivity.this)) {
-            new FetchbadgeNumber().execute();
-        }else {
-            Toast.makeText(ProductListActivity.this,"No internet Connection",Toast.LENGTH_SHORT).show();
+            taskGetProducts = new GetProducts();
+            taskGetProducts.execute();
         }
-        //badgeCount = ItemCounter.getInstance().getItemCount();
-        //invalidateOptionsMenu();
+        if (AppHelper.isConnectingToInternet(ProductListActivity.this)) {
+            new FetchbadgeNumber().execute();
+        } else {
+            Toast.makeText(ProductListActivity.this, "No internet Connection", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private class FetchbadgeNumber extends AsyncTask<Void, Void, Integer> {
@@ -425,9 +385,14 @@ public class ProductListActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
     protected void onRestart() {
         super.onRestart();
-        invalidateOptionsMenu();
     }
 }
 

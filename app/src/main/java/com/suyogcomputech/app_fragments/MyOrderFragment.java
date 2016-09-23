@@ -60,8 +60,8 @@ public class MyOrderFragment extends Fragment {
         protected void onPreExecute() {
             super.onPreExecute();
             progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setTitle("Please wait...");
-            progressDialog.setMessage("Fetching cart items");
+            progressDialog.setTitle("Please wait");
+            progressDialog.setMessage("Fetching orders...");
             progressDialog.show();
         }
 
@@ -71,12 +71,6 @@ public class MyOrderFragment extends Fragment {
             try {
                 ConnectionClass connectionClass = new ConnectionClass();
                 Connection connection = connectionClass.connect();
-                //String query = "select * from Eshop_Order_tb where uid='"+findUserId()+"'";
-//                String query = "select p.prod_id,e.slno,p.prod_title,p.images,p.prod_brand,p.price,e.size,e.Quantity,o.from_date,\n" +
-//                        "o.to_date,o.offer_per from Eshop_Prod_table as p\n" +
-//                        "inner join Eshop_cart_tb as e on(p.prod_id=e.prod_id)\n" +
-//                        "inner join Eshop_Offer_tb as o on(p.prod_id=o.prod_id)\n" +
-//                        " and e.Status=1 and e.user_id='"+findUserId()+"'";
                 String query = "select eot.b_fname,eot.b_email,eot.b_ph1,eot.b_address1,eot.quantity,eot.size,ept.prod_brand,ept.images,ept.prod_title,ept.price from Eshop_Order_tb as eot inner join Eshop_Prod_table as ept on eot.prod_id=ept.prod_id ;";
                 Log.v("Query",query);
                 Statement statement = connection.createStatement();
@@ -97,17 +91,6 @@ public class MyOrderFragment extends Fragment {
                 list=new ArrayList<>();
                 while (rs.next()){
                     ProductDetails details=new ProductDetails();
-//                    details.setTitle(rs.getString("prod_title"));
-//                    details.setBrand(rs.getString("prod_brand"));
-//                    details.setPrice(rs.getString("price"));
-//                    details.setSizeProduct(rs.getString("size"));
-//                    details.setOfferPer(rs.getString("offer_per"));
-//                    details.setMainImage("http://" + AppConstants.IP + "/" + AppConstants.DB + rs.getString(AppConstants.PRDMAINIMAGE).replace("~", "").replace(" ", "%20"));
-//                    details.setQuantity(rs.getString("Quantity"));
-//                    details.setFromDate(rs.getString("from_date"));
-//                    details.setToDate(rs.getString("to_date"));
-//                    details.setSerielNo(rs.getString("slno"));
-//                    details.setId(rs.getString("prod_id"));
                     details.setMainImage("http://" + AppConstants.IP + "/" + AppConstants.DB + rs.getString("images").replace("~", "").replace(" ", "%20"));
                     details.setTitle(rs.getString("prod_title"));
                     details.setBrand(rs.getString("prod_brand"));

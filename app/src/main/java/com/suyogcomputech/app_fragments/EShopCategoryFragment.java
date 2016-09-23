@@ -29,6 +29,7 @@ import com.suyogcomputech.helper.EShopCategory;
 import com.suyogcomputech.helper.EShopSubCategory;
 import com.suyogcomputech.helper.ItemCounter;
 import com.suyogcomputech.helper.ProductDetails;
+import com.suyogcomputech.sms.MainActivity;
 import com.suyogcomputech.sms.ProductListActivity;
 import com.suyogcomputech.sms.R;
 import com.suyogcomputech.sms.ShoppingCartItemActivity;
@@ -46,6 +47,11 @@ public class EShopCategoryFragment extends Fragment implements ExpandableListVie
     ExpandableListView expLvCatgory;
     GetCategoryList taskGetCategoryList;
     ArrayList<EShopCategory> list;
+    public static final String MyPREFERENCES = "MyPrefs" ;
+    public static final String CatId = "CatId";
+    public static final String SubCatId = "SubCatId";
+    public static final String SubCatDesc = "SubCatDesc";
+    SharedPreferences sharedpreferences;
 
 
     private BadgeStyle style = ActionItemBadge.BadgeStyles.RED.getStyle();
@@ -91,6 +97,7 @@ public class EShopCategoryFragment extends Fragment implements ExpandableListVie
             taskGetCategoryList = new GetCategoryList();
             taskGetCategoryList.execute();
         }
+        sharedpreferences = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         return view;
     }
 
@@ -116,7 +123,12 @@ public class EShopCategoryFragment extends Fragment implements ExpandableListVie
     public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
         String catId = list.get(i).getCatId();
         String subCatId = list.get(i).getSubCategories().get(i1).getSubcatId();
-
+        String subCatDesc = list.get(i).getSubCategories().get(i1).getSubCatDesc();
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString(CatId,catId);
+        editor.putString(SubCatId, subCatId);
+        editor.putString(SubCatDesc,subCatDesc);
+        editor.commit();
         Intent intent = new Intent(getActivity(), ProductListActivity.class);
         intent.putExtra(AppConstants.CATID, catId);
         intent.putExtra(AppConstants.SUBCATID, subCatId);

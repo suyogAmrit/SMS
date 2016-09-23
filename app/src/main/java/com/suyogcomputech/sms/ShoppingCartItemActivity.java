@@ -57,7 +57,11 @@ public class ShoppingCartItemActivity extends AppCompatActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
-       setUpToolBar();
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setTitle("My Cart");
         toatlBillCardLayout = (CardView) findViewById(R.id.toatlBillCardLayout);
         txtCartTotal = (TextView)findViewById(R.id.txtCartTotal);
         txtDiscountTotal = (TextView)findViewById(R.id.txtDiscountTotal);
@@ -72,11 +76,7 @@ public class ShoppingCartItemActivity extends AppCompatActivity{
         }
     }
     private void setUpToolBar() {
-        toolbar = (Toolbar) findViewById(R.id.toolbarCart);
-        toolbar.setTitle("My Cart");
-        toolbar.setTitleTextColor(Color.WHITE);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
     }
     @Override
