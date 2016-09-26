@@ -71,7 +71,7 @@ public class MyOrderFragment extends Fragment {
             try {
                 ConnectionClass connectionClass = new ConnectionClass();
                 Connection connection = connectionClass.connect();
-                String query = "select eot.b_fname,eot.b_email,eot.b_ph1,eot.b_address1,eot.quantity,eot.size,ept.prod_brand,ept.images,ept.prod_title,ept.price from Eshop_Order_tb as eot inner join Eshop_Prod_table as ept on eot.prod_id=ept.prod_id ;";
+                String query = "select eot.b_fname,eot.b_email,eot.b_ph1,eot.b_address1,eot.quantity,eot.size,eot.uniqueId,eot.date,ept.prod_brand,ept.images,ept.prod_title,ept.price from Eshop_Order_tb as eot inner join Eshop_Prod_table as ept on eot.prod_id=ept.prod_id ;";
                 Log.v("Query",query);
                 Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
@@ -101,6 +101,8 @@ public class MyOrderFragment extends Fragment {
                     details.setOrderPlaceHolderEmail(rs.getString("b_email"));
                     details.setOrderPlaceHolderAddr(rs.getString("b_address1"));
                     details.setOrderPlaceHolderPhone(rs.getString("b_ph1"));
+                    details.setUniqueId(rs.getString("uniqueId"));
+                    details.setOrderedDate(rs.getString("date"));
                     list.add(details);
                 }
                 orderListAdapter = new OrderListAdapter(list,getActivity());

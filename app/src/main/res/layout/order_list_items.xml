@@ -26,48 +26,68 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/txtProdTitleBrand"
-            android:text="jkdbc"/>
+            />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/txtProdPrice"
-            android:text="jkdbc"
             android:layout_marginTop="5dp"/>
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/txtProdQty"
-            android:text="jkdbc"
-            android:layout_marginTop="5dp"/>
-        <TextView
+            android:orientation="horizontal"
+            android:weightSum="1">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtProdQty"
+                android:layout_weight="0.4"
+                android:layout_marginTop="5dp"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtOrderId"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="0.6"
+                android:layout_marginTop="5dp"/>
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/txtProdSize"
-            android:text="jkdbc"
-            android:layout_marginTop="5dp"/>
+            android:orientation="horizontal"
+            android:weightSum="1">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtProdSize"
+                android:layout_weight="0.4"
+                android:layout_marginTop="5dp"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtOrderedDate"
+                android:layout_weight="0.6"
+                android:layout_marginTop="5dp"/>
+        </LinearLayout>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/txtOrderName"
-            android:text="jkdbc"
             android:layout_marginTop="5dp"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/txtOrderEmail"
-            android:text="jkdbc"
             android:layout_marginTop="5dp"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/txtOrderAddr"
-            android:text="jkdbc"
             android:layout_marginTop="5dp"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/txtOrderPhone"
-            android:text="jkdbc"
             android:layout_marginTop="5dp"/>
     </LinearLayout>
     </LinearLayout>

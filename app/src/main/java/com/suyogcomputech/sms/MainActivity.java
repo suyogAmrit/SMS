@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements ExpandableListVie
     Fragment fragment;
     FragmentManager fragmentManager;
     String uniqueUserId;
+    private BadgeStyle style = ActionItemBadge.BadgeStyles.RED.getStyle();
     int badgeCount = 0;
 
     @Override
@@ -91,26 +92,39 @@ public class MainActivity extends AppCompatActivity implements ExpandableListVie
             expListView.setOnChildClickListener(this);
 
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         if (AppHelper.isConnectingToInternet(this)) {
             new FetchbadgeNumber().execute();
         }
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.main_menu,menu);
+        ActionItemBadge.update(this, menu.findItem(R.id.item_samplebadge), FontAwesome.Icon.faw_shopping_cart, style, badgeCount);
+        return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.item_samplebadge) {
+            if (badgeCount>0) {
                 Intent intent = new Intent(MainActivity.this, ShoppingCartItemActivity.class);
                 startActivity(intent);
+            }else {
+                AppHelper.showAlertDilog(MainActivity.this,"","You don't have any item in cart","Ok");
+            }
            return true;
         }
         if (item.getItemId()==R.id.item_search){
-            Intent intent = new Intent(MainActivity.this, SearchProductActivity.class);
-            startActivity(intent);
-        }
+                Intent intent = new Intent(MainActivity.this, SearchProductActivity.class);
+                startActivity(intent);
+            }
         return false;
     }
 

@@ -18,6 +18,26 @@ public class ProductDetails implements Parcelable{
     String sellerName;
     String orderplaceHolderName;
 
+    public String getOrderedDate() {
+        return orderedDate;
+    }
+
+    public void setOrderedDate(String orderedDate) {
+        this.orderedDate = orderedDate;
+    }
+
+    String orderedDate;
+
+    public String getUniqueId() {
+        return uniqueId;
+    }
+
+    public void setUniqueId(String uniqueId) {
+        this.uniqueId = uniqueId;
+    }
+
+    String uniqueId;
+
     public String getOrderPlaceHolderEmail() {
         return orderPlaceHolderEmail;
     }

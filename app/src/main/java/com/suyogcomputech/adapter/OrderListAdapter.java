@@ -2,6 +2,7 @@ package com.suyogcomputech.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.suyogcomputech.helper.AppConstants;
+import com.suyogcomputech.helper.AppHelper;
 import com.suyogcomputech.helper.ProductDetails;
 import com.suyogcomputech.sms.R;
 
@@ -45,6 +47,10 @@ public class OrderListAdapter  extends RecyclerView.Adapter<OrderListAdapter.Vie
         holder.txtOrderEmail.setText("Email: "+detailses.get(position).getOrderPlaceHolderEmail());
         holder.txtOrderAddr.setText("Address: " +detailses.get(position).getOrderPlaceHolderAddr());
         holder.txtOrderPhone.setText("Phone: " + detailses.get(position).getOrderPlaceHolderPhone());
+        holder.txtOrderId.setText("ORDERED ID: "+detailses.get(position).getUniqueId());
+        if (!TextUtils.isEmpty(detailses.get(position).getOrderedDate())) {
+            holder.txtOrderedDate.setText("Date: " + AppHelper.getDateFromString(detailses.get(position).getOrderedDate()));
+        }
     }
 
     @Override
@@ -53,7 +59,7 @@ public class OrderListAdapter  extends RecyclerView.Adapter<OrderListAdapter.Vie
     }
 
     public class ViewHolder  extends RecyclerView.ViewHolder{
-        TextView txtProdTitleBrand,txtProdPrice,txtProdQty,txtProdSize,txtOrderName,txtOrderEmail,txtOrderAddr,txtOrderPhone;
+        TextView txtProdTitleBrand,txtProdPrice,txtProdQty,txtProdSize,txtOrderName,txtOrderEmail,txtOrderAddr,txtOrderPhone,txtOrderId,txtOrderedDate;
         private ImageView imgOrderedProduct;
        public ViewHolder(View itemView) {
            super(itemView);
@@ -66,6 +72,8 @@ public class OrderListAdapter  extends RecyclerView.Adapter<OrderListAdapter.Vie
            txtOrderEmail = (TextView)itemView.findViewById(R.id.txtOrderEmail);
            txtOrderAddr = (TextView)itemView.findViewById(R.id.txtOrderAddr);
            txtOrderPhone = (TextView)itemView.findViewById(R.id.txtOrderPhone);
+           txtOrderId = (TextView)itemView.findViewById(R.id.txtOrderId);
+           txtOrderedDate = (TextView)itemView.findViewById(R.id.txtOrderedDate);
        }
    }
 }

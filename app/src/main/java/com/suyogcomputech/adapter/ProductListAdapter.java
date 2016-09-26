@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.squareup.picasso.Picasso;
 import com.suyogcomputech.helper.AppConstants;
 import com.suyogcomputech.helper.AppHelper;
 import com.suyogcomputech.helper.Product;
@@ -61,7 +62,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         ProductDetails p = list.get(position);
         Log.i("images", p.getMainImage());
         holder.tvShortDesc.setText(p.getShortDesc().toUpperCase());
@@ -69,19 +70,20 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         holder.tvBrand.setText(p.getBrand());
         //if (list.get(position).getFromDate() != null && list.get(position).getToDate() != null) {
         // Log.i(String.valueOf(list.get(position)), "offer");
-        if (list.get(position).getFromDate() != null && list.get(position).getToDate() != null && AppHelper.compareDate(list.get(position).getFromDate(), list.get(position).getToDate())) {
+        if (p.getFromDate() != null && p.getToDate() != null && AppHelper.compareDate(p.getFromDate(), p.getToDate())) {
             holder.tvOffer.setVisibility(View.VISIBLE);
-            double actualPrice = Double.valueOf(list.get(position).getPrice()) - (Double.valueOf(list.get(position).getPrice()) * Double.valueOf(list.get(position).getOfferPer())) / 100;
+            double actualPrice = Double.valueOf(p.getPrice()) - (Double.valueOf(p.getPrice()) * Double.valueOf(p.getOfferPer())) / 100;
             holder.tvPrice.setText(AppConstants.RUPEESYM + actualPrice);
             holder.offer_frame.setVisibility(View.VISIBLE);
-            holder.productCutPrice.setText(AppConstants.RUPEESYM + list.get(position).getPrice());
+            holder.productCutPrice.setText(AppConstants.RUPEESYM + p.getPrice());
         }else {
-            holder.tvPrice.setText(AppConstants.RUPEESYM + Double.valueOf(list.get(position).getPrice()));
+            holder.tvPrice.setText(AppConstants.RUPEESYM + Double.valueOf(p.getPrice()));
             holder.tvOffer.setVisibility(View.GONE);
             holder.offer_frame.setVisibility(View.GONE);
         }
-        Uri uri = Uri.parse(p.getMainImage());
-        holder.ivImage.setImageURI(uri);
+//        Uri uri = Uri.parse(p.getMainImage());
+//        holder.ivImage.setImageURI(uri);
+        Picasso.with(myContext).load(p.getMainImage()).placeholder(android.R.drawable.ic_menu_gallery).into(holder.ivImage);
 
         holder.cvParent.setOnClickListener(new View.OnClickListener() {
             @Override

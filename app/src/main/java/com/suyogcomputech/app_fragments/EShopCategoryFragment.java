@@ -62,31 +62,31 @@ public class EShopCategoryFragment extends Fragment implements ExpandableListVie
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         if (AppHelper.isConnectingToInternet(getActivity())) {
-            new FetchbadgeNumber().execute();
+           // new FetchbadgeNumber().execute();
         }
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        getActivity().getMenuInflater().inflate(R.menu.main_menu, menu);
-        ActionItemBadge.update(getActivity(), menu.findItem(R.id.item_samplebadge), FontAwesome.Icon.faw_shopping_cart, style, badgeCount);
-        menu.findItem(R.id.item_sort).setVisible(false);
-    }
+//    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        super.onCreateOptionsMenu(menu, inflater);
+//        getActivity().getMenuInflater().inflate(R.menu.main_menu, menu);
+//        ActionItemBadge.update(getActivity(), menu.findItem(R.id.item_samplebadge), FontAwesome.Icon.faw_shopping_cart, style, badgeCount);
+//        menu.findItem(R.id.item_sort).setVisible(false);
+//    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.item_samplebadge) {
-            if (badgeCount>0) {
-                Intent intent = new Intent(getActivity(), ShoppingCartItemActivity.class);
-                startActivity(intent);
-            }else {
-                    AppHelper.showAlertDilog(getActivity(),"","You don't have any cart items","Ok");
-            }
-            return true;
-        }
-        return false;
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        if (item.getItemId() == R.id.item_samplebadge) {
+//            if (badgeCount>0) {
+//                Intent intent = new Intent(getActivity(), ShoppingCartItemActivity.class);
+//                startActivity(intent);
+//            }else {
+//                    AppHelper.showAlertDilog(getActivity(),"","You don't have any cart items","Ok");
+//            }
+//            return true;
+//        }
+//        return false;
+//    }
 
     @Nullable
     @Override
@@ -113,7 +113,7 @@ public class EShopCategoryFragment extends Fragment implements ExpandableListVie
     public void onStart() {
         super.onStart();
         if (AppHelper.isConnectingToInternet(getActivity())) {
-            new FetchbadgeNumber().execute();
+            //new FetchbadgeNumber().execute();
         }
         //badgeCount = ItemCounter.getInstance().getItemCount();
         //getActivity().invalidateOptionsMenu();

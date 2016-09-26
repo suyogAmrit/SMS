@@ -45,7 +45,7 @@ public class AppHelper {
     public static Date getDateFromString(String string) {
         Date d = null;
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy"); // here set the pattern as you date in string was containing like date/month/year
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS"); // here set the pattern as you date in string was containing like date/month/year
             d = sdf.parse(string);
             return d;
         } catch (ParseException ex) {

@@ -17,5 +17,6 @@
         android:id="@+id/item_sort"
         android:icon="@android:drawable/ic_menu_sort_alphabetically"
         android:title="Sort"
+        android:visible="false"
         app:showAsAction="always" />
 </menu>

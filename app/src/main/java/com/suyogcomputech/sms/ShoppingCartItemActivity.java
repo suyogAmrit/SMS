@@ -48,11 +48,11 @@ public class ShoppingCartItemActivity extends AppCompatActivity{
     private RecyclerView rcvMyOrderRecycler;
     ArrayList<ProductDetails> list;
     CardView toatlBillCardLayout;
-    public static TextView txtCartTotal;
-    public TextView txtDiscountTotal,txtSubTotal,txtTotalPayble;
+    public static TextView txtCartTotal,txtDiscountTotal,txtTotalPayble;
     ProgressDialog progressDialog;
     int slNo;
     String orderId;
+    public static final  int REQUEST_CODE = 325;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +65,6 @@ public class ShoppingCartItemActivity extends AppCompatActivity{
         toatlBillCardLayout = (CardView) findViewById(R.id.toatlBillCardLayout);
         txtCartTotal = (TextView)findViewById(R.id.txtCartTotal);
         txtDiscountTotal = (TextView)findViewById(R.id.txtDiscountTotal);
-        txtSubTotal = (TextView)findViewById(R.id.txtSubTotal);
         txtTotalPayble = (TextView)findViewById(R.id.txtTotalPayble);
         progressDialog = new ProgressDialog(this);
         //productId=getIntent().getExtras().getString(AppConstants.PROD_ID);
@@ -74,10 +73,6 @@ public class ShoppingCartItemActivity extends AppCompatActivity{
         }else {
             Toast.makeText(ShoppingCartItemActivity.this,"No internet Connection",Toast.LENGTH_SHORT).show();
         }
-    }
-    private void setUpToolBar() {
-
-
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -160,11 +155,14 @@ public class ShoppingCartItemActivity extends AppCompatActivity{
             try {
                 ConnectionClass connectionClass = new ConnectionClass();
                 Connection connection = connectionClass.connect();
-                String query = "select p.prod_id,e.slno,p.prod_title,p.images,p.prod_brand,p.price,e.size,e.Quantity,o.from_date,\n" +
+                /*String query = "select p.prod_id,e.slno,p.prod_title,p.images,p.prod_brand,p.price,e.size,e.Quantity,o.from_date,\n" +
                         "o.to_date,o.offer_per from Eshop_Prod_table as p\n" +
                         "inner join Eshop_cart_tb as e on(p.prod_id=e.prod_id)\n" +
                         "inner join Eshop_Offer_tb as o on(p.prod_id=o.prod_id)\n" +
-                        " and e.Status=1 and e.user_id='"+findUserId()+"'";
+                        " and e.Status=1 and e.user_id='"+findUserId()+"'";*/
+                String query = "select p.prod_id,e.slno,p.prod_title,p.images,p.prod_brand,p.price,e.size,e.Quantity from Eshop_Prod_table as p\n" +
+                        "inner join Eshop_cart_tb as e on(p.prod_id=e.prod_id)\n" +
+                        "and e.Status=1 and e.user_id='"+findUserId()+"'";
 
                 Log.v("Query",query);
                 Statement statement = connection.createStatement();
@@ -188,11 +186,8 @@ public class ShoppingCartItemActivity extends AppCompatActivity{
                     details.setBrand(rs.getString("prod_brand"));
                     details.setPrice(rs.getString("price"));
                     details.setSizeProduct(rs.getString("size"));
-                    details.setOfferPer(rs.getString("offer_per"));
                     details.setMainImage("http://" + AppConstants.IP + "/" + AppConstants.DB + rs.getString(AppConstants.PRDMAINIMAGE).replace("~", "").replace(" ", "%20"));
                     details.setQuantity(rs.getString("Quantity"));
-                    details.setFromDate(rs.getString("from_date"));
-                    details.setToDate(rs.getString("to_date"));
                     details.setSerielNo(rs.getString("slno"));
                     details.setId(rs.getString("prod_id"));
                     list.add(details);
@@ -204,7 +199,10 @@ public class ShoppingCartItemActivity extends AppCompatActivity{
                 LinearLayoutManager glm = new LinearLayoutManager(ShoppingCartItemActivity.this);
                 rcvMyOrderRecycler.setLayoutManager(glm);
                 cartItemAdapter.totalPrice();
-                totalPriceCount();
+                if (list==null && list.size()==0){
+                    Toast.makeText(ShoppingCartItemActivity.this,"No Orders",Toast.LENGTH_SHORT).show();
+                }
+                //cartItemAdapter.totalDis();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -217,11 +215,6 @@ public class ShoppingCartItemActivity extends AppCompatActivity{
         String uniqueUserId = sharedpreferences.getString(AppConstants.USERID, AppConstants.NOT_AVAILABLE);
         return uniqueUserId;
     }
-    public void totalPriceCount(){
-        toatlBillCardLayout.setVisibility(View.GONE);
-        txtTotalPayble.setText(txtCartTotal.getText().toString());
-        //txtSubTotal.setText(AppConstants.RUPEESYM+(Double.valueOf(txtCartTotal.getText().toString())-Double.valueOf(txtDiscountTotal.getText().toString())));
-    }
 
 
     @Override
@@ -229,10 +222,11 @@ public class ShoppingCartItemActivity extends AppCompatActivity{
         super.onActivityResult(requestCode, resultCode, data);
 
 
-        if (requestCode == 1) {
+        if (requestCode == REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 Log.i("ResultCode", "123");
                 new FetchCartItems().execute();
+                cartItemAdapter.notifyDataSetChanged();
             }
         }
     }

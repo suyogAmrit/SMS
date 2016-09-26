@@ -18,6 +18,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -58,7 +59,7 @@ public class ProductListActivity extends AppCompatActivity {
     ProductListAdapter adapter;
     private BadgeStyle style = ActionItemBadge.BadgeStyles.RED.getStyle();
     private int badgeCount = 0;
-    private ArrayList<ProductDetails> productDetailList, productDetailsArrayList, productDetailsesnew, productDetailsesListOfData;
+    private ArrayList<ProductDetails> productDetailList, productDetailsArrayList, productDetailsesnew;
     String query;
     RadioGroup radioGroup;
     ProgressDialog dialog;
@@ -289,9 +290,11 @@ public class ProductListActivity extends AppCompatActivity {
                     p.setSellerName(resultSet.getString(AppConstants.SELLOR_NAME));
                     ArrayList<String> imageList = new ArrayList<>();
                     if (p.getStatus().equals("1")) {
-                        imageList.add("http://" + AppConstants.IP + "/" + AppConstants.DB + resultSet.getString(AppConstants.IMAGE1).replace("~", "").replace(" ", "%20"));
-                        imageList.add("http://" + AppConstants.IP + "/" + AppConstants.DB + resultSet.getString(AppConstants.IMAGE2).replace("~", "").replace(" ", "%20"));
-                        imageList.add("http://" + AppConstants.IP + "/" + AppConstants.DB + resultSet.getString(AppConstants.IMAGE3).replace("~", "").replace(" ", "%20"));
+                        if (!TextUtils.isEmpty(resultSet.getString(AppConstants.IMAGE1)) && !TextUtils.isEmpty(resultSet.getString(AppConstants.IMAGE2)) && !TextUtils.isEmpty(resultSet.getString(AppConstants.IMAGE3))) {
+                            imageList.add("http://" + AppConstants.IP + "/" + AppConstants.DB + resultSet.getString(AppConstants.IMAGE1).replace("~", "").replace(" ", "%20"));
+                            imageList.add("http://" + AppConstants.IP + "/" + AppConstants.DB + resultSet.getString(AppConstants.IMAGE2).replace("~", "").replace(" ", "%20"));
+                            imageList.add("http://" + AppConstants.IP + "/" + AppConstants.DB + resultSet.getString(AppConstants.IMAGE3).replace("~", "").replace(" ", "%20"));
+                        }
                         p.setImages(imageList);
                     }
                     ArrayList<String> listSize = new ArrayList<>();
@@ -326,7 +329,8 @@ public class ProductListActivity extends AppCompatActivity {
                 connection.close();
                 return list;
             } catch (Exception e) {
-                Log.i("Exception", e.getMessage());
+                Log.i("Exception", ""+e.getMessage());
+                e.printStackTrace();
                 return null;
             }
         }
@@ -335,6 +339,7 @@ public class ProductListActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        adapter.clear();
         if (AppHelper.isConnectingToInternet(ProductListActivity.this)) {
             taskGetProducts = new GetProducts();
             taskGetProducts.execute();

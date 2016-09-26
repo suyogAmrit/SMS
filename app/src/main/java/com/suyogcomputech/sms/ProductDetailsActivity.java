@@ -41,6 +41,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import static android.R.attr.id;
+
 /**
  * Created by suyogcomputech on 31/08/16.
  */
@@ -97,7 +99,9 @@ public class ProductDetailsActivity extends AppCompatActivity {
 //        }
         productDetails = getIntent().getParcelableExtra(AppConstants.EXTRA_PROCUCT_DETAILS);
         Log.v("", "");
-        updateUi();
+        if (productDetails!=null) {
+            updateUi();
+        }
     }
 
     private void updateUi() {
@@ -105,7 +109,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         imgPager.setAdapter(imagePagerAdapter);
         CirclePageIndicator indicator = (CirclePageIndicator) findViewById(R.id.indicator);
         indicator.setViewPager(imgPager);
-        Log.d("", productDetails.getImages().get(0));
+        Log.d("", productDetails.getMainImage());
         if (productDetails.getRating()==0){
             ratingProduct.setVisibility(View.GONE);
         }else {
@@ -114,7 +118,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         }
         product_title.setText(productDetails.getBrand() + " " + productDetails.getTitle());
         product_cutting_price.setText(AppConstants.RUPEESYM + productDetails.getPrice());
-        productDiscount.setText(Integer.valueOf(productDetails.getOfferPer()) + "% off");
+        productDiscount.setText(""+productDetails.getOfferPer() + "% off");
         product_offer_desc.setText(productDetails.getOfferDesc());
         small.setText(productDetails.getSizes().get(0));
         medium.setText(productDetails.getSizes().get(1));
@@ -265,7 +269,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         }
         return false;
     }
-    private class AddCartTask extends AsyncTask<Void, Void, Boolean> {
+    private class AddCartTask extends AsyncTask<Void, Void, Long> {
         ProgressDialog dialog;
 
         @Override
@@ -278,8 +282,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
-            try {
+        protected Long doInBackground(Void... params) {
+            /*try {
                 ConnectionClass connectionClass = new ConnectionClass();
                 Connection connection = connectionClass.connect();
                 SharedPreferences sharedpreferences = getSharedPreferences(AppConstants.USERPREFS, Context.MODE_PRIVATE);
@@ -296,6 +300,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
                     PreparedStatement statementInsert = connection.prepareStatement(insertQuery);
                     long resSetInsert = statementInsert.executeUpdate();
                     Log.i("Result", String.valueOf(resSetInsert));
+                    Log.i("insertQuery",insertQuery);
                     if (resSetInsert>0){
                         connection.close();
                         return true;
@@ -308,14 +313,54 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 e.printStackTrace();
                 return false;
             }
-            return false;
+            return false;*/
+            try {
+                ConnectionClass connectionClass = new ConnectionClass();
+                Connection connection = connectionClass.connect();
+                SharedPreferences sharedpreferences = getSharedPreferences(AppConstants.USERPREFS, Context.MODE_PRIVATE);
+                String uniqueUserId = sharedpreferences.getString(AppConstants.USERID, AppConstants.NOT_AVAILABLE);
+                String selectQuery="select * from Eshop_cart_tb where prod_id='"+productDetails.getId()+"' and size='"+productSize+"' and user_id='"+findUserId()+"'";
+                Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery(selectQuery);
+                if (!resultSet.next()) {
+                    String insertQuery="insert into Eshop_cart_tb (user_id,prod_id,Quantity,Status,size) values ('" + uniqueUserId + "','" + productDetails.getId() + "','" + 1 + "','" + productDetails.getStatus()+ "','" +productSize +"'" + ");";
+                    PreparedStatement statementInsert = connection.prepareStatement(insertQuery);
+                    long resSetInsert = statementInsert.executeUpdate();
+                    return resSetInsert;
+                }
+                else
+                {
+                    String updateQuery="update Eshop_cart_tb set Quantity=Quantity+1\n" + "where user_id='"+uniqueUserId+"' and prod_id='"+productDetails.getId()+"' and size='"+productSize+"'";
+                    PreparedStatement statementInsert = connection.prepareStatement(updateQuery);
+                    long resSet = statementInsert.executeUpdate();
+                    return Long.valueOf(1111111);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            return null;
         }
 
         @Override
-        protected void onPostExecute(Boolean isExecuted) {
-            super.onPostExecute(isExecuted);
-            if (isExecuted) {
+        protected void onPostExecute(Long i) {
+            super.onPostExecute(i);
+            dialog.dismiss();
+            /*if (isExecuted) {
                 Toast.makeText(ProductDetailsActivity.this, "Item Added successfully", Toast.LENGTH_SHORT).show();
+            }
+            dialog.dismiss();
+            if (AppHelper.isConnectingToInternet(ProductDetailsActivity.this)) {
+                new FetchbadgeNumber().execute();
+            }else {
+                Toast.makeText(ProductDetailsActivity.this,"No internet Connection",Toast.LENGTH_SHORT).show();
+            }*/
+            if(i>0 && i!=1111111)
+            {
+                Toast.makeText(ProductDetailsActivity.this, "Item Added Succesfully.", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                Toast.makeText(ProductDetailsActivity.this, "Quantity updated.", Toast.LENGTH_SHORT).show();
             }
             dialog.dismiss();
             if (AppHelper.isConnectingToInternet(ProductDetailsActivity.this)) {
@@ -324,6 +369,12 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 Toast.makeText(ProductDetailsActivity.this,"No internet Connection",Toast.LENGTH_SHORT).show();
             }
         }
+    }
+    public String findUserId()
+    {
+        SharedPreferences sharedpreferences = getSharedPreferences(AppConstants.USERPREFS, Context.MODE_PRIVATE);
+        String uniqueUserId = sharedpreferences.getString(AppConstants.USERID, AppConstants.NOT_AVAILABLE);
+        return uniqueUserId;
     }
 
     @Override
@@ -371,8 +422,9 @@ public class ProductDetailsActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
-            badgeCount = integer;
-            ItemCounter.getInstance().setItemCount(badgeCount);
+//            badgeCount = integer;
+//            ItemCounter.getInstance().setItemCount(badgeCount);
+            invalidateOptionsMenu();
         }
     }
     /*private class GetProductDetails extends AsyncTask<Void, Void, ProductDetails>  {

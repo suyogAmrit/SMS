@@ -33,6 +33,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -126,13 +127,14 @@ public class OrderItemActivity extends AppCompatActivity implements View.OnClick
                 //String query = "insert into Eshop_Order_tb (s_fname,s_address1,s_ph1,uniqueId,quantity) Values ('"+ownerName+"','"+address+"','+"+phoneNo+"'"+createUniqueUserId()+"'"+quantites()+"')";
                 for (int k = 0;k<list.size();k++) {
                     listItems.add(Integer.valueOf(list.get(k).getId()));
-                     query = "Insert into Eshop_Order_tb(b_fname,b_ph1,b_address1,b_email,b_country,b_city,b_zip,b_state,quantity,prod_id,uniqueId,uid,size,status1)\n" +
-                            "values('" + ownerName + "','" + phoneNo + "','" + address + "','" + "emailo@gmail.com" + "','" + "India" + "','" + "Bhubaneswar" + "','" + "5482512" + "','" + "Odisha" + "','" + totalQuantity() + "','" + k + "','" + createUniqueUserId() + "','" + findUserId() + "','" + list.get(k).getSizeProduct() + "'," + 0 + ")";
+                     query = "Insert into Eshop_Order_tb(b_fname,b_ph1,b_address1,b_email,b_country,b_city,b_zip,b_state,quantity,prod_id,uniqueId,uid,size,status1,date)\n" +
+                            "values('" + ownerName + "','" + phoneNo + "','" + address + "','" + "emailo@gmail.com" + "','" + "India" + "','" + "Bhubaneswar" + "','" + "5482512" + "','" + "Odisha" + "','" + totalQuantity() + "','" + list.get(k).getId() + "','" + createUniqueUserId() + "','" + findUserId() + "','" + list.get(k).getSizeProduct() + "','" + 0 +"',GETDATE())";
                     PreparedStatement statement = connection.prepareStatement(query);
                     long resSet = statement.executeUpdate();
                     Log.i("Result", String.valueOf(resSet));
+                    Log.i("QueryInsert",query);
                 }
-                Log.i("QueryInsert",query);
+
 //                PreparedStatement statement = connection.prepareStatement(query);
 //                long resSet = statement.executeUpdate();
 //                Log.i("Result", String.valueOf(resSet));
@@ -145,6 +147,7 @@ public class OrderItemActivity extends AppCompatActivity implements View.OnClick
 //                }
             } catch (SQLException e) {
                 e.printStackTrace();
+                Log.e("messagae",e.getMessage());
                 return false;
             }
             return false;
@@ -262,7 +265,7 @@ public class OrderItemActivity extends AppCompatActivity implements View.OnClick
     public String createUniqueUserId(){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         String currentDateandTime = sdf.format(new Date());
-        return currentDateandTime+findUserId();
+        return currentDateandTime+findUserId().toUpperCase();
     }
     private class FetchCartItems extends AsyncTask<Void,Void,ResultSet>{
         @Override
