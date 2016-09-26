@@ -1,5 +1,8 @@
 package com.suyogcomputech.sms;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,9 +11,14 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mikepenz.actionitembadge.library.ActionItemBadge;
+import com.mikepenz.actionitembadge.library.utils.BadgeStyle;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.suyogcomputech.adapter.GroceryListAdapter;
 import com.suyogcomputech.helper.AppConstants;
 import com.suyogcomputech.helper.ConnectionClass;
@@ -30,6 +38,10 @@ public class GroceryListActivity extends AppCompatActivity {
     Toolbar tbProduct;
     RecyclerView rvPdroducts;
     GroceryListAdapter adapter;
+    String uniqueUserId;
+    private BadgeStyle style = ActionItemBadge.BadgeStyles.RED.getStyle();
+    private int badgeCount = 0;
+
     private ArrayList<GroceryProductDetails> productDetailList;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,8 +63,43 @@ public class GroceryListActivity extends AppCompatActivity {
         productDetailList = new ArrayList<>();
         rvPdroducts = (RecyclerView) findViewById(R.id.rv_product);
 
+        SharedPreferences sharedpreferences = getSharedPreferences(AppConstants.USERPREFS, Context.MODE_PRIVATE);
+        uniqueUserId = sharedpreferences.getString(AppConstants.USERID, AppConstants.NOT_AVAILABLE);
+
         new GroceryList().execute();
+        new CartCount().execute();
     }
+
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.grocery_menu_cart, menu);
+        ActionItemBadge.update(GroceryListActivity.this, menu.findItem(R.id.addcart), FontAwesome.Icon.faw_shopping_cart, style, badgeCount);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        if (item.getItemId() == R.id.addcart) {
+            Intent intent = new Intent(GroceryListActivity.this,GroceryCartActivity.class);
+            //intent.putExtra(AppConstants.PROD_ID,productDetails.getId());
+            startActivity(intent);
+            return true;
+        }
+        return false;
+    }
+
+
+
+
 
     private class GroceryList extends AsyncTask<String,Void,ResultSet> {
 
@@ -106,6 +153,47 @@ public class GroceryListActivity extends AppCompatActivity {
                 ResultSet resultSet = statement.executeQuery(query);
 //                connection.close();
                 return resultSet;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+
+
+
+
+    private class CartCount extends AsyncTask<Void,Void,Integer> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            super.onPostExecute(integer);
+
+            badgeCount=integer;
+            invalidateOptionsMenu();
+
+        }
+
+        @Override
+        protected Integer doInBackground(Void... params) {
+            try {
+                ConnectionClass connectionClass = new ConnectionClass();
+                Connection connection = connectionClass.connect();
+                String cartQuery="select count(*) as cart_count from Grocery_cart_table where user_id='"+uniqueUserId+"' and status=1";
+                Statement statement = null;
+                statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery(cartQuery);
+
+                resultSet.next();
+                Log.i("ssss",cartQuery);
+                Log.i("ssss",String.valueOf(resultSet.getInt("cart_count")));
+                return(resultSet.getInt("cart_count"));
+
             } catch (SQLException e) {
                 e.printStackTrace();
             }

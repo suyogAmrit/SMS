@@ -101,6 +101,8 @@
             android:screenOrientation="portrait"></activity>
         <activity android:name=".ShowFilteredProductActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".GroceryCartActivity" android:screenOrientation="portrait" />
+        <activity android:name=".CheckoutActivity" android:screenOrientation="portrait" />
     </application>
 
 </manifest>
