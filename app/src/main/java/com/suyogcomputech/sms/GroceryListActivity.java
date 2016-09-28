@@ -28,7 +28,10 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by Suyog on 9/7/2016.
@@ -66,6 +69,7 @@ public class GroceryListActivity extends AppCompatActivity {
         SharedPreferences sharedpreferences = getSharedPreferences(AppConstants.USERPREFS, Context.MODE_PRIVATE);
         uniqueUserId = sharedpreferences.getString(AppConstants.USERID, AppConstants.NOT_AVAILABLE);
 
+
         new GroceryList().execute();
         new CartCount().execute();
     }
@@ -89,9 +93,16 @@ public class GroceryListActivity extends AppCompatActivity {
             return true;
         }
         if (item.getItemId() == R.id.addcart) {
-            Intent intent = new Intent(GroceryListActivity.this,GroceryCartActivity.class);
-            //intent.putExtra(AppConstants.PROD_ID,productDetails.getId());
-            startActivity(intent);
+            if(badgeCount!=0)
+            {
+                Intent intent = new Intent(GroceryListActivity.this,GroceryCartActivity.class);
+                //intent.putExtra(AppConstants.PROD_ID,productDetails.getId());
+                startActivity(intent);
+            }
+            else
+            {
+                Toast.makeText(GroceryListActivity.this, "Cart empty please add item to cart", Toast.LENGTH_SHORT).show();
+            }
             return true;
         }
         return false;

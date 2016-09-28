@@ -76,8 +76,12 @@ public class GroceryProductDetailsActivity extends AppCompatActivity {
         uniqueUserId = sharedpreferences.getString(AppConstants.USERID, AppConstants.NOT_AVAILABLE);
 
         new GroceryDetails().execute();
-        new CartCount().execute();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        new CartCount().execute();
     }
 
     @Override
@@ -96,9 +100,16 @@ public class GroceryProductDetailsActivity extends AppCompatActivity {
             return true;
         }
         if (item.getItemId() == R.id.addcart) {
-            Intent intent = new Intent(GroceryProductDetailsActivity.this,GroceryCartActivity.class);
-            //intent.putExtra(AppConstants.PROD_ID,productDetails.getId());
-            startActivity(intent);
+            if(badgeCount!=0)
+            {
+                Intent intent = new Intent(GroceryProductDetailsActivity.this,GroceryCartActivity.class);
+                //intent.putExtra(AppConstants.PROD_ID,productDetails.getId());
+                startActivity(intent);
+            }
+            else
+            {
+                Toast.makeText(GroceryProductDetailsActivity.this, "Cart empty please add item to cart", Toast.LENGTH_SHORT).show();
+            }
             return true;
         }
         return false;
@@ -106,8 +117,8 @@ public class GroceryProductDetailsActivity extends AppCompatActivity {
 
 
     public void addToCart(View view) {
-            qty=String.valueOf(tv_qty.getText());
-            new InsertCart().execute();
+        qty=String.valueOf(tv_qty.getText());
+        new InsertCart().execute();
     }
 
     public void plus(View view) {
@@ -207,6 +218,8 @@ public class GroceryProductDetailsActivity extends AppCompatActivity {
 
             if(i>0 && i!=1111111)
             {
+                ++badgeCount;
+                invalidateOptionsMenu();
                 Toast.makeText(GroceryProductDetailsActivity.this, "Add to cart Successfully.", Toast.LENGTH_SHORT).show();
             }
             else{
@@ -244,7 +257,7 @@ public class GroceryProductDetailsActivity extends AppCompatActivity {
         }
     }
 
-    private class CartCount extends AsyncTask<Void,Void,Integer> {
+    public class CartCount extends AsyncTask<Void,Void,Integer> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
