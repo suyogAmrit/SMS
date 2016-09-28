@@ -14,10 +14,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.suyogcomputech.adapter.GroceryCartAdapter;
 import com.suyogcomputech.helper.AppConstants;
 import com.suyogcomputech.helper.ConnectionClass;
+import com.suyogcomputech.helper.Grocery;
 import com.suyogcomputech.helper.GroceryCartList;
 
 import java.sql.Connection;
@@ -36,7 +39,9 @@ public class GroceryCartActivity extends AppCompatActivity {
     RecyclerView rvCartItems;
     Toolbar toolbar;
     Button placeOrder,checkout;
+//    TextView tv_no_items;
     LinearLayout new_address_layout,exist_address,exist_layout,new_address;
+    int cart_count;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +56,7 @@ public class GroceryCartActivity extends AppCompatActivity {
 //        new_address=(LinearLayout)findViewById(R.id.use_exist_address);
         checkout=(Button)findViewById(R.id.checkout);
         rvCartItems=(RecyclerView)findViewById(R.id.rv_cart_item);
+//        tv_no_items=(TextView)findViewById(R.id.tv_no_items);
         toolbar=(Toolbar)findViewById(R.id.main_toolbar);
         toolbar.setTitle("Cart");
         setSupportActionBar(toolbar);
@@ -102,7 +108,6 @@ public class GroceryCartActivity extends AppCompatActivity {
                     groceryCartList.setMaxQuantity(resultSet.getString("quantityM"));
 
                     cartArrayList.add(groceryCartList);
-                    Log.i("image_url",resultSet.getString("images_path"));
                 }
                 groceryCartAdapter=new GroceryCartAdapter(GroceryCartActivity.this,cartArrayList);
                 rvCartItems.setAdapter(groceryCartAdapter);

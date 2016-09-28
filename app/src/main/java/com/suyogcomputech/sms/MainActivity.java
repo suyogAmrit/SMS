@@ -29,6 +29,7 @@ import com.suyogcomputech.adapter.ExpandableListAdapter;
 import com.suyogcomputech.app_fragments.EShopCategoryFragment;
 import com.suyogcomputech.app_fragments.GroceryFragment;
 import com.suyogcomputech.app_fragments.MyAppointmentFragment;
+import com.suyogcomputech.app_fragments.MyGroceryOrderFragment;
 import com.suyogcomputech.app_fragments.MyOrderFragment;
 import com.suyogcomputech.app_fragments.MyEventBookingFragment;
 import com.suyogcomputech.app_fragments.MyReportsFragment;
@@ -252,7 +253,7 @@ public class MainActivity extends AppCompatActivity implements ExpandableListVie
                         mDrawerLayout.closeDrawer(GravityCompat.START);
                         break;
                     case 1:
-                        fragment = new MyOrderFragment();
+                        fragment = new MyGroceryOrderFragment();
                         toolbar.setTitle("My Order");
                         toolbar.setTitleTextColor(Color.WHITE);
                         mDrawerLayout.closeDrawer(GravityCompat.START);

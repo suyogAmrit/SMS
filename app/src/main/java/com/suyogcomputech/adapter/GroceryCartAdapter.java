@@ -20,6 +20,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.suyogcomputech.helper.AppConstants;
 import com.suyogcomputech.helper.ConnectionClass;
 import com.suyogcomputech.helper.GroceryCartList;
+import com.suyogcomputech.sms.GroceryCartActivity;
 import com.suyogcomputech.sms.R;
 
 import java.sql.Connection;
@@ -109,6 +110,15 @@ public class GroceryCartAdapter extends RecyclerView.Adapter<GroceryCartAdapter.
             if (i > 0) {
                 cartArrayLists.remove(pos);
                 Toast.makeText(context, "Item Removed from cart", Toast.LENGTH_SHORT).show();
+
+                int cart_count=cartArrayLists.size();
+                if(cart_count==0)
+                {
+//                    checkout.setVisibility(View.GONE);
+//                    tv_no_items.setVisibility(View.VISIBLE);
+
+                    ((GroceryCartActivity)context).finish();
+                }
                 notifyDataSetChanged();
             }
         }
