@@ -119,6 +119,7 @@ public class GroceryCartAdapter extends RecyclerView.Adapter<GroceryCartAdapter.
 
                     ((GroceryCartActivity)context).finish();
                 }
+                ((GroceryCartActivity)context).cartCount();
                 notifyDataSetChanged();
             }
         }

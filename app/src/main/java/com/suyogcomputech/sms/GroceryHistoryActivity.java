@@ -104,6 +104,11 @@ String orderId,uniqueUserId;
             }
             return true;
         }
+        if(item.getItemId()==R.id.item_search)
+        {
+            Intent intent = new Intent(GroceryHistoryActivity.this,SearchGroceryActivity.class);
+            startActivity(intent);
+        }
         return false;
     }
 

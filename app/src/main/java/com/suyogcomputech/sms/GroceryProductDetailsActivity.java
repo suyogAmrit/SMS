@@ -112,6 +112,11 @@ public class GroceryProductDetailsActivity extends AppCompatActivity {
             }
             return true;
         }
+        if(item.getItemId()==R.id.item_search)
+        {
+            Intent intent = new Intent(GroceryProductDetailsActivity.this,SearchGroceryActivity.class);
+            startActivity(intent);
+        }
         return false;
     }
 

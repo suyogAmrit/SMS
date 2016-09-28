@@ -36,6 +36,7 @@ import com.suyogcomputech.sms.GroceryCartActivity;
 import com.suyogcomputech.sms.GroceryListActivity;
 import com.suyogcomputech.sms.GroceryProductDetailsActivity;
 import com.suyogcomputech.sms.R;
+import com.suyogcomputech.sms.SearchGroceryActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -121,6 +122,11 @@ public class GroceryFragment extends Fragment implements ExpandableListView.OnCh
                 Toast.makeText(getActivity(), "Cart empty please add item to cart", Toast.LENGTH_SHORT).show();
             }
             return true;
+        }
+        if(item.getItemId()==R.id.item_search)
+        {
+            Intent intent = new Intent(getActivity(),SearchGroceryActivity.class);
+            startActivity(intent);
         }
         return false;
     }

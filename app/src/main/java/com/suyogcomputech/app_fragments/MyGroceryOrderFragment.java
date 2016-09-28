@@ -35,6 +35,7 @@ import com.suyogcomputech.sms.GroceryHistoryActivity;
 import com.suyogcomputech.sms.GroceryListActivity;
 import com.suyogcomputech.sms.GroceryProductDetailsActivity;
 import com.suyogcomputech.sms.R;
+import com.suyogcomputech.sms.SearchGroceryActivity;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -100,6 +101,11 @@ public class MyGroceryOrderFragment extends Fragment {
                 Toast.makeText(getActivity(), "Cart empty please add item to cart", Toast.LENGTH_SHORT).show();
             }
             return true;
+        }
+        if(item.getItemId()==R.id.item_search)
+        {
+            Intent intent = new Intent(getActivity(),SearchGroceryActivity.class);
+            startActivity(intent);
         }
         return false;
     }

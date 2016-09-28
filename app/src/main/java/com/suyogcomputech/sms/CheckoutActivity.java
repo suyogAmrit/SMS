@@ -11,10 +11,15 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mikepenz.actionitembadge.library.ActionItemBadge;
+import com.mikepenz.actionitembadge.library.utils.BadgeStyle;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.suyogcomputech.adapter.CheckOutGroceryAdapter;
 import com.suyogcomputech.adapter.GroceryCartAdapter;
 import com.suyogcomputech.helper.AppConstants;
@@ -41,6 +46,8 @@ public class CheckoutActivity extends AppCompatActivity {
     CheckOutGroceryAdapter checkoutAdapter;
     ArrayList<GroceryCartList> cartArrayList;
     RecyclerView rvCartItems;
+    int badgeCount;
+    private BadgeStyle style = ActionItemBadge.BadgeStyles.RED.getStyle();
     TextView tv_grand_total,tv_shipping_fee,tv_grand_total_price,tv_name,tv_appt_name,tv_phone_number,tv_address,tv_flat_no;
 
     @Override
@@ -68,8 +75,49 @@ public class CheckoutActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         new GetCartItemCheckout().execute();
         new GetAddress().execute();
+        new CartCount().execute();
 
     }
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.grocery_menu_cart, menu);
+        ActionItemBadge.update(CheckoutActivity.this, menu.findItem(R.id.addcart), FontAwesome.Icon.faw_shopping_cart, style, badgeCount);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        if (item.getItemId() == R.id.addcart) {
+            if(badgeCount!=0)
+            {
+                Intent intent = new Intent(CheckoutActivity.this,GroceryCartActivity.class);
+                //intent.putExtra(AppConstants.PROD_ID,productDetails.getId());
+                startActivity(intent);
+            }
+            else
+            {
+                Toast.makeText(CheckoutActivity.this, "Cart empty please add item to cart", Toast.LENGTH_SHORT).show();
+            }
+            return true;
+        }
+        if(item.getItemId()==R.id.item_search)
+        {
+            Intent intent = new Intent(CheckoutActivity.this,SearchGroceryActivity.class);
+            startActivity(intent);
+        }
+        return false;
+    }
+
+
+
 
     public void placeOrder(View view) {
         new PlaceOrder().execute();
@@ -271,6 +319,41 @@ public class CheckoutActivity extends AppCompatActivity {
                 return resSetInsert;
             }
             catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+    public class CartCount extends AsyncTask<Void,Void,Integer> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            super.onPostExecute(integer);
+
+            badgeCount=integer;
+            invalidateOptionsMenu();
+
+        }
+
+        @Override
+        protected Integer doInBackground(Void... params) {
+            try {
+                ConnectionClass connectionClass = new ConnectionClass();
+                Connection connection = connectionClass.connect();
+                String cartQuery="select count(*) as cart_count from Grocery_cart_table where user_id='"+uniqueUserId+"' and status=1";
+                Statement statement = null;
+                statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery(cartQuery);
+
+                resultSet.next();
+                return(resultSet.getInt("cart_count"));
+
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
             return null;

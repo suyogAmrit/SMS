@@ -104,6 +104,7 @@
         <activity android:name=".GroceryCartActivity" android:screenOrientation="portrait" />
         <activity android:name=".CheckoutActivity" android:screenOrientation="portrait" />
         <activity android:name=".GroceryHistoryActivity" android:screenOrientation="portrait" />
+        <activity android:name=".SearchGroceryActivity" android:screenOrientation="portrait" />
     </application>
 
 </manifest>
