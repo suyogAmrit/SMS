@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.suyogcomputech.adapter.CartItemAdapter;
 import com.suyogcomputech.helper.AppConstants;
+import com.suyogcomputech.helper.AppHelper;
 import com.suyogcomputech.helper.ConnectionClass;
 import com.suyogcomputech.helper.ProductDetails;
 
@@ -77,6 +78,9 @@ public class EditSelectedProductActivity extends AppCompatActivity {
         Log.v("","");
         updateUi();
         detailsArrayList = new ArrayList<>();
+//        if (AppHelper.isConnectingToInternet(EditSelectedProductActivity.this)){
+//            new FetchSizeAvaliabilityTask().execute();
+//        }
     }
 
     private void updateUi() {
@@ -220,6 +224,51 @@ public class EditSelectedProductActivity extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+    private class FetchSizeAvaliabilityTask extends AsyncTask<String,Void,String>{
+        String resultstring="";
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                ConnectionClass connectionClass = new ConnectionClass();
+                Connection connection = connectionClass.connect();
+                String query = "" ;
+                if (productDetails.getSizeProduct().equalsIgnoreCase("S")){
+                    query = query+ "select size1_available from Eshop_Prod_Size_tb where size1='s' AND prod_id = "+productDetails.getId()+";";
+                    resultstring = "size1_available";
+                }else if (productDetails.getSizeProduct().equalsIgnoreCase("M")){
+                    query = query+"select size2_available from Eshop_Prod_Size_tb where size2='m' AND prod_id = "+productDetails.getId()+";";
+                    resultstring = "size2_available";
+                }else if (productDetails.getSizeProduct().equalsIgnoreCase("L")){
+                    query = query+ "select size3_available from Eshop_Prod_Size_tb where size3='L' AND prod_id = "+productDetails.getId()+";";
+                    resultstring = "size3_available";
+                }else if (productDetails.getSizeProduct().equalsIgnoreCase("XL")){
+                    query = query+"select size4_available from Eshop_Prod_Size_tb where size4='XL' AND prod_id = "+productDetails.getId()+";";
+                    resultstring = "size4_available";
+                }else if (productDetails.getSizeProduct().equalsIgnoreCase("XXL")){
+                    query = query+"select size5_available from Eshop_Prod_Size_tb where size5='XXL' AND prod_id = "+productDetails.getId()+";";
+                    resultstring = "size5_available";
+                }else if (productDetails.getSizeProduct().equalsIgnoreCase("XXXL")){
+                    query = query+"select size6_available from Eshop_Prod_Size_tb where size6='XXXL' AND prod_id = "+productDetails.getId()+";";
+                    resultstring = "size6_available";
+                }
+                Log.v("Query", query);
+                Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery(query);
+                Log.v("ResSet",resultSet.toString());
+                String value = resultSet.getString(resultstring);
+                connection.close();
+                return value;
+            }catch (SQLException s){
+                s.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+        }
     }
     private class FtechcartSizeAvailibletask extends AsyncTask<Void,Void,ArrayList<ProductDetails>>{
         @Override

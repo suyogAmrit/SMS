@@ -155,8 +155,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:text="REMOVE"
-                        android:gravity="center"
-                        android:clickable="true"/>
+                        android:gravity="center" />
                 </LinearLayout>
                 <View
                     android:layout_width="1dp"
@@ -179,8 +178,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:text="EDIT"
-                        android:gravity="center"
-                        android:clickable="true"/>
+                        android:gravity="center" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

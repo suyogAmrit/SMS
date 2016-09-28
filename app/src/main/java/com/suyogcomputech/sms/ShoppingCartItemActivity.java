@@ -199,6 +199,7 @@ public class ShoppingCartItemActivity extends AppCompatActivity{
                 LinearLayoutManager glm = new LinearLayoutManager(ShoppingCartItemActivity.this);
                 rcvMyOrderRecycler.setLayoutManager(glm);
                 cartItemAdapter.totalPrice();
+                cartItemAdapter.totalDis();
                 if (list==null && list.size()==0){
                     Toast.makeText(ShoppingCartItemActivity.this,"No Orders",Toast.LENGTH_SHORT).show();
                 }
@@ -220,8 +221,6 @@ public class ShoppingCartItemActivity extends AppCompatActivity{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-
         if (requestCode == REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 Log.i("ResultCode", "123");

@@ -97,30 +97,30 @@ public class MainActivity extends AppCompatActivity implements ExpandableListVie
     @Override
     protected void onStart() {
         super.onStart();
-        if (AppHelper.isConnectingToInternet(this)) {
-            new FetchbadgeNumber().execute();
-        }
+//        if (AppHelper.isConnectingToInternet(this)) {
+//            new FetchbadgeNumber().execute();
+//        }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.main_menu,menu);
-        ActionItemBadge.update(this, menu.findItem(R.id.item_samplebadge), FontAwesome.Icon.faw_shopping_cart, style, badgeCount);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        super.onCreateOptionsMenu(menu);
+//        getMenuInflater().inflate(R.menu.main_menu,menu);
+//        ActionItemBadge.update(this, menu.findItem(R.id.item_samplebadge), FontAwesome.Icon.faw_shopping_cart, style, badgeCount);
+//        return true;
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.item_samplebadge) {
-            if (badgeCount>0) {
-                Intent intent = new Intent(MainActivity.this, ShoppingCartItemActivity.class);
-                startActivity(intent);
-            }else {
-                AppHelper.showAlertDilog(MainActivity.this,"","You don't have any item in cart","Ok");
-            }
-           return true;
-        }
+//        if (item.getItemId() == R.id.item_samplebadge) {
+//            if (badgeCount>0) {
+//                Intent intent = new Intent(MainActivity.this, ShoppingCartItemActivity.class);
+//                startActivity(intent);
+//            }else {
+//                AppHelper.showAlertDilog(MainActivity.this,"","You don't have any item in cart","Ok");
+//            }
+//           return true;
+//        }
         if (item.getItemId()==R.id.item_search){
                 Intent intent = new Intent(MainActivity.this, SearchProductActivity.class);
                 startActivity(intent);

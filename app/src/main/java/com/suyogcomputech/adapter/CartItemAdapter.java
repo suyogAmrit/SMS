@@ -3,6 +3,7 @@ package com.suyogcomputech.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -137,10 +138,13 @@ public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.ViewH
         ShoppingCartItemActivity.txtTotalPayble.setText(AppConstants.RUPEESYM+price);
     }
     public void totalDis(){
-        double dispr = 0;
+        double dispr = 0.0;
         for (int l = 0;l<myItems.size();l++){
-            Log.v("qunnn", ""+Double.parseDouble(myItems.get(l).getPrice()));
-            dispr = dispr + ((Double.valueOf(myItems.get(l).getPrice()) * Double.valueOf(myItems.get(l).getOfferPer()))/100);
+            if (!TextUtils.isEmpty(myItems.get(l).getPrice()) && !TextUtils.isEmpty(myItems.get(l).getOfferPer())) {
+                Log.v("qunnn", "" + Double.parseDouble(myItems.get(l).getPrice()));
+                dispr = dispr + ((Double.parseDouble(myItems.get(l).getPrice()) * Double.parseDouble(myItems.get(l).getOfferPer())) / 100);
+                Log.v("qunnn", "" + dispr);
+            }
         }
         ShoppingCartItemActivity.txtDiscountTotal.setText(AppConstants.RUPEESYM+""+dispr);
     }
